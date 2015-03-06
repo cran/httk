@@ -1,0 +1,15 @@
+Title: High-Throughput Toxicokinetics
+Package: httk
+Version: 1.1
+Date: 3/5/2015
+Author: John Wambaugh and Robert Pearce, Schmitt method implementation by Jimena Davis, dynamic model adapted from code by R. Woodrow Setzer, Rabbit parameters from Nisha Sipes
+Suggests: ggplot2
+Description: Functions and data tables for simulation and statistical analysis of chemical toxicokinetics (TK) using data obtained from relatively high throughput, in vitro studies. Both physiologically-based (PBTK) and empirical (e.g., one compartment) TK models can be parameterized for sevral hundred chemicals and multiple species. These models are solved efficiently, often using compiled (C-based) code. A Monte Carlo sampler is included for simulating biological variability and measurment limitations. Functions are also provided for exporting PBTK models to SBML and JARNAC for use with other simulation software. These functions and data provide a set of tools for in vitro-in vivo extrapolation (IVIVE) of high throughput screening data  (e.g., ToxCast) to real-world exposures via reverse dosimetry (also known as "RTK").
+Maintainer: John Wambaugh <wambaugh.john@epa.gov>
+License: GPL-3
+Packaged: 2015-03-06 15:46:56 UTC; jwambaug
+LazyData: true
+Imports: deSolve, msm
+NeedsCompilation: yes
+Repository: CRAN
+Date/Publication: 2015-03-06 17:47:38

@@ -1,0 +1,3 @@
+export(predict_partitioning_schmitt,add_chemtable,parameterize_1comp,solve_3comp,parameterize_3comp,solve_1comp,calc_css,export_pbtk_jarnac, export_pbtk_sbml,solve_pbtk, monte_carlo, get_wetmore_css, calc_mc_css, calc_mc_oral_equiv, get_wetmore_cheminfo, get_cheminfo, get_wetmore_oral_equiv,calc_hepatic_clearance,calc_stats,parameterize_pbtk,parameterize_steadystate,calc_analytic_css,calc_elimination_rate,calc_ratioblood2plasma,calc_volume_of_distribution,calc_total_clearance)
+useDynLib(httk)
+import(msm,deSolve)
