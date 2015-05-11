@@ -10,11 +10,12 @@ This function solves for the amounts or concentrations of a chemical in differen
 }
 \usage{
 solve_3comp(chem.name = NULL, chem.cas = NULL, times=NULL,
-            parameters=NULL, days=10, tsteps = 4, daily.dose = 1, 
-            doses.per.day=0, initial.values=NULL,plots=F, suppress.messages=F, 
+            parameters=NULL, days=10, tsteps = 4, daily.dose = 1,dose=NULL, 
+            doses.per.day=NULL, initial.values=NULL,plots=F, suppress.messages=F, 
             species="Human", iv.dose=F,output.units='uM',
-            fu.hep.correct=T,method="lsoda",rtol=1e-8,
-            atol=1e-12,recalc.blood2plasma=F,...)
+            method="lsoda",rtol=1e-8,
+            atol=1e-12,default.to.human=F,recalc.blood2plasma=F,
+            recalc.clearance=F,dosing.matrix=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,6 +26,7 @@ solve_3comp(chem.name = NULL, chem.cas = NULL, times=NULL,
   \item{days}{Length of the simulation.}
    \item{tsteps}{The number time steps per hour.}
   \item{daily.dose}{Total daily dose, mg/kg BW.}
+  \item{dose}{Amount of a single dose, mg/kg BW.  Overwrites daily.dose.}
   \item{doses.per.day}{Number of doses per day.}
   \item{initial.values}{Vector containing the initial concentrations or amounts of the chemical in specified tissues with units corresponding to output.units.  Defaults are zero.}
   \item{plots}{Plots all outputs if true.}
@@ -32,16 +34,20 @@ solve_3comp(chem.name = NULL, chem.cas = NULL, times=NULL,
   \item{species}{Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human"). }
   \item{iv.dose}{Simulates a single i.v. dose if true.}
     \item{output.units}{Desired units (either "mg/L", "mg", "umol", or default "uM").}
-    \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
     \item{method}{Method used by integrator (deSolve).}
   \item{rtol}{Argument passed to integrator (deSolve).}
   \item{atol}{Argument passed to integrator (deSolve).}
-    \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Fraction_unbound_plasma, and Krbc2plasma.}
+    \item{default.to.human}{
+  Substitutes missing animal values with human values if true (hepatic intrinsic clearance or fraction of unbound plasma).
+  }
+    \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Funbound.plasma, and Krbc2plasma.}
+    \item{recalc.clearance}{Recalculates the the hepatic clearance (Clmetabolism) with new million.cells.per.gliver parameter.}
+      \item{dosing.matrix}{Vector of dosing times or a matrix consisting of two columns or rows named "dose" and "time" containing the time and amount, in mg/kg BW, of each dose.}
   \item{...}{Additional arguments passed to the integrator.}
 }
 
 \details{
-Default of 0 for doses.per.day solves for a single dose.
+Default of NULL for doses.per.day solves for a single dose.
 
 The compartments used in this model are the small intestine, portal vein,  liver, and systemic compartment.  
 
@@ -65,9 +71,8 @@ John Wambaugh and Robert Pearce
 
 \examples{
 solve_3comp(chem.name='Bisphenol-A',doses.per.day=3,dose=1/3)
- solve_3comp(chem.name='Nicotine',doses.per.day=20)
+ solve_3comp(chem.name='Nicotine',doses.per.day=2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Solve}

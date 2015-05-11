@@ -49,7 +49,7 @@ J2: Agutlumen -> Agut;	kgutabs*Agutlumen;
 	
 // Change of amount of chemical in lung tissue:	
 
-J3: Alung -> Aart;	Qcardiac*Alung/Vlung*Ratioblood2plasma/Klung2plasma/Fraction_unbound_plasma;
+J3: Alung -> Aart;	Qcardiac*Alung/Vlung*Rblood2plasma/Klung2plasma/Fraction_unbound_plasma;
 
 J4: Aven -> Alung;	Qcardiac*Aven/Vven;
 	
@@ -58,22 +58,22 @@ J4: Aven -> Alung;	Qcardiac*Aven/Vven;
 	
 // Change in amount of chemical in the rest of body tissue:	
 J5: Aart -> Arest;	Qrest*Aart/Vart;
-J6: Arest -> Aven;	Qrest*Arest/Vrest*Ratioblood2plasma/Krest2plasma/Fraction_unbound_plasma;
+J6: Arest -> Aven;	Qrest*Arest/Vrest*Rblood2plasma/Krest2plasma/Fraction_unbound_plasma;
 	
 // Change in amount of chemical in the liver tissue:	
 
 J7: Aart -> Aliver;	Qliver*Aart/Vart;
 // -> Liver;	CLbiliary*Cliver/Kliver2plasma/Fraction_unbound_plasma/Vliver;
-J13: Aliver -> Ametabolized;	CLmetabolism*Aliver/Vliver/Kliver2plasma;
-J8: Agut -> Aliver;	Qgut*Agut/Vgut*Ratioblood2plasma/Kgut2plasma/Fraction_unbound_plasma;
-J9: Aliver -> Aven;	(Qliver+Qgut)*Aliver/Vliver*Ratioblood2plasma/Kliver2plasma/Fraction_unbound_plasma;
+J13: Aliver -> Ametabolized;	Clmetabolism*Aliver/Vliver/Kliver2plasma;
+J8: Agut -> Aliver;	Qgut*Agut/Vgut*Rblood2plasma/Kgut2plasma/Fraction_unbound_plasma;
+J9: Aliver -> Aven;	(Qliver+Qgut)*Aliver/Vliver*Rblood2plasma/Kliver2plasma/Fraction_unbound_plasma;
 	
 	
 	
 // Change in amount of chemical in the kidney tissue:	
 J10: Aart -> Akidney;	Qkidney*Aart/Vart;
 J11: Akidney -> Atubules;	Qgfr*Akidney/Vkidney/Kkidney2plasma;
-J12: Akidney -> Aven;	Qkidney*Akidney/Vkidney*Ratioblood2plasma/Kkidney2plasma/Fraction_unbound_plasma;
+J12: Akidney -> Aven;	Qkidney*Akidney/Vkidney*Rblood2plasma/Kkidney2plasma/Fraction_unbound_plasma;
 
 
    
@@ -93,10 +93,10 @@ p.Klung2plasma = ",signif(inlist$Klung2plasma,digits),";
 //   Various things:
 BW = ",inlist$BW,";            // Body Weight, Kg
 hematocrit = ",inlist$hematocrit,";  // fraction of blood volume that is RBCs, typically 0.4 - 0.5
-p.Fraction_unbound_plasma = ",signif(inlist$Fraction_unbound_plasma[[1]],digits),";
-p.Ratioblood2plasma =  ",signif(inlist$Ratioblood2plasma[[1]],digits),";
+p.Fraction_unbound_plasma = ",signif(inlist$Funbound.plasma[[1]],digits),";
+p.Rblood2plasma =  ",signif(inlist$Rblood2plasma[[1]],digits),";
 P.Qgfr =",signif(24*inlist$Qgfrc,digits),"* BW^0.75;  // L/day
-p.CLmetabolism = ",signif(24*inlist$CLmetabolism,digits),"*BW;
+p.Clmetabolism = ",signif(24*inlist$Clmetabolism,digits),"*BW;
 
 //   Species Concentrations: umol
 p.Agutlumen = ",Agutlumen,";   // initial dose

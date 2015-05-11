@@ -7,9 +7,9 @@ initparms3comp <- function(newParms = NULL){
     Qgfrc = 0.108,
     Qgutf = 0.205,
     Qliverf = 0.0536,
-    Vportven = 0,
+    Vgut = 0,
     Vliver = 0,
-    Vsyscomp = 0,
+    Vrest = 0,
     Fraction_unbound_plasma = 0.0682,
     CLmetabolism = 0.0,
     Qcardiac = 0,
@@ -36,19 +36,19 @@ initparms3comp <- function(newParms = NULL){
 }
 
 Outputs3comp <- c(
-    "Cportven",
+    "Cgut",
     "Cliver",
-    "Csyscomp",
+    "Crest",
     "Cserum"
 )
 
 
 initState3comp <- function(parms, newState = NULL) {
   Y <- c(
-    Aintestine = 0.0,
-    Aportven = 0.0,
+    Agutlumen = 0.0,
+    Agut = 0.0,
     Aliver = 0.0,
-    Asyscomp = 0.0,
+    Arest = 0.0,
     Ametabolized = 0.0,
     Atubules = 0.0,
     AUC = 0.0

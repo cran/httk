@@ -1,6 +1,6 @@
 # This function retrieves the paramters needed to run the constant infusion dose model for determining steady-state concentration.
 
-parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human",clint.pvalue.threshold=0.05,default.to.human=F,human.clint.fub=F,fu.hep.correct=T)
+parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human",clint.pvalue.threshold=0.05,default.to.human=F,human.clint.fub=F)
 
 {
   PK.physiology.data <- PK.physiology.data
@@ -9,6 +9,10 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
   out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
   chem.cas <- out$chem.cas
   chem.name <- out$chem.name
+
+  #Capitilie the first letter of spcies only:
+  species <- tolower(species)
+  substring(species,1,1) <- toupper(substring(species,1,1))
 
   if (!(species %in% colnames(PK.physiology.data)))
   {
@@ -21,8 +25,8 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
   this.phys.data <- PK.physiology.data[,PK.phys.species]
   names(this.phys.data) <- PK.physiology.data[,1]
   
-  QGFRc <- this.phys.data["GFR"] #mL/min/kgBW
-  BW <- this.phys.data["Average BW"]
+  QGFRc <- this.phys.data[["GFR"]] #mL/min/kgBW
+  BW <- this.phys.data[["Average BW"]]
     
   if (!(paste(species,"Vol (L/kg)") %in% colnames(tissue.data)))
   {
@@ -30,7 +34,7 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
     {
       tissue.vols <- tissue.data[,toupper(colnames(tissue.data))==toupper(paste(species,"Vol (L/kg)"))]
       tissue.flows <- tissue.data[,toupper(colnames(tissue.data))==toupper(paste(species,"Flow (mL/min/kg^(3/4))"))]
-      warning(paste(species,"coerced to",toupper(species),"for tissue data."))
+      warning(paste(species,"coerced to",paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"for tissue data."))
     } else stop(paste("Tissue data for",species,"not found."))
   } else {
     tissue.vols <- tissue.data[,paste(species,"Vol (L/kg)")]
@@ -39,24 +43,24 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
   names(tissue.vols) <- tissue.data[,1]
   names(tissue.flows) <- tissue.data[,1]
 
-  Qhc <- tissue.flows["liver"]  #mL/min/kgBW
-  liver.volume.per.kgBW <- tissue.vols["liver"] # L/kg BW
-  CLint <- try(get_invitroPK_param("Clint",species,chem.CAS=chem.cas),silent=T)
-  if (class(CLint) == "try-error" & default.to.human || human.clint.fub) 
+  Qtotal.liverc <- tissue.flows[["liver"]]  #mL/min/kgBW
+  Vliverc <- tissue.vols[["liver"]] # L/kg BW
+  Clint <- try(get_invitroPK_param("Clint",species,chem.CAS=chem.cas),silent=T)
+  if (class(Clint) == "try-error" & default.to.human || human.clint.fub) 
   {
-    CLint <- try(get_invitroPK_param("Clint","Human",chem.CAS=chem.cas),silent=T)
+    Clint <- try(get_invitroPK_param("Clint","Human",chem.CAS=chem.cas),silent=T)
     warning(paste(species,"coerced to Human for metabolic clerance data."))
   }
-  if (class(CLint) == "try-error") stop("Missing metabolic clearance data for given species. Set default.to.human to true to substitute human value.")
+  if (class(Clint) == "try-error") stop("Missing metabolic clearance data for given species. Set default.to.human to true to substitute human value.")
     # Check that the trend in the CLint assay was significant:
-  CLint.pValue <- get_invitroPK_param("Clint.pValue",species,chem.CAS=chem.cas)
-  if (!is.na(CLint.pValue) & CLint.pValue > clint.pvalue.threshold) CLint <- 0
+  Clint.pValue <- get_invitroPK_param("Clint.pValue",species,chem.CAS=chem.cas)
+  if (!is.na(Clint.pValue) & Clint.pValue > clint.pvalue.threshold) Clint <- 0
   
   # unitless fraction of chemical unbound with plasma
-  fub <- try(get_invitroPK_param("Fub",species,chem.CAS=chem.cas),silent=T)
+  fub <- try(get_invitroPK_param("Funbound.plasma",species,chem.CAS=chem.cas),silent=T)
   if (class(fub) == "try-error" & default.to.human || human.clint.fub) 
   {
-    fub <- try(get_invitroPK_param("Fub","Human",chem.CAS=chem.cas),silent=T)
+    fub <- try(get_invitroPK_param("Funbound.plasma","Human",chem.CAS=chem.cas),silent=T)
     warning(paste(species,"coerced to Human for protein binding data."))
   }
   if (class(fub) == "try-error") stop("Missing protein binding data for given species. Set default.to.human to true to substitute human value.")
@@ -65,13 +69,16 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
     fub <- 0.005
     warning("Fraction unbound = 0, changed to 0.005.")
   }
+  
+  Fgutabs <- try(get_invitroPK_param("Fgutabs",species,chem.CAS=chem.cas),silent=T)
+  if (class(Fgutabs) == "try-error") Fgutabs <- 1
  
 
   Params <- list()
-  Params[["CLint"]] <- CLint # uL/min/10^6
-  Params[["Fraction_unbound_plasma"]] <- fub # unitless fraction
-  Params[["Qhc"]] <- Qhc/1000*60     #        L/h/kgBW
-  Params[["QGFRc"]] <- QGFRc/1000*60 #        L/h/kgBW     
+  Params[["Clint"]] <- Clint # uL/min/10^6
+  Params[["Funbound.plasma"]] <- fub # unitless fraction
+  Params[["Qtotal.liverc"]] <- Qtotal.liverc/1000*60     #        L/h/kgBW
+  Params[["Qgfrc"]] <- QGFRc/1000*60 #        L/h/kgBW     
   Params[["BW"]] <- BW # kg
   Params[["MW"]] <- get_physchem_param("MW",chem.CAS=chem.cas) # molecular weight g/mol
   
@@ -80,12 +87,13 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
   Pow <- 10^get_physchem_param("logP",chem.CAS=chem.cas) # Octanol:water partition coeffiecient
 
 # Correct for unbound fraction of chemical in the hepatocyte intrinsic clearance assay (Kilford et al., 2008)
-  if (fu.hep.correct) Params[["Fraction_unbound_hepatocyteassay"]] <-calc_fu_hep(Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept) # fraction 
+  Params[["Fhep.assay.correction"]] <- calc_fu_hep(Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept) # fraction 
 
   Params[["million.cells.per.gliver"]] <- 110 # 10^6 cells/g-liver
-  Params[["liver.volume.per.kgBW"]] <- liver.volume.per.kgBW # L/kg BW
-  Params[["tissue.density"]] <- 1.05 # g/mL
- # Params[["CLmetabolism"]] <- calc_Hepatic_Clearance(Params)
+  Params[["Vliverc"]] <- Vliverc # L/kg BW
+  Params[["liver.density"]] <- 1.05 # g/mL
+  Params[['Fgutabs']] <- Fgutabs
+
   return(Params)
 }
 

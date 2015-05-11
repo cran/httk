@@ -8,7 +8,7 @@ concentration in tissues taken from animals administered control doses of the
 chemicals either orally or intravenously. This plasma concentration-time data 
 is from rat experiments reported in public sources. Toxicokinetic data were 
 retrieved from those studies by the Netherlands Organisation for Applied 
-Scientific Research (TNO) using curve stripping (TechDig v2). 
+Scientific Research (TNO) using curve stripping (TechDig v2).  This data is provided for statistical analysis as in Wambaugh (2014). 
 }
 \usage{chem.invivo.PK.data}
 \format{A data.frame containing 597 rows and 13 columns.}

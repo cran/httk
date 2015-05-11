@@ -26,13 +26,13 @@ augment.table <- function(this.table,this.CAS,compound.name=NULL,this.property,v
 
   chem.id.cols<-c("Compound","CAS","CAS.Checksum","DSSTox.GSID","SMILES.desalt")
   chem.phys.cols<-c("MW","logP","pKa_Donor","pKa_Accept","logMA")
-  chem.invitro.cols <- c("Clint","Clint.pValue","Fub","Fab","Rbp")
-
+  chem.invitro.cols <- c("Clint","Clint.pValue","Funbound.plasma","Fgutabs","Rblood2plasma")
+                                     
   data.cols <- c("Reference","Species",chem.id.cols, chem.phys.cols,chem.invitro.cols)
-  if (!(this.property %in% data.cols))
+  if (!(tolower(this.property) %in% tolower(data.cols)))
     stop(paste("Parameter", this.property,
       "not matched by columns in our data table."))
-
+  
 # If one of the species-specific parameters is being set (that is, anything in
 # chem.invitro.cols) then species must either be set for the whole table or read
 # in from a column in that table:
@@ -86,11 +86,14 @@ matched to a \"new.table\" column in argument \"data.list\".")
   }
 #  if (!(this.property %in% chem.prop.cols)) stop(paste(this.property,"not a valid property"))
   index <- which(this.table[,"CAS"]==this.CAS)
-  if (!(compound.name %in% strsplit(this.table[index,"All.Compound.Names"],"[|]")[[1]]))
+  if (!is.null(compound.name))
   {
-    this.table[index,"All.Compound.Names"] <- paste(this.table[index,"All.Compound.Names"],compound.name,sep="|")
+    if (!(compound.name %in% strsplit(this.table[index,"All.Compound.Names"],"[|]")[[1]]))
+    {
+      this.table[index,"All.Compound.Names"] <- paste(this.table[index,"All.Compound.Names"],compound.name,sep="|")
+    }
   }
-  if (this.property %in% chem.invitro.cols)
+  if (this.property %in% paste(species,chem.invitro.cols,sep="."))
   {
     if (!(species %in% strsplit(this.table[index,"All.Species"],"[|]")[[1]]))
     {
@@ -107,7 +110,8 @@ matched to a \"new.table\" column in argument \"data.list\".")
   if (is.na(this.table[index,this.property]) | overwrite)
   {
     if (!(this.property %in% c("pKa_Donor","pKa_Accept","SMILES.desalt"))) this.table[index,this.property] <- as.numeric(value)
-    else this.table[index,this.property] <- value
+    else this.table[index,this.property] <- as.character(value)
+    if(!is.na(this.table[index,this.property]) & this.table[index,this.property] == "" & this.property %in% c("pKa_Donor","pKa_Accept")) this.table[index,this.property] <- NA
     ref.name <- paste(this.property,"Reference",sep=".")
     this.table[index,ref.name] <- reference
   }
@@ -121,6 +125,17 @@ matched to a \"new.table\" column in argument \"data.list\".")
 add_chemtable <- function(new.table, data.list, current.table=NULL, reference=NULL,
                           species=NULL, overwrite=F)
 {
+# Let's make the capitalization consistent in data.list:
+  exceptions <- c("Clint.pValue","logP","logMA","MW","CAS","CAS.Checksum","pKa_Donor","pKa_Accept","SMILES.desalt","DSSTox.GSID")
+  for (this.name in names(data.list))
+  {
+    if (tolower(this.name) %in% tolower(exceptions)) this.name <- exceptions[tolower(exceptions)==tolower(this.name)]
+    else {
+      this.name <- tolower(this.name)
+      substring(this.name,1,1) <- toupper(substring(this.name,1,1))
+    }
+  }
+  
 # We either need to have reference set for the whole table, or read in from a
 #column from that table:
   if (is.null(reference) & !("Reference" %in% names(data.list))) stop("Either \

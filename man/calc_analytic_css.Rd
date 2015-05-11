@@ -11,7 +11,7 @@ This function calculates the analytic steady state plasma or venous blood concen
 calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
                   output.units='uM',model = 'pbtk',species='Human',
                   concentration='plasma',suppress.messages=F,
-                  fu.hep.correct=T,recalc.blood2plasma=F)
+                  recalc.blood2plasma=F,default.to.human=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,9 +27,12 @@ calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
 }
   \item{suppress.messages}{Whether or not the output message is suppressed.}
   \item{concentration}{Desired concentration type, 'blood' or default 'plasma'.}
-  \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
-  \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Fraction_unbound_plasma, and Krbc2plasma.} 
-}
+  \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Funbound.plasma, and Krbc2plasma.} 
+  \item{default.to.human}{
+  Substitutes missing rat values with human values if true.
+  }
+} 
+ 
 \details{
 
 When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
@@ -57,5 +60,4 @@ calc_analytic_css(chem.name='Bisphenol-A',output.units='mg/L',
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Solve}

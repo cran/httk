@@ -11,7 +11,7 @@ This function initializes the parameters needed in the functions solve_pbtk, cal
 \usage{
  parameterize_pbtk(chem.cas=NULL,chem.name=NULL,species="Human",default.to.human=F,
  tissuelist=list(liver=c("liver"),kidney=c("kidney"),lung=c("lung"),gut=c("gut")),
- force.human.clint.fub = F,clint.pvalue.threshold=0.05,fu.hep.correct=TRUE)
+ force.human.clint.fub = F,clint.pvalue.threshold=0.05)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,7 +36,6 @@ This function initializes the parameters needed in the functions solve_pbtk, cal
   Forces use of human values for hepatic intrinsic clearance and fraction of unbound plasma if true.
  }
  \item{clint.pvalue.threshold}{Hepatic clearances with clearance assays having p-values greater than the threshold are set to zero.}
- \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (defaults to TRUE).}
 }
 
 \details{
@@ -46,8 +45,10 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
 \value{
 
   \item{BW}{Body Weight, kg.}
-    \item{CLmetabolismc}{Hepatic Clearance, L/h/kg BW.}
-    \item{Fraction_unbound_plasma}{Fraction of plasma that is not bound.}
+    \item{Clmetabolismc}{Hepatic Clearance, L/h/kg BW.}
+    \item{Fgutabs}{Fraction of the oral dose absorbed, i.e. the fraction of the dose that enters the gutlumen.}
+    \item{Funbound.plasma}{Fraction of plasma that is not bound.}
+       \item{Fhep.assay.correction}{The fraction of chemical unbound in hepatocyte assay using the method of Kilford et al. (2008)}
     \item{hematocrit}{Percent volume of red blood cells in the blood.}
     \item{kdermabs}{Rate that chemical is transferred from the skin to the blood, 1/h.}
     \item{Kgut2plasma}{Ratio of concentration of chemical in gut tissue to unbound concentration in plasma.}
@@ -58,6 +59,7 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
       \item{Klung2plasma}{Ratio of concentration of chemical in lung tissue to unbound concentration in plasma.}
        \item{Krbc2plasma}{Ratio of concentration of chemical in red blood cells to unbound concentration in plasma.}
      \item{Krest2plasma}{Ratio of concentration of chemical in rest of body tissue to unbound concentration in plasma.}
+       \item{million.cells.per.gliver}{Millions cells per gram of liver tissue.}
     \item{MW}{Molecular Weight, g/mol.}
     \item{Qcardiacc}{Cardiac Output, L/h/kg BW^3/4.}
      \item{Qgfrc}{Glomerular Filtration Rate, L/h/kg BW^3/4, volume of fluid filtered from kidney and excreted.}
@@ -65,7 +67,7 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
      \item{Qkidneyf}{Fraction of cardiac output flowing to the kidneys.}
      \item{Qliverf}{Fraction of cardiac output flowing to the liver.}
       \item{Qlungf}{Fraction of cardiac output flowing to the lungs, not used in current model.  Entire cardiac output actually flows through the lung compartment.}
-      \item{Ratioblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma.}
+      \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma.}
      \item{Vartc}{Volume of the arteries per kg body weight, L/kg BW.}
       \item{Vgutc}{Volume of the gut per kg body weight, L/kg BW.}
       \item{Vkidneyc}{Volume of the kidneys per kg body weight, L/kg BW.}
@@ -104,5 +106,4 @@ Kilford, P. J., Gertz, M., Houston, J. B. and Galetin, A. (2008). Hepatocellular
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Parameter}

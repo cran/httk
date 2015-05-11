@@ -67,5 +67,5 @@ get_wetmore_css(chem.cas="34256-82-1",species="Rat",which.quantile=0.5)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Wetmore}
+\keyword{Monte Carlo}% __ONLY ONE__ keyword per line

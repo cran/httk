@@ -5,7 +5,7 @@
 \description{
 This data set contains values from Schmitt (2008) describing the composition
 of specific tissues and from Birnbaum et al. (1994) describing
-volumes of and blood flows to thos tissues, allowing parameterization of 
+volumes of and blood flows to those tissues, allowing parameterization of 
 toxicokinetic models for human, mouse, rat, dog, or rabbit.
 }
 \usage{tissue.data}

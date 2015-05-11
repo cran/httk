@@ -1,5 +1,5 @@
-\name{calc_ratioblood2plasma}
-\alias{calc_ratioblood2plasma}
+\name{calc_rblood2plasma}
+\alias{calc_rblood2plasma}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Calculate the constant ratio of the blood concentration to the plasma concentration.
@@ -8,7 +8,7 @@ Calculate the constant ratio of the blood concentration to the plasma concentrat
 This function calculates the constant ratio of the blood concentration to the plasma concentration. It uses the hematocrit and the red blood cell (RBC) parition coefficient as predicted by the Schmitt (2008) method.
 }
 \usage{
-calc_ratioblood2plasma(chem.cas=NULL, chem.name=NULL, default.to.human=F, species="Human")
+calc_rblood2plasma(chem.cas=NULL, chem.name=NULL, default.to.human=F, species="Human")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -44,10 +44,9 @@ John Wambaugh
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-calc_ratioblood2plasma(chem.name="Bisphenol A")
-calc_ratioblood2plasma(chem.name="Bisphenol A",species="Rat")
+calc_rblood2plasma(chem.name="Bisphenol A")
+calc_rblood2plasma(chem.name="Bisphenol A",species="Rat")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Parameter}

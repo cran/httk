@@ -10,17 +10,17 @@ calc_css <- function(parameters=NULL,
                     concentration='plasma',
                     suppress.messages=F,
                     model='pbtk',
-                    fu.hep.correct=T,
+                    default.to.human=F,
                     ...)
 {
   
   if(is.null(parameters)){
     if(tolower(model)=='pbtk'){
-      parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,fu.hep.correct=fu.hep.correct)
+      parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
     }else if(tolower(model)=='3compartment'){
-      parameters <- parameterize_3comp(chem.cas=chem.cas,chem.name=chem.name,species=species,fu.hep.correct=fu.hep.correct)
+      parameters <- parameterize_3comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
     }else if(tolower(model)=='1compartment'){
-      parameters <- parameterize_1comp(chem.cas=chem.cas,chem.name=chem.name,species=species,fu.hep.correct=fu.hep.correct)
+      parameters <- parameterize_1comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
     }
   } 
 
@@ -28,14 +28,14 @@ calc_css <- function(parameters=NULL,
   conc <- (1 - p) * css 
 
   if(tolower(model) == 'pbtk'){
-    out <- solve_pbtk(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
+    out <- solve_pbtk(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day,days = days,suppress.messages=T,...)
     Final_Conc <- out[dim(out)[1],c("Agutlumen","Cart","Cven","Clung","Cgut","Cliver","Ckidney","Crest")]
   }else if(tolower(model) =='3compartment'){
     out <- solve_3comp(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
-    Final_Conc <- out[dim(out)[1],c("Aintestine","Cportven","Cliver","Csyscomp")]
+    Final_Conc <- out[dim(out)[1],c("Agutlumen","Cgut","Cliver","Crest")]
   }else if(tolower(model)=='1compartment'){
     out <- solve_1comp(parameters=parameters,daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
-    Final_Conc <- as.numeric(out[dim(out)[1],'Compartment'])
+    Final_Conc <- out[dim(out)[1],c("Agutlumen","Ccompartment")]
   }else stop('The model options are only: 1compartment, 3compartment, and pbtk.')
   
   day <- days
@@ -55,10 +55,10 @@ calc_css <- function(parameters=NULL,
     Final_Conc <- out[dim(out)[1],c("Agutlumen","Cart","Cven","Clung","Cgut","Cliver","Ckidney","Crest")]
   }else if(tolower(model) =='3compartment'){
     out <- solve_3comp(parameters=parameters,initial.values = Final_Conc, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
-    Final_Conc <- out[dim(out)[1],c("Aintestine","Cportven","Cliver","Csyscomp")]
+    Final_Conc <- out[dim(out)[1],c("Agutlumen","Cgut","Cliver","Crest")]
   }else if(tolower(model)=='1compartment'){
-    out <- solve_1comp(parameters=parameters,daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,initial.value=Final_Conc,...)
-    Final_Conc <- as.numeric(out[dim(out)[1],'Compartment'])
+    out <- solve_1comp(parameters=parameters,daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,initial.values=Final_Conc,...)
+    Final_Conc <- out[dim(out)[1],c('Agutlumen','Ccompartment')]
   }
   
     if(day > 36500) break 
@@ -83,7 +83,7 @@ calc_css <- function(parameters=NULL,
       out[,'AUC'] <- out[,'AUC']/1e+06 * parameters[["MW"]] * 1000
       css <- css /1e+06 * parameters[["MW"]] * 1000
       if(tolower(model)=='1compartment'){
-        out[,'Compartment'] <- out[,'Compartment']/1e+06 * parameters[["MW"]] * 1000
+        out[,'Ccompartment'] <- out[,'Ccompartment']/1e+06 * parameters[["MW"]] * 1000
       }else{  
         out[,'Cplasma'] <- out[,'Cplasma']/1e+06 * parameters[["MW"]] * 1000
       }
@@ -91,7 +91,7 @@ calc_css <- function(parameters=NULL,
   
   if(tolower(concentration)=='plasma'){
     if(tolower(model)=='1compartment'){
-      max=as.numeric(max(out[,'Compartment']))
+      max=as.numeric(max(out[,'Ccompartment']))
     }else{
       max=as.numeric(max(out[,'Cplasma']))
     }
@@ -100,11 +100,11 @@ calc_css <- function(parameters=NULL,
     if(tolower(model)=='pbtk'){
       max=as.numeric(max(out[,'Cven']))
     }else if(tolower(model) == '3compartment'){
-      max=as.numeric(max(out[,'Cplasma'] * parameters[['Ratioblood2plasma']]))
+      max=as.numeric(max(out[,'Cplasma'] * parameters[['Rblood2plasma']]))
     }else{
-      max=as.numeric(max(out[,'Compartment'] * parameters[['Ratioblood2plasma']]))
+      max=as.numeric(max(out[,'Ccompartment'] * parameters[['Rblood2plasma']]))
     }   
-   avg=as.numeric((out[dim(out)[1],'AUC'] - out[match(days-1,out[,'time']),'AUC'])*parameters[['Ratioblood2plasma']])
+   avg=as.numeric((out[dim(out)[1],'AUC'] - out[match(days-1,out[,'time']),'AUC'])*parameters[['Rblood2plasma']])
   }else stop("Only blood and plasma concentrations are calculated.")
   if(!suppress.messages){
     if(is.null(chem.cas) & is.null(chem.name)){

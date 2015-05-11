@@ -10,7 +10,7 @@ This function calculates the hepatic clearance for a well-stirred model or other
 }
 \usage{
 calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Human',
-                       hepatic.model='well-stirred',fu.hep.correct=T,suppress.messages=F)
+                       hepatic.model='well-stirred',suppress.messages=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,9 +21,7 @@ calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Hum
 %%     ~~Describe \code{ssparams.var.inv} here~~
 }
   \item{parameters}{Chemical parameters from parameterize_steadystate function, overrides chem.name and chem.cas.}
-  \item{hepatic.model}{Model used in calculating hepatic clearance, unscaled, parallel tube, dispersion, or default well-stirred.}
-   \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
-   
+  \item{hepatic.model}{Model used in calculating hepatic clearance, unscaled, parallel tube, dispersion, or default well-stirred.}  
    \item{suppress.messages}{Whether or not to suppress the output message.}
 }
 
@@ -45,5 +43,4 @@ calc_hepatic_clearance(chem.name="Ibuprofen")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Parameter}

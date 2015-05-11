@@ -40,5 +40,5 @@ export_pbtk_jarnac(chem.name='Nicotine',initial.amounts=list(Agutlumen=1),filena
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ programming }
+\keyword{ Export}
 

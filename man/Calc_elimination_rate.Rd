@@ -11,7 +11,7 @@ elimination is entirely due to metablism by the liver and glomerular filtration 
 }
 \usage{
 calc_elimination_rate(chem.cas=NULL,chem.name=NULL,parameters=NULL,species="Human",
-                      suppress.messages=F,fu.hep.correct=TRUE)
+                      suppress.messages=F,default.to.human=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,13 +23,15 @@ calc_elimination_rate(chem.cas=NULL,chem.name=NULL,parameters=NULL,species="Huma
   Either the cas number or the chemical name must be specified.
 %%     ~~Describe \code{pred} here~~
 }
-\item{parameters}{Chemical parameters from parameterize_steadystate function, overrides chem.name and chem.cas.}
+\item{parameters}{Chemical parameters from parameterize_steadystate or 1compartment function, overrides chem.name and chem.cas.}
   \item{species}{
  Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human").}
  
  \item{suppress.messages}{Whether or not the output message is suppressed.} 
  
- \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
+   \item{default.to.human}{
+  Substitutes missing animal values with human values if true.
+  }
 
 
 
@@ -59,5 +61,4 @@ calc_elimination_rate(chem.cas="80-05-7")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Parameter}

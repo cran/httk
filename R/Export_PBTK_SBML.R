@@ -50,11 +50,11 @@ export_pbtk_sbml <- function(chem.cas=NULL,
          <parameter id = \"Vven\" value = \"",signif(inlist$Vvenc * inlist$BW,digits),"\"/>
          <parameter id = \"Qrest\" value = \"",signif(inlist$Qcardiac*(1-inlist$Qgutf-inlist$Qliverf-inlist$Qkidneyf),digits),"\"/>
          <parameter id = \"Vrest\" value = \"",signif(inlist$Vrestc * inlist$BW,digits),"\"/>
-         <parameter id = \"Ratioblood2plasma\" value = \"",signif(inlist$Ratioblood2plasma,digits),"\"/>
+         <parameter id = \"Rblood2plasma\" value = \"",signif(inlist$Rblood2plasma,digits),"\"/>
          <parameter id = \"Krest2plasma\" value = \"",signif(inlist$Krest2plasma,digits),"\"/>
-         <parameter id = \"Fraction_unbound_plasma\" value = \"",signif(inlist$Fraction_unbound_plasma,digits),"\"/>
+         <parameter id = \"Fraction_unbound_plasma\" value = \"",signif(inlist$Funbound.plasma,digits),"\"/>
          <parameter id = \"Qliver\" value = \"",signif(inlist$Qliverf * inlist$Qcardiac,digits),"\"/>
-         <parameter id = \"CLmetabolism\" value = \"",signif(24*inlist$CLmetabolism*inlist$BW,digits),"\"/>
+         <parameter id = \"Clmetabolism\" value = \"",signif(24*inlist$Clmetabolism*inlist$BW,digits),"\"/>
          <parameter id = \"Vliver\" value = \"",signif(inlist$Vliverc * inlist$BW,digits),"\"/>
          <parameter id = \"Kliver2plasma\" value = \"",signif(inlist$Kliver2plasma,digits),"\"/>
          <parameter id = \"Vgut\" value = \"",signif(inlist$Vgutc * inlist$BW,digits),"\"/>
@@ -146,7 +146,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                               </ci>
                            </apply>
                            <ci>
-                                 Ratioblood2plasma
+                                 Rblood2plasma
                            </ci>
                         </apply>
                         <ci>
@@ -245,7 +245,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                               </ci>
                            </apply>
                            <ci>
-                                 Ratioblood2plasma
+                                 Rblood2plasma
                            </ci>
                         </apply>
                         <ci>
@@ -302,7 +302,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            <apply>
                               <times/>
                               <ci>
-                                    CLmetabolism
+                                    Clmetabolism
                               </ci>
                               <ci>
                                     Aliver
@@ -350,7 +350,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                               </ci>
                            </apply>
                            <ci>
-                                 Ratioblood2plasma
+                                 Rblood2plasma
                            </ci>
                         </apply>
                         <ci>
@@ -401,7 +401,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                               </ci>
                            </apply>
                            <ci>
-                                 Ratioblood2plasma
+                                 Rblood2plasma
                            </ci>
                         </apply>
                         <ci>
@@ -506,7 +506,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                               </ci>
                            </apply>
                            <ci>
-                                 Ratioblood2plasma
+                                 Rblood2plasma
                            </ci>
                         </apply>
                         <ci>

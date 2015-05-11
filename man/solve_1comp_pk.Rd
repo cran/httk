@@ -10,9 +10,10 @@ This function solves for the amount or concentration of a chemical in plasma or 
 }
 \usage{
 solve_1comp(chem.cas=NULL,chem.name=NULL,times=NULL,parameters=NULL,daily.dose=1,
-            doses.per.day=0, days=10,tsteps = 4, suppress.messages=F,
-            species='Human',output.units='uM',plots=F,initial.value=0,
-            iv.dose=F,fu.hep.correct=T,...)
+            dose=NULL,doses.per.day=NULL, days=10,tsteps = 4, suppress.messages=F,
+            species='Human',output.units='uM',plots=F,initial.values=NULL,
+            iv.dose=F,method="lsoda",rtol=1e-8,atol=1e-12,
+            default.to.human=F,dosing.matrix=NULL,recalc.elimination=F,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,21 +23,28 @@ solve_1comp(chem.cas=NULL,chem.name=NULL,times=NULL,parameters=NULL,daily.dose=1
   \item{parameters}{Chemical parameters from parameterize_1comp function, overrides chem.name and chem.cas.}
   \item{days}{Length of the simulation.}
   \item{tsteps}{The number time steps per hour.}
-  \item{daily.dose}{Total daily dose, mg/ kg BW.}
+  \item{daily.dose}{Total daily dose, mg/kg BW.}
+  \item{dose}{Amount of a single dose, mg/kg BW.  Overwrites daily.dose.}
   \item{doses.per.day}{Number of doses per day.}
   \item{species}{Species desired (either "Rat", "Rabbit", "Dog", or default "Human"). }
   \item{iv.dose}{Simulates a single i.v. dose if true.}
   \item{output.units}{Desired units (either "mg/L", "mg", "umol", or default "uM").}
-  \item{initial.value}{Initial concentration or amount of chemical in the compartment.  Contains same units as output.units, default of "uM".  Defaults to zero.}
+  \item{initial.values}{Vector containing the initial concentrations or amounts of the chemical in specified tissues with units corresponding to output.units.  Defaults are zero.}
    \item{suppress.messages}{Whether or not the output message is suppressed.}
   \item{plots}{Plots all outputs if true.}  
-  \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
+  \item{method}{Method used by integrator (deSolve).}
+  \item{rtol}{Argument passed to integrator (deSolve).}
+  \item{atol}{Argument passed to integrator (deSolve).}
+  \item{default.to.human}{Substitutes missing rat values with human values if true. }
+  \item{dosing.matrix}{Vector of dosing times or a matrix consisting of two columns or rows named "dose" and "time" containing the time and amount, in mg/kg BW, of each dose.}
+  \item{recalc.elimination}{Whether or not to recalculate the elimination rate.}
   \item{...}{Additional arguments passed to the integrator.}
+
 
 }
 
 \details{
-Default value of 0 for doses.per.day solves for a single dose.
+Default value of NULL for doses.per.day solves for a single dose.
 
 
  When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance.
@@ -68,5 +76,4 @@ solve_1comp(chem.name='Bisphenol-A',doses.per.day=3,tsteps=50,days=20)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Solve}

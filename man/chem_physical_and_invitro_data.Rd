@@ -4,7 +4,7 @@
 \title{Physico-chemical properties and in vitro measurements for toxicokinetics}
 \description{
 This data set contains the necessary information to make basic, high-throughput
-toxicokinetic (HTTK) predictions for compounds. These data have been compiled
+toxicokinetic (HTTK) predictions for compounds, including Funbound.plasma, molecular weight, logP, logMA (membrane affinity), and pKa. These data have been compiled
 from multiple sources, and can be used to parameterize a variety of toxicokinetic models.
 }
 \usage{chem.physical_and_invitro.data}

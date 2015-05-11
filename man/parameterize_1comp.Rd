@@ -10,7 +10,7 @@ This function initializes the parameters needed in the function solve_1comp.
 }
 \usage{
  parameterize_1comp(chem.cas=NULL,chem.name=NULL,species="Human",
-                    default.to.human=F,fu.hep.correct=TRUE)
+                    default.to.human=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,6 @@ This function initializes the parameters needed in the function solve_1comp.
   \item{default.to.human}{
   Substitutes missing rat values with human values if true.
   }
-  \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
 
 }
 
@@ -38,11 +37,14 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
 }
 \value{
 
-  \item{volume.of.distribution}{Volume of distribution, units of L/kg BW.}
-  \item{ke}{Elimination rate, units of 1/h.}
+  \item{Vdist}{Volume of distribution, units of L/kg BW.}
+  \item{Fgutabs}{Fraction of the oral dose absorbed, i.e. the fraction of the dose that enters the gutlumen.}
+  \item{kelim}{Elimination rate, units of 1/h.}
+    \item{hematocrit}{Percent volume of red blood cells in the blood.}
   \item{kgutabs}{Rate chemical is absorbed, 1/h.}
+  \item{million.cells.per.gliver}{Millions cells per gram of liver tissue.}
    \item{MW}{Molecular Weight, g/mol.} 
-   \item{Ratioblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma.}
+   \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma.}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -61,5 +63,4 @@ John Wambaugh
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Parameter}

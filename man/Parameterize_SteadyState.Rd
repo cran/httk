@@ -11,7 +11,7 @@ This function initializes the parameters needed in the functions calc_mc_css, ca
 \usage{
  parameterize_steadystate(chem.cas=NULL,chem.name=NULL,species="Human",
                           clint.pvalue.threshold=0.05,default.to.human=F,
-                          human.clint.fub=F,fu.hep.correct=T)
+                          human.clint.fub=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +25,7 @@ This function initializes the parameters needed in the functions calc_mc_css, ca
    \item{human.clint.fub}{
   Uses human hepatic intrinsic clearance and fraction of unbound plasma in calculation of partition coefficients for rats if true.
  }
-  \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
+
 }
 
 \details{
@@ -34,14 +34,16 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
 }
 \value{
    \item{Clint}{Hepatic Intrinsic Clearance, uL/min/10^6 cells.}
-   \item{Fraction_unbound_plasma}{Fraction of plasma that is not bound.}
-   \item{Qhc}{Flow rate of blood exiting the liver, L/h/kg BW^3/4.}
-   \item{QGFRc}{Gromerular Filtration Rate, L/h/kg BW^3/4, volume of fluid filtered from kidney and excreted.}
+   \item{Fgutabs}{Fraction of the oral dose absorbed, i.e. the fraction of the dose that enters the gutlumen.}
+   \item{Funbound.plasma}{Fraction of plasma that is not bound.}
+   \item{Qtotal.liverc}{Flow rate of blood exiting the liver, L/h/kg BW^3/4.}
+   \item{Qgfrc}{Gromerular Filtration Rate, L/h/kg BW^3/4, volume of fluid filtered from kidney and excreted.}
   \item{BW}{Body Weight, kg}
   \item{MW}{Molecular Weight, g/mol}
   \item{million.cells.per.gliver}{Millions cells per gram of liver tissue.}
-  \item{liver.volume.per.kgBW}{Volume of the liver per kg body weight, L/kg BW.}
-   \item{tissue.density}{Liver tissue density, kg/L.}
+  \item{Vliverc}{Volume of the liver per kg body weight, L/kg BW.}
+   \item{liver.density}{Liver tissue density, kg/L.}
+   \item{Fhep.assay.correction}{The fraction of chemical unbound in hepatocyte assay using the method of Kilford et al. (2008)}
      
 %%  ~Describe the value returned
 %%  If it is a LIST, use
@@ -60,5 +62,4 @@ John Wambaugh
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Parameter}

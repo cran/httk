@@ -72,12 +72,12 @@ library(httk)
 library(ggplot2)
 
 vary.params <- list(BW=0.3)
-vary.params[["liver.volume.per.kgBW"]]<-0.3
-vary.params[["QGFRc"]]<-0.3
-vary.params[["Qhc"]]<-0.3
+vary.params[["Vliverc"]]<-0.3
+vary.params[["Qgfrc"]]<-0.3
+vary.params[["Qtotal.liverc"]]<-0.3
 vary.params[["million.cells.per.gliver"]]<-0.3
-vary.params[["CLint"]]<-0.3
-censored.params<-list(Fraction_unbound_plasma=list(cv=0.3,lod=0.01))
+vary.params[["Clint"]]<-0.3
+censored.params<-list(Funbound.plasma=list(cv=0.3,lod=0.01))
 
 pValues <- get_cheminfo(c("Compound","CAS","Clint.pValue"))
 pValues.rat <- get_cheminfo(c("Compound","CAS","Clint.pValue"),species="Rat")
@@ -86,13 +86,13 @@ pValues.rat <- get_cheminfo(c("Compound","CAS","Clint.pValue"),species="Rat")
  
 Wetmore.table <- NULL
 for (this.CAS in get_cheminfo(model="3compartmentss"))
-  if (this.CAS %in% get_wetmore_cheminfo())
+  if (this.CAS \%in\% get_wetmore_cheminfo())
   {
     print(this.CAS)
     these.params <- parameterize_steadystate(chem.cas=this.CAS)
-    if (these.params[["Fraction_unbound_plasma"]] == 0.0) 
+    if (these.params[["Funbound.plasma"]] == 0.0) 
     {
-      these.params[["Fraction_unbound_plasma"]] <- 0.005
+      these.params[["Funbound.plasma"]] <- 0.005
     }
     vLiver.human.values <- monte_carlo(these.params,
                                        cv.params=vary.params,
@@ -149,4 +149,4 @@ Fig1a.fit <- lm(log(Wetmore) ~ log(Predicted)*Percentile, Wetmore.table)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ distribution }
+\keyword{Monte Carlo }

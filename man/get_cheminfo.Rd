@@ -14,7 +14,7 @@ get_cheminfo(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.default=0.00
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-\item{info}{A single character vector (or collection of character vectors) from "Compound", "CAS", "logP", "pKa_Donor"," pKa_Accept", "MW", "Clint", "Clint.pValue", or "Fub". info="all" gives all information for the model and species.} 
+\item{info}{A single character vector (or collection of character vectors) from "Compound", "CAS", "logP", "pKa_Donor"," pKa_Accept", "MW", "Clint", "Clint.pValue", or "Funbound.plasma". info="all" gives all information for the model and species.} 
 \item{species}{Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human").}
 \item{exclude.fub.zero}{Whether or not to exclude chemicals with a fraction of unbound plasma equal to zero or include them with a value of fub.lod.default. Defaults to TRUE for 1compartment and FALSE for pbtk models.}
 \item{fub.lod.default}{Default value used for fraction of unbound plasma for chemicals where measured value was below the limit of detection. Default value is 0.0005.}
@@ -42,12 +42,11 @@ get_cheminfo()
 # plasma binding assay: 
 get_cheminfo(info='Compound',exclude.fub.zero=TRUE,species='Rat')
 # List all CAS numbers for which the 1compartment model can be run in humans:
-get_cheminfo(info=c('compound','fub','logP')) 
+get_cheminfo(info=c('compound','funbound.plasma','logP')) 
 get_cheminfo(model="pbtk")
 # See all the data for humans:
 get_cheminfo(info="all")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ Retrieval}

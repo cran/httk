@@ -8,17 +8,16 @@ calc_mc_css <- function(chem.cas=NULL,
                             species="Human",
                             output.units="mg/L",
                             suppress.messages=F,
-                            censored.params=list(Fraction_unbound_plasma=list(cv=0.3,lod=0.01)),
-                            vary.params=list(BW=0.3,liver.volume.per.kgBW=0.3,QGFRc=0.3,Qhc=0.3,million.cells.per.gliver=0.3,CLint=0.3),
+                            censored.params=list(Funbound.plasma=list(cv=0.3,lod=0.01)),
+                            vary.params=list(BW=0.3,Vliverc=0.3,Qgfrc=0.3,Qtotal.liverc=0.3,million.cells.per.gliver=0.3,Clint=0.3),
                             samples=1000,
-                            fu.hep.correct=T,
                             return.samples=F)
 {
   if(is.null(chem.cas) & is.null(chem.name) & is.null(parameters)) stop('Must specify chem.cas, chem.name, or parameters.')
   if (is.null(parameters)){
-        parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,fu.hep.correct=fu.hep.correct)
+        parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species)
       }else{
-        name.list <- c("CLint","Fraction_unbound_plasma","Qhc","QGFRc","BW","MW","million.cells.per.gliver","liver.volume.per.kgBW","tissue.density")
+        name.list <- c("Clint","Funbound.plasma","Fhep.assay.correction","Qtotal.liverc","Qgfrc","BW","MW","million.cells.per.gliver","Vliverc","liver.density")
         if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_steadystate."))
       }
   

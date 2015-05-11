@@ -5,7 +5,7 @@
 Add a table of chemical information for use in making httk predictions.
 }
 \description{
-This function add's chemical-specific information to the table chem.physical_and_invitro.data. This table is queried by the model parameterization functions when attempting to parameterize a model, so adding sufficient data to this table allows additional chemicals to be modeled.
+This function adds chemical-specific information to the table chem.physical_and_invitro.data. This table is queried by the model parameterization functions when attempting to parameterize a model, so adding sufficient data to this table allows additional chemicals to be modeled.
 }
 \usage{
 add_chemtable(new.table, data.list, current.table=NULL, 
@@ -14,7 +14,7 @@ add_chemtable(new.table, data.list, current.table=NULL,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{new.table}{Object of class data.frame containing one row per chemical, with each chemical minimally by described by a CAS number.}
-  \item{data.list}{This list identifies which properties are to be read from the table. Each item in the list should point to a column in the table new.table. Valid names in the list are: 'Compound', 'CAS', 'DSSTox.GSID' 'SMILES.desalt', 'Reference', 'Species', 'MW', 'logP', 'pKa_Donor', 'pKa_Accept', 'logMA', 'Clint', 'Clint.pValue', 'Fub', 'Fab', 'Rbp'. Note that Fab (Fraction absorbed) and Rbp (Ratio blood to plasma) are currently not used.}
+  \item{data.list}{This list identifies which properties are to be read from the table. Each item in the list should point to a column in the table new.table. Valid names in the list are: 'Compound', 'CAS', 'DSSTox.GSID' 'SMILES.desalt', 'Reference', 'Species', 'MW', 'logP', 'pKa_Donor', 'pKa_Accept', 'logMA', 'Clint', 'Clint.pValue', 'Funbound.plasma', 'Fgutabs', 'Rblood2plasma'. Note that Rblood2plasma (Ratio blood to plasma) is currently not used.}
   \item{current.table}{This is the table to which data is being added.}
   \item{reference}{This is the reference for the data in the new table. This may be omitted if a column in data.list gives the reference value for each chemical.}
   \item{species}{This is the species for the data in the new table. This may be omitted if a column in data.list gives the species value for each chemical or if the data is not species-specific (e.g., MW).}
@@ -49,7 +49,7 @@ chem.physical_and_invitro.data <- add_chemtable(my.new.data,
                                   CAS="CASRN",
                                   MW="MW",
                                   logP="LogP",
-                                  Fub="Fup",
+                                  Funbound.plasma="Fup",
                                   Clint="CLint"),
                                   species="Human",
                                   reference="MyPaper 2015")

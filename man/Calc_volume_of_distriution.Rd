@@ -1,5 +1,5 @@
-\name{calc_volume_of_distribution}
-\alias{calc_volume_of_distribution}
+\name{calc_vdist}
+\alias{calc_vdist}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Calculate the volume of distribution for a one compartment model.
@@ -9,8 +9,8 @@ Calculate the volume of distribution for a one compartment model.
  This function predicts partition coefficients for all tissues, then lumps them into a single compartment. The effective volume of distribution is calculated by summing each tissues volume times it's partition coefficient relative to plasma. Plasma, and the paritioning into RBCs are also added to get the total volume of distribution in L/KG BW. Partition coefficients are calculated using Schmitt's (2008) method. 
 }
 \usage{
-calc_volume_of_distribution(chem.cas=NULL, chem.name=NULL, default.to.human=F,
-                            species="Human", suppress.messages=F)
+calc_vdist(chem.cas=NULL, chem.name=NULL, parameters=NULL,
+                           default.to.human=F,species="Human", suppress.messages=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,7 @@ calc_volume_of_distribution(chem.cas=NULL, chem.name=NULL, default.to.human=F,
   Either the CAS number or the chemical name must be specified.
 %%     ~~Describe \code{pred} here~~
 }
+  \item{parameters}{Parameters from parameterize_3comp or parameterize_pbtk.}
   \item{default.to.human}{
   Substitutes missing animal values with human values if true.
   }
@@ -49,12 +50,11 @@ John Wambaugh
 
 
 \examples{
-calc_volume_of_distribution(chem.cas="80-05-7")
-calc_volume_of_distribution(chem.name="Bisphenol A")
-calc_volume_of_distribution(chem.name="Bisphenol A",species="Rat")
-calc_volume_of_distribution(chem.name="Bisphenol A",species="Rabbit")
+calc_vdist(chem.cas="80-05-7")
+calc_vdist(chem.name="Bisphenol A")
+calc_vdist(chem.name="Bisphenol A",species="Rat")
+calc_vdist(chem.name="Bisphenol A",species="Rabbit")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ Parameter}

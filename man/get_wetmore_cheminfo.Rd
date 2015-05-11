@@ -36,5 +36,5 @@ get_wetmore_cheminfo(info=c('CAS','MW'))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ Wetmore}
+\keyword{Retrieval}% __ONLY ONE__ keyword per line

@@ -11,10 +11,10 @@ This function finds the analytical steady state plasma concentration(from calc_a
 \usage{
 calc_mc_css(chem.cas=NULL,chem.name=NULL,parameters=NULL,daily.dose=1,
             which.quantile=0.95,species="Human",output.units="mg/L",suppress.messages=F,
-            censored.params=list(Fraction_unbound_plasma=list(cv=0.3,lod=0.01)),
-            vary.params=list(BW=0.3,liver.volume.per.kgBW=0.3,QGFRc=0.3,Qhc=0.3,
-            million.cells.per.gliver=0.3,CLint=0.3),samples=1000,
-            fu.hep.correct=T,return.samples=F)
+            censored.params=list(Funbound.plasma=list(cv=0.3,lod=0.01)),
+            vary.params=list(BW=0.3,Vliverc=0.3,Qgfrc=0.3,Qtotal.liverc=0.3,
+            million.cells.per.gliver=0.3,Clint=0.3),samples=1000,
+            return.samples=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -53,7 +53,6 @@ truncated at zero. This argument should be a list of coefficients of variation
 parameter in "parameters". New values are sampled with mean equal to the value in
 "parameters" and standard deviation equal to the mean times the CV.}
   \item{samples}{Number of samples generated in calculating quantiles.}
-  \item{fu.hep.correct}{Whether or not to correct the in vitro measured hepatic clearance for the fraction of chemical predicted to bind to hepatocytes using the method of Kilford et al. (2008) (default to TRUE).}
   \item{return.samples}{Whether or not to return the vector containing the samples from the simulation instead of the selected quantile.}
  
   
@@ -80,5 +79,5 @@ John Wambaugh
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 }
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Monte Carlo}
+\keyword{Steady State}% __ONLY ONE__ keyword per line

@@ -10,19 +10,18 @@ This function calculates the area under the curve, the mean, and the peak values
 }
 \usage{
 calc_stats(days,chem.name=NULL,chem.cas=NULL,parameters=NULL,stats=c("AUC","peak","mean"),
-           species='Human',exclude.fub.zero=F,daily.dose=1,doses.per.day=0,
+           species='Human',exclude.fub.zero=F,daily.dose=1,dose=NULL,doses.per.day=NULL,
            output.units='uM',concentration='plasma',model='pbtk',suppress.messages=F,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{days}{Length of the simulation.}
  \item{chem.name}{Name of desired chemical.}
-  \item{chem.cas}{CAS number of desired chemical.}
-  
-  \item{parameters}{Chemical parameters from parameterize_pbtk function, overrides chem.name and chem.cas.}
-  
+  \item{chem.cas}{CAS number of desired chemical.}  
+  \item{parameters}{Chemical parameters from parameterize_pbtk function, overrides chem.name and chem.cas.}  
   \item{stats}{Desired values (either 'AUC', 'mean', 'peak', or a vector containing any combination).}
   \item{daily.dose}{Total daily dose, mg/kg BW.}
+  \item{dose}{Amount of a single dose, mg/kg BW.  Overwrites daily.dose.}
   \item{species}{Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human").}
   \item{exclude.fub.zero}{Whether or not to exclude chemicals with a fraction of unbound plasma equal to zero or include them with a value of 0.005, only used when chem.name, chem.cas, and parameters are not specified.}
   \item{doses.per.day}{Number of doses per day.}
@@ -56,5 +55,5 @@ calc_stats(chem.name='Bisphenol-A',days=100,stats=c('peak','mean'),species='Rat'
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Solve}
+\keyword{Statistics}% __ONLY ONE__ keyword per line

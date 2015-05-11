@@ -4,33 +4,33 @@ get_cheminfo <- function(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.
   chem.physical_and_invitro.data <- chem.physical_and_invitro.data
   if(tolower(species) == 'human') species <- 'Human' 
   else if(tolower(species) == 'rat') species <- 'Rat'
-  else if(tolower(species) %in% c('rabbit','mouse','dog')){
-    if(default.to.human==F) stop('No chemical data on rabbit, mouse, or dog.  Set default.to.human to true.  These species are parameterized with human chemical data.') 
-    }
+  else if(tolower(species) == 'dog') species <- 'Dog'
+  else if(tolower(species) == 'rabbit') species <- 'Rabbit'
+  else if(tolower(species) == 'mouse') species <- 'Mouse'
   else stop("Only species of human, rat, mouse, rabbit, and dog accepted.")
   
   if(default.to.human==T) species <- 'Human'
   
   if (model == "pbtk" | model == "3compartment" | model == "1compartment")
   {
-    necessary.params <- c(paste(species,"Clint",sep="."),paste(species,"Fub",sep="."),"MW","logP")
+    necessary.params <- c(paste(species,"Clint",sep="."),paste(species,"Funbound.plasma",sep="."),"MW","logP")
     if (is.na(exclude.fub.zero)) exclude.fub.zero=T
   }
   else if (model == "3compartmentss")
   {
-    necessary.params <- c(paste(species,"Clint",sep="."),paste(species,"Fub",sep="."),"MW","logP")
+    necessary.params <- c(paste(species,"Clint",sep="."),paste(species,"Funbound.plasma",sep="."),"MW","logP")
 
     if (is.na(exclude.fub.zero)) exclude.fub.zero <- F
 
   }else if(model == 'schmitt'){  
     
-    necessary.params <- c(paste(species,"Fub",sep="."),"logP")
+    necessary.params <- c(paste(species,"Funbound.plasma",sep="."),"logP")
     if (is.na(exclude.fub.zero)) exclude.fub.zero=T
     
   }else stop("Valid models are currently only: pbtk, 1compartment, 3compartment, schmitt, and 3compartmentss.")
   
   good.chemicals.index <- apply(chem.physical_and_invitro.data[,necessary.params],1,function(x) all(!is.na(x)))
-  if (exclude.fub.zero) good.chemicals.index <- good.chemicals.index & (chem.physical_and_invitro.data[,paste(species,"Fub",sep=".")]>0) 
+  if (exclude.fub.zero) good.chemicals.index <- good.chemicals.index & (chem.physical_and_invitro.data[,paste(species,"Funbound.plasma",sep=".")]>0) 
   good.chemical.data <- chem.physical_and_invitro.data[good.chemicals.index,] 
 
     if('mw' %in% tolower(info)) info <- c('MW',info[tolower(info) != 'mw'])
@@ -40,7 +40,7 @@ get_cheminfo <- function(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.
     if('compound' %in% tolower(info)) info <- c('Compound',info[tolower(info) != 'compound'])
     if('cas' %in% tolower(info)) info <- c('CAS',info[tolower(info) != 'cas'])
   
-  valid.info <- c("Compound","CAS","logP","pKa_Accept","pKa_Donor","MW","Clint","Clint.pValue","Fub")
+  valid.info <- c("Compound","CAS","logP","pKa_Accept","pKa_Donor","MW","Clint","Clint.pValue","Funbound.plasma")
 
   if (any(toupper(info)=="ALL")) info <- valid.info
   
@@ -48,9 +48,9 @@ get_cheminfo <- function(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.
 
   if (toupper("Clint") %in% toupper(info)) info[toupper(info)==toupper("Clint")] <- paste(species,"Clint",sep=".")
   if (toupper("Clint.pValue") %in% toupper(info)) info[toupper(info)==toupper("Clint.pValue")] <- paste(species,"Clint.pValue",sep=".")
-  if (toupper("Fub") %in% toupper(info)) info[toupper(info)==toupper("Fub")] <- paste(species,"Fub",sep=".")
+  if (toupper("Funbound.plasma") %in% toupper(info)) info[toupper(info)==toupper("Funbound.plasma")] <- paste(species,"Funbound.plasma",sep=".")
  
-  if (!toupper(paste(species,"Clint",sep=".")) %in% toupper(colnames(chem.physical_and_invitro.data))) stop(paste("Species",species,"not found."))
+ #if (!toupper(paste(species,"Clint",sep=".")) %in% toupper(colnames(chem.physical_and_invitro.data))) stop(paste("Species",species,"not found."))
     
   columns <- colnames(chem.physical_and_invitro.data)
 #    c("Compound","CAS","MW",paste(species,"Clint",sep="."),paste(species,"Fub",sep="."))
@@ -60,12 +60,12 @@ get_cheminfo <- function(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.
   
  # this.subset <- suppressWarnings(this.subset[!is.na(as.numeric(this.subset[,paste(species,"Clint",sep=".")])),])
   #this.subset <- suppressWarnings(this.subset[!is.na(as.numeric(this.subset[,paste(species,"Fub",sep=".")])),])
-  if (exclude.fub.zero) this.subset <- suppressWarnings(this.subset[as.numeric(this.subset[,paste(species,"Fub",sep=".")])!=0,])  
-  else this.subset[suppressWarnings(as.numeric(this.subset[,paste(species,"Fub",sep=".")]) == 0),"Fub"] <- fub.lod.default
+  if (exclude.fub.zero) this.subset <- suppressWarnings(this.subset[as.numeric(this.subset[,paste(species,"Funbound.plasma",sep=".")])!=0,])  
+  else this.subset[suppressWarnings(as.numeric(this.subset[,paste(species,"Funbound.plasma",sep=".")]) == 0),paste(species,"Funbound.plasma",sep=".")] <- fub.lod.default
                               
   data.table <- this.subset
   
    
     
-  return(unique(data.table[,info]))
+  return(data.table[,info])
 }
