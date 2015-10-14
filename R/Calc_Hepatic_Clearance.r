@@ -34,7 +34,7 @@ calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,
   # Convert from uL/min/g-liver to uL/min/kg BW
   Clint <- Clint*(Vliverc*1000*liver.density)
   # Convert from uL/min/kg BW to L/h/kg BW
-  Clint <- Clint/10^6*60
+  Clint <- Clint/10^6*60 
 
   Qtotal.liverc <- Qtotal.liverc / parameters[['BW']]^0.25
   if (tolower(model) == "unscaled")

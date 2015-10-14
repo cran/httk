@@ -24,17 +24,17 @@
        if(is.null(parameters)){
          parameters <- parameterize_pbtk(chem.cas=chem.cas,species=species,default.to.human=default.to.human) 
        }else{
-         name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","kdermabs","Kgut2plasma","kgutabs","kinhabs","Kkidney2plasma","Kliver2plasma","Klung2plasma","Krbc2plasma","Krest2plasma","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Qlungf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
+         name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","kdermabs","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krbc2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Qlungf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
          if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_pbtk."))
        }  
-       if(recalc.blood2plasma) parameters[['Rblood2plasma']] <- 1 - parameters[['hematocrit']] + parameters[['hematocrit']] * parameters[['Krbc2plasma']] * parameters[['Funbound.plasma']]  
+       if(recalc.blood2plasma) parameters[['Rblood2plasma']] <- 1 - parameters[['hematocrit']] + parameters[['hematocrit']] * parameters[['Krbc2pu']] * parameters[['Funbound.plasma']]  
 
 
        
        Qcardiac <-  parameters[["Qcardiacc"]] / parameters[['BW']]^0.25  
        Qgfr <-  parameters[["Qgfrc"]] / parameters[['BW']]^0.25    
        Clmetabolism <-  parameters[["Clmetabolismc"]]  
-       Kliver2plasma <- parameters[['Kliver2plasma']]
+       Kliver2pu <- parameters[['Kliver2pu']]
 
        Qgut <- parameters[["Qgutf"]] * Qcardiac
        Qliver <- parameters[["Qliverf"]] * Qcardiac
@@ -85,16 +85,16 @@
       if (is.null(parameters)){
         parameters <- parameterize_3comp(chem.cas=chem.cas,species=species,default.to.human=default.to.human)
       }else{
-        name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","Kgut2plasma","Krbc2plasma","kgutabs","Kliver2plasma","Krest2plasma","million.cells.per.gliver","MW","Qcardiacc","Qgfrc","Qgutf","Qliverf","Rblood2plasma","Vgutc","Vliverc","Vrestc")
+        name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","Kgut2pu","Krbc2pu","kgutabs","Kliver2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc","Qgfrc","Qgutf","Qliverf","Rblood2plasma","Vgutc","Vliverc","Vrestc")
         if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_3comp."))
-        name.list2 <- c("BW","Clmetabolismc","Fgutabs","Funbound.plasma","Fhep.assay.correction","hematocrit","kdermabs","Kgut2plasma","kgutabs","kinhabs","Kkidney2plasma","Kliver2plasma","Klung2plasma","Krbc2plasma","Krest2plasma","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Qlungf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
+        name.list2 <- c("BW","Clmetabolismc","Fgutabs","Funbound.plasma","Fhep.assay.correction","hematocrit","kdermabs","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krbc2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Qlungf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
         if(any(name.list2[which(!name.list2 %in% name.list)] %in% names(parameters)))stop("Parameters are from parameterize_pbtk.  Use parameters from parameterize_3comp.")
       }
-      if(recalc.blood2plasma) parameters[['Rblood2plasma']] <- 1 - parameters[['hematocrit']] + parameters[['hematocrit']] * parameters[['Krbc2plasma']] * parameters[['Funbound.plasma']]
+      if(recalc.blood2plasma) parameters[['Rblood2plasma']] <- 1 - parameters[['hematocrit']] + parameters[['hematocrit']] * parameters[['Krbc2pu']] * parameters[['Funbound.plasma']]
       
 
       dose <- dose * parameters$Fgutabs
-      Css <- dose * parameters[['BW']]^0.25  / (parameters$Clmetabolismc * parameters[['BW']]^0.25  + parameters$Qgfrc * (parameters$Qliverf + parameters$Qgutf) / ((parameters$Qliverf + parameters$Qgutf) + parameters$Funbound.plasma * parameters$Qgfrc / parameters$Rblood2plasma)) / parameters$Funbound.plasma
+      Css <- dose * parameters[['BW']]^0.25  / (parameters$Clmetabolismc * parameters[['BW']]^0.25  + parameters$Qgfrc * (parameters$Qliverf + parameters$Qgutf) * parameters$Qcardiacc / ((parameters$Qliverf + parameters$Qgutf) * parameters$Qcardiacc + parameters$Funbound.plasma * parameters$Qgfrc / parameters$Rblood2plasma)) / parameters$Funbound.plasma
       if (tolower(concentration)=='blood')
       {
          Css <- Css * parameters[['Rblood2plasma']]

@@ -1,6 +1,7 @@
 # This functions converts a uM chemical concetrations ("conc") to an oral equivalent dose using the values from the Wetmore et al. (2012) and (2013) publications
 get_wetmore_oral_equiv <- function(conc,chem.name=NULL,chem.cas=NULL,suppress.messages=F,which.quantile=0.95,species="Human",input.units='uM',output.units='mg',clearance.assay.conc=NULL,...)
 {
+  Wetmore.data <- Wetmore.data
   if(is.null(chem.cas)) chem.cas <- get_chem_id(chem.name=chem.name)[['chem.cas']]
   if(tolower(input.units) =='mg/l' | tolower(output.units) == 'mol'){
     MW <- get_physchem_param("MW",chem.CAS=chem.cas)
@@ -9,8 +10,8 @@ get_wetmore_oral_equiv <- function(conc,chem.name=NULL,chem.cas=NULL,suppress.me
     conc <- conc / 1000 / MW * 1000000
   }else if(tolower(input.units)!='um') stop('Input units can only be in mg/L or uM.')
   if(is.null(clearance.assay.conc)){
-    if (conc < 5) this.conc <- 1
-    else this.conc <- 10
+    this.data <- subset(Wetmore.data,Wetmore.data[,"CAS"]==chem.cas&toupper(Wetmore.data[,"Species"])==toupper(species))
+    this.conc <- this.data[which.min(abs(this.data[,'Concentration..uM.'] - conc)),'Concentration..uM.']
   }else{
     this.conc <- clearance.assay.conc
   }

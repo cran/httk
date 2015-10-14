@@ -4,7 +4,7 @@
 # pKa_Donor: compound H dissociation equilibirum constant(s)
 # pKa_Accept: compound H association equilibrium constant(s)   
 # MA: phospholipid:water distribution coefficient
-# KAPPAcell2plasma: Ratio of D inside the cell to D in the plasma, as derived from the different pHs and pKas
+# KAPPAcell2pu: Ratio of D inside the cell to D in the plasma, as derived from the different pHs and pKas
 # Fprotein.plasma: protein fraction in plasma - from Gardner 1980
 predict_partitioning_schmitt <- function(chem.name=NULL,
                                          chem.cas=NULL,
@@ -22,7 +22,7 @@ predict_partitioning_schmitt <- function(chem.name=NULL,
 # Then normalize to one:
   tissue.data[c(1:11,13),2:3] <- tissue.data[c(1:11,13),2:3]/apply(tissue.data[c(1:11,13),2:3],1,sum)
 
-	Ktissue2plasma <- list()
+	Ktissue2pu <- list()
 	
 	# water fraction in plasma:
 	FWpl <- 1 - parameters$Fprotein.plasma
@@ -77,7 +77,7 @@ predict_partitioning_schmitt <- function(chem.name=NULL,
 		}
 
     # Need to calculate the amount of un-ionized parent:
-    ionization <- calc_ionization(pH,pKa_Donor=parameters$pKa_Donor,pKa_Accept=parameters$pKa_Accept)
+    ionization <- calc_ionization(pH=pH,pKa_Donor=parameters$pKa_Donor,pKa_Accept=parameters$pKa_Accept)
     fraction_neutral  <- ionization[["fraction_neutral"]]
     fraction_charged <- ionization[["fraction_charged"]]
     fraction_negative <- ionization[["fraction_negative"]]
@@ -101,12 +101,11 @@ predict_partitioning_schmitt <- function(chem.name=NULL,
 		# unbound fraction in cellular space:
 		fucell <- 1/(FW + Kn_L*Fn_L+Kn_PL*Fn_PL+Ka_PL*Fa_PL+KP*FP)
 		
-    KAPPAcell2plasma <- calc_dow(parameters$Pow,pH=parameters$plasma.pH,alpha=parameters$alpha,pKa_Donor=parameters$pKa_Donor,pKa_Accept=parameters$pKa_Accept)/Dow
-   
-    # We want ratio of tissue concentration to unbound plasma Ctissue:(fub,plasma*Cplasma) = this.PC:
-		#this.PC <- ((Fint/fuint + KAPPAcell2plasma*Fcell/fucell))*fupl
-		Ktissue2plasma[[this.tissue]] <- as.numeric(((Fint/fuint + KAPPAcell2plasma*Fcell/fucell)))
+    KAPPAcell2pu <- calc_dow(parameters$Pow,pH=parameters$plasma.pH,alpha=parameters$alpha,pKa_Donor=parameters$pKa_Donor,pKa_Accept=parameters$pKa_Accept)/Dow
+    
+    if(this.tissue == 'red blood cells') eval(parse(text=paste("Ktissue2pu[\"Krbc2pu\"] <- ",as.numeric(((Fint/fuint + KAPPAcell2pu*Fcell/fucell))) ,sep='')))
+		else eval(parse(text=paste("Ktissue2pu[\"K",this.tissue,"2pu\"] <- ",as.numeric(((Fint/fuint + KAPPAcell2pu*Fcell/fucell))) ,sep='')))
 	}
     
- 	return(Ktissue2plasma)
+ 	return(Ktissue2pu)
 }

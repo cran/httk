@@ -49,7 +49,7 @@ J2: Agutlumen -> Agut;	kgutabs*Agutlumen;
 	
 // Change of amount of chemical in lung tissue:	
 
-J3: Alung -> Aart;	Qcardiac*Alung/Vlung*Rblood2plasma/Klung2plasma/Fraction_unbound_plasma;
+J3: Alung -> Aart;	Qcardiac*Alung/Vlung*Rblood2plasma/Klung2pu/Fraction_unbound_plasma;
 
 J4: Aven -> Alung;	Qcardiac*Aven/Vven;
 	
@@ -58,22 +58,22 @@ J4: Aven -> Alung;	Qcardiac*Aven/Vven;
 	
 // Change in amount of chemical in the rest of body tissue:	
 J5: Aart -> Arest;	Qrest*Aart/Vart;
-J6: Arest -> Aven;	Qrest*Arest/Vrest*Rblood2plasma/Krest2plasma/Fraction_unbound_plasma;
+J6: Arest -> Aven;	Qrest*Arest/Vrest*Rblood2plasma/Krest2pu/Fraction_unbound_plasma;
 	
 // Change in amount of chemical in the liver tissue:	
 
 J7: Aart -> Aliver;	Qliver*Aart/Vart;
-// -> Liver;	CLbiliary*Cliver/Kliver2plasma/Fraction_unbound_plasma/Vliver;
-J13: Aliver -> Ametabolized;	Clmetabolism*Aliver/Vliver/Kliver2plasma;
-J8: Agut -> Aliver;	Qgut*Agut/Vgut*Rblood2plasma/Kgut2plasma/Fraction_unbound_plasma;
-J9: Aliver -> Aven;	(Qliver+Qgut)*Aliver/Vliver*Rblood2plasma/Kliver2plasma/Fraction_unbound_plasma;
+// -> Liver;	CLbiliary*Cliver/Kliver2pu/Fraction_unbound_plasma/Vliver;
+J13: Aliver -> Ametabolized;	Clmetabolism*Aliver/Vliver/Kliver2pu;
+J8: Agut -> Aliver;	Qgut*Agut/Vgut*Rblood2plasma/Kgut2pu/Fraction_unbound_plasma;
+J9: Aliver -> Aven;	(Qliver+Qgut)*Aliver/Vliver*Rblood2plasma/Kliver2pu/Fraction_unbound_plasma;
 	
 	
 	
 // Change in amount of chemical in the kidney tissue:	
 J10: Aart -> Akidney;	Qkidney*Aart/Vart;
-J11: Akidney -> Atubules;	Qgfr*Akidney/Vkidney/Kkidney2plasma;
-J12: Akidney -> Aven;	Qkidney*Akidney/Vkidney*Rblood2plasma/Kkidney2plasma/Fraction_unbound_plasma;
+J11: Akidney -> Atubules;	Qgfr*Akidney/Vkidney/Kkidney2pu;
+J12: Akidney -> Aven;	Qkidney*Akidney/Vkidney*Rblood2plasma/Kkidney2pu/Fraction_unbound_plasma;
 
 
    
@@ -84,11 +84,11 @@ end;
 
 //   Equilibrium ratio of tissue to free plasma concentration",
 
-"\np.Kliver2plasma = ",signif(inlist$Kliver2plasma,digits),";
-p.Krest2plasma = ",signif(inlist$Krest2plasma,digits),";
-p.Kkidney2plasma = ",signif(inlist$Kkidney2plasma,digits),";
-p.Kgut2plasma = ",signif(inlist$Kgut2plasma,digits),";
-p.Klung2plasma = ",signif(inlist$Klung2plasma,digits),";
+"\np.Kliver2pu = ",signif(inlist$Kliver2pu,digits),";
+p.Krest2pu = ",signif(inlist$Krest2pu,digits),";
+p.Kkidney2pu = ",signif(inlist$Kkidney2pu,digits),";
+p.Kgut2pu = ",signif(inlist$Kgut2pu,digits),";
+p.Klung2pu = ",signif(inlist$Klung2pu,digits),";
 
 //   Various things:
 BW = ",inlist$BW,";            // Body Weight, Kg

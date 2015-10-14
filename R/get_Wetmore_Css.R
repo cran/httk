@@ -14,11 +14,16 @@ get_wetmore_css <- function(chem.cas=NULL,chem.name=NULL,daily.dose=1,which.quan
    
     if (!is.null(clearance.assay.conc)) 
     {
-      this.data <- subset(this.data,this.data[,"Concentration..uM."]==clearance.assay.conc)
+      this.data <- subset(this.data,this.data[,"Concentration..uM."]==clearance.assay.conc)[1,]
       if (dim(this.data)[1]!=1) stop(paste("No",clearance.assay.conc,"uM clearance assay data for",chem.name,"in",species))
-    } else {
-      this.data <- this.data[1,]
-      clearance.assay.conc <- this.data[,"Concentration..uM."][[1]]
+    }else{
+      if(1 %in% this.data[,"Concentration..uM."]){
+        this.data <- subset(this.data,this.data[,"Concentration..uM."]== 1)[1,] 
+        clearance.assay.conc <- 1
+      }else{
+        this.data <- this.data[1,]
+        clearance.assay.conc <- this.data[,"Concentration..uM."][[1]]
+      }
     }
     out <- NULL
     if (tolower(output.units)=="mg/l")
@@ -28,8 +33,8 @@ get_wetmore_css <- function(chem.cas=NULL,chem.name=NULL,daily.dose=1,which.quan
       if (0.95 %in% which.quantile) out <- c(out,daily.dose*this.data[,"Css_upper_95th_perc.mg.L."])
     } else if(tolower(output.units) == 'um') {
       if (0.05 %in% which.quantile) out <- c(out,daily.dose*this.data[,"Css_lower_5th_perc.uM."])
-      if (0.5 %in% which.quantile) out <- c(daily.dose*this.data[,"Css_median_perc.uM."])
-      if (0.95 %in% which.quantile) out <- c(daily.dose*this.data[,"Css_upper_95th_perc.uM."])
+      if (0.5 %in% which.quantile) out <- c(out,daily.dose*this.data[,"Css_median_perc.uM."])
+      if (0.95 %in% which.quantile) out <- c(out,daily.dose*this.data[,"Css_upper_95th_perc.uM."])
     } else{
      stop('Output.units can only be uM or mg/L.')
     }

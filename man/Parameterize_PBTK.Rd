@@ -51,14 +51,14 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
        \item{Fhep.assay.correction}{The fraction of chemical unbound in hepatocyte assay using the method of Kilford et al. (2008)}
     \item{hematocrit}{Percent volume of red blood cells in the blood.}
     \item{kdermabs}{Rate that chemical is transferred from the skin to the blood, 1/h.}
-    \item{Kgut2plasma}{Ratio of concentration of chemical in gut tissue to unbound concentration in plasma.}
+    \item{Kgut2pu}{Ratio of concentration of chemical in gut tissue to unbound concentration in plasma.}
     \item{kgutabs}{Rate that chemical enters the gut from gutlumen, 1/h.}
      \item{kinhabs}{Rate that the chemical is transferred from the lungs to the blood, 1/h.}
-     \item{Kkidney2plasma}{Ratio of concentration of chemical in kidney tissue to unbound concentration in plasma.}
-     \item{Kliver2plasma}{Ratio of concentration of chemical in liver tissue to unbound concentration in plasma.}
-      \item{Klung2plasma}{Ratio of concentration of chemical in lung tissue to unbound concentration in plasma.}
-       \item{Krbc2plasma}{Ratio of concentration of chemical in red blood cells to unbound concentration in plasma.}
-     \item{Krest2plasma}{Ratio of concentration of chemical in rest of body tissue to unbound concentration in plasma.}
+     \item{Kkidney2pu}{Ratio of concentration of chemical in kidney tissue to unbound concentration in plasma.}
+     \item{Kliver2pu}{Ratio of concentration of chemical in liver tissue to unbound concentration in plasma.}
+      \item{Klung2pu}{Ratio of concentration of chemical in lung tissue to unbound concentration in plasma.}
+       \item{Krbc2pu}{Ratio of concentration of chemical in red blood cells to unbound concentration in plasma.}
+     \item{Krest2pu}{Ratio of concentration of chemical in rest of body tissue to unbound concentration in plasma.}
        \item{million.cells.per.gliver}{Millions cells per gram of liver tissue.}
     \item{MW}{Molecular Weight, g/mol.}
     \item{Qcardiacc}{Cardiac Output, L/h/kg BW^3/4.}

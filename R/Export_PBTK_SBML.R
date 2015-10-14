@@ -51,19 +51,19 @@ export_pbtk_sbml <- function(chem.cas=NULL,
          <parameter id = \"Qrest\" value = \"",signif(inlist$Qcardiac*(1-inlist$Qgutf-inlist$Qliverf-inlist$Qkidneyf),digits),"\"/>
          <parameter id = \"Vrest\" value = \"",signif(inlist$Vrestc * inlist$BW,digits),"\"/>
          <parameter id = \"Rblood2plasma\" value = \"",signif(inlist$Rblood2plasma,digits),"\"/>
-         <parameter id = \"Krest2plasma\" value = \"",signif(inlist$Krest2plasma,digits),"\"/>
+         <parameter id = \"Krest2pu\" value = \"",signif(inlist$Krest2pu,digits),"\"/>
          <parameter id = \"Fraction_unbound_plasma\" value = \"",signif(inlist$Funbound.plasma,digits),"\"/>
          <parameter id = \"Qliver\" value = \"",signif(inlist$Qliverf * inlist$Qcardiac,digits),"\"/>
          <parameter id = \"Clmetabolism\" value = \"",signif(24*inlist$Clmetabolism*inlist$BW,digits),"\"/>
          <parameter id = \"Vliver\" value = \"",signif(inlist$Vliverc * inlist$BW,digits),"\"/>
-         <parameter id = \"Kliver2plasma\" value = \"",signif(inlist$Kliver2plasma,digits),"\"/>
+         <parameter id = \"Kliver2pu\" value = \"",signif(inlist$Kliver2pu,digits),"\"/>
          <parameter id = \"Vgut\" value = \"",signif(inlist$Vgutc * inlist$BW,digits),"\"/>
          <parameter id = \"Qkidney\" value = \"",signif(inlist$Qkidneyf * inlist$Qcardiac,digits),"\"/>
          <parameter id = \"Qgfr\" value = \"",signif(24* inlist$Qgfrc * inlist$BW^0.75 ,digits),"\"/>
          <parameter id = \"Vkidney\" value = \"",signif(inlist$Vkidneyc * inlist$BW,digits),"\"/>
-         <parameter id = \"Kkidney2plasma\" value = \"",signif(inlist$Kkidney2plasma,digits),"\"/>
-         <parameter id = \"Klung2plasma\" value = \"",signif(inlist$Klung2plasma,digits),"\"/>
-         <parameter id = \"Kgut2plasma\" value = \"",signif(inlist$Kgut2plasma,digits),"\"/>
+         <parameter id = \"Kkidney2pu\" value = \"",signif(inlist$Kkidney2pu,digits),"\"/>
+         <parameter id = \"Klung2pu\" value = \"",signif(inlist$Klung2pu,digits),"\"/>
+         <parameter id = \"Kgut2pu\" value = \"",signif(inlist$Kgut2pu,digits),"\"/>
       </listOfParameters>
       <listOfReactions>
          <reaction id = \"J1\" reversible = \"false\">
@@ -150,7 +150,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            </ci>
                         </apply>
                         <ci>
-                              Klung2plasma
+                              Klung2pu
                         </ci>
                      </apply>
                      <ci>
@@ -249,7 +249,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            </ci>
                         </apply>
                         <ci>
-                              Krest2plasma
+                              Krest2pu
                         </ci>
                      </apply>
                      <ci>
@@ -313,7 +313,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            </ci>
                         </apply>
                         <ci>
-                              Kliver2plasma
+                              Kliver2pu
                         </ci>
                      </apply>
                </math>
@@ -354,7 +354,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            </ci>
                         </apply>
                         <ci>
-                              Kgut2plasma
+                              Kgut2pu
                         </ci>
                      </apply>
                      <ci>
@@ -405,7 +405,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            </ci>
                         </apply>
                         <ci>
-                              Kliver2plasma
+                              Kliver2pu
                         </ci>
                      </apply>
                      <ci>
@@ -469,7 +469,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                         </ci>
                      </apply>
                      <ci>
-                           Kkidney2plasma
+                           Kkidney2pu
                      </ci>
                   </apply>
                </math>
@@ -510,7 +510,7 @@ export_pbtk_sbml <- function(chem.cas=NULL,
                            </ci>
                         </apply>
                         <ci>
-                              Kkidney2plasma
+                              Kkidney2pu
                         </ci>
                      </apply>
                      <ci>

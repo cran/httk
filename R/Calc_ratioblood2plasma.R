@@ -26,7 +26,7 @@ calc_rblood2plasma <- function(chem.cas=NULL,
 # Predict the PCs for all tissues in the tissue.data table:
   PCs <- predict_partitioning_schmitt(parameters=parameters)
     
-  Rblood2plasma = 1 - hematocrit + hematocrit * PCs[["red blood cells"]] * parameters$Funbound.plasma
+  Rblood2plasma = 1 - hematocrit + hematocrit * PCs[["Krbc2pu"]] * parameters$Funbound.plasma
     
   return(as.numeric(Rblood2plasma))
 }

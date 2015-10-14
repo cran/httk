@@ -71,7 +71,7 @@ parameterize_pbtk <- function(chem.cas=NULL,
   MA <- suppressWarnings(10^(get_physchem_param("logMA",chem.CAS=chem.cas)))
   
 # Predict the PCs for all tissues in the tissue.data table:
-  parm <- outlist <- list(Funbound.plasma=fub,Pow=Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept,MA=MA,Fprotein.plasma = 75/1000/1.025,plasma.pH=7.4,temperature=temp)
+  parm <- list(Funbound.plasma=fub,Pow=Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept,MA=MA,Fprotein.plasma = 75/1000/1.025,plasma.pH=7.4,temperature=temp)
   PCs <- predict_partitioning_schmitt(parameters=parm)
 # Get_lumped_tissues returns a list with the lumped PCs, vols, and flows:
   lumped_params <- get_lumped_tissues(PCs,tissuelist=tissuelist,species=species)
@@ -82,20 +82,12 @@ parameterize_pbtk <- function(chem.cas=NULL,
   #mL/min/kgBW converted to L/h/kgBW:
   QGFRc <- this.phys.data["GFR"]/1000*60 
   Qcardiacc = this.phys.data["Cardiac Output"]/1000*60 
-  for (this.flow in names(lumped_params$flow))
-    if (!(this.flow %in% c("liver","kidney","gut","red blood cells","rest")))
-    {
-      eval(parse(text=paste("Q",tolower(this.flow),"f = lumped_params$flow$",this.flow,"/this.phys.data[\"Cardiac Output\"]",sep="")))
-      eval(parse(text=paste("outlist[[\"Q",tolower(this.flow),"f\"]] = as.numeric(Q",tolower(this.flow),"f)",sep="")))
-    }
-  Qgutf = lumped_params$flow$gut/this.phys.data["Cardiac Output"]
-  Qliverf = (lumped_params$flow$liver-lumped_params$flow$gut)/this.phys.data["Cardiac Output"]
-  Qkidneyf = lumped_params$flow$kidney/this.phys.data["Cardiac Output"]
-  outlist <- c(outlist,list(
+  flows <- unlist(lumped_params[substr(names(lumped_params),1,1) == 'Q'])
+
+  outlist <- c(outlist,c(
     Qcardiacc = as.numeric(Qcardiacc),
-    Qgutf = as.numeric(Qgutf),
-    Qliverf = as.numeric(Qliverf),
-    Qkidneyf = as.numeric(Qkidneyf),
+    flows[names(flows) != 'Qtotal.liverf'],
+    Qliverf= flows[['Qtotal.liverf']] - flows[['Qgutf']],
     Qgfrc = as.numeric(QGFRc))) 
   # end flows  
   
@@ -103,21 +95,13 @@ parameterize_pbtk <- function(chem.cas=NULL,
   # units should be L/kgBW  
   Vartc = this.phys.data["Plasma Volume"]/(1-this.phys.data["Hematocrit"])/2/1000 #L/kgBW
   Vvenc = this.phys.data["Plasma Volume"]/(1-this.phys.data["Hematocrit"])/2/1000 #L/kgBW
-  for (this.vol in names(lumped_params$vol))
-    if (!(this.vol %in% c("liver","rest","red blood cells")))
-      eval(parse(text=paste("outlist[[\"V",tolower(this.vol),"c\"]] = as.numeric(lumped_params$vol$",this.vol,")",sep="")))
-  outlist <- c(outlist,list(
+
+  outlist <- c(outlist,
     Vartc = as.numeric(Vartc),
     Vvenc = as.numeric(Vvenc),
-    Vliverc = as.numeric(lumped_params$vol$liver),
-    Vrestc = as.numeric(lumped_params$vol$rest)))
-  # end volumes
+    lumped_params[substr(names(lumped_params),1,1) == 'V'],
+    lumped_params[substr(names(lumped_params),1,1) == 'K'])
   
-  for (this.K in names(lumped_params$Ktissue2plasma))
-    if (!(this.K %in% c("rest","red blood cells")))
-      eval(parse(text=paste("outlist[[\"K",tolower(this.K),"2plasma\"]] = as.numeric(lumped_params$Ktissue2plasma$",this.K,")",sep="")))
-  outlist <- c(outlist,Krbc2plasma = as.numeric(lumped_params$Ktissue2plasma$'red blood cells'),Krest2plasma = as.numeric(lumped_params$Ktissue2plasma$rest))
-# outlist <- c(outlist,Krest2plasma = as.numeric(lumped_params$Ktissue2plasma$Rest))
   
 # Create the list of parameters:
   BW <- this.phys.data["Average BW"]
@@ -141,10 +125,10 @@ parameterize_pbtk <- function(chem.cas=NULL,
                                 million.cells.per.gliver= 110, # 10^6 cells/g-liver
                                 liver.density= 1.05, # g/mL
                                 Dn=0.17,BW=BW,
-                                Vliverc=lumped_params$vol$liver, #L/kg
-                                Qtotal.liverc=(lumped_params$vol$liver+lumped_params$vol$Gut)/1000*60),suppress.messages=T)),million.cells.per.gliver=110,Fgutabs=Fgutabs)) #L/h/kg BW
+                                Vliverc=lumped_params$Vliverc, #L/kg
+                                Qtotal.liverc=(lumped_params$Qtotal.liverc)/1000*60),suppress.messages=T)),million.cells.per.gliver=110,Fgutabs=Fgutabs)) #L/h/kg BW
   
 
-    outlist <- c(outlist,Rblood2plasma=as.numeric(1 - hematocrit + hematocrit * PCs[["red blood cells"]] * fub))
+    outlist <- c(outlist,Rblood2plasma=as.numeric(1 - hematocrit + hematocrit * PCs[["Krbc2pu"]] * fub))
   return(outlist[sort(names(outlist))])
 }

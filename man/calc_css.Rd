@@ -9,9 +9,10 @@ Find the steady state concentration and the day it is reached.
 This function finds the day a chemical comes within the specified range of the analytical steady state venous blood or plasma concentration(from calc_analytic_css) for the multiple compartment, three compartment, and one compartment models, the fraction of the true steady state value reached on that day, the maximum concentration, and the average concentration at the end of the simulation.
 }
 \usage{
-calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", p = .01,
+calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", f = .01,
          daily.dose=1, doses.per.day=3,days = 10,output.units = "uM",
-         concentration='plasma',suppress.messages=F,model='pbtk',default.to.human=F,...)
+         concentration='plasma',suppress.messages=F,model='pbtk',default.to.human=F,
+         f.change=0.00001,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +26,7 @@ calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", p = .01,
 %%     ~~Describe \code{pred} here~~
 }
 
-  \item{p}{
+  \item{f}{
   Fractional distance from the final steady state concentration that the average concentration must come within to be considered at steady state.
 %%     ~~Describe \code{pred} here~~
 }
@@ -41,6 +42,7 @@ calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", p = .01,
   \item{default.to.human}{
   Substitutes missing animal values with human values if true (hepatic intrinsic clearance or fraction of unbound plasma).
   }
+  \item{f.change}{Fractional change of daily steady state concentration reached to stop calculating.}
   \item{...}{Additional arguments passed to model solver (default of solve_pbtk).}
   
 
@@ -66,7 +68,7 @@ Robert Pearce
 \examples{
 parms <- parameterize_pbtk(chem.name='Bisphenol-A')
 calc_css(parms,concentration='blood')
-calc_css(chem.name='Bisphenol-A',doses.per.day=5,p=.001,output.units='mg/L')
+calc_css(chem.name='Bisphenol-A',doses.per.day=5,f=.001,output.units='mg/L')
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

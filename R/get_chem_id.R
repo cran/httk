@@ -28,6 +28,7 @@ get_chem_id <- function(chem.cas=NULL,
     if (!any(names.index==name.key)) stop ("Chemical name not found.")
 #Set the chemical CAS:
     found.chem.cas <- chem.physical_and_invitro.data[names.index==name.key,"CAS"]
+    found.chem.cas <- found.chem.cas[!is.na(found.chem.cas)]
   }
 
   if (!is.null(chem.cas) & !is.null(chem.name))

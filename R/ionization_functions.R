@@ -5,7 +5,7 @@ calc_dow <- function(Pow,pH=NA,pKa_Donor=NA,pKa_Accept=NA,fraction_neutral=NULL,
   if (is.null(fraction_neutral))
   {
     if (is.na(pH)) stop("pH or fraction_neutral must be specified in calc_dow.")
-    ionization <- calc_ionization(pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
+    ionization <- calc_ionization(pH=pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
     fraction_neutral  <- ionization[["fraction_neutral"]]
   }
   
@@ -39,8 +39,15 @@ calc_dow <- function(Pow,pH=NA,pKa_Donor=NA,pKa_Accept=NA,fraction_neutral=NULL,
 #    fraction_positive = base/denom))
 #}
 
-calc_ionization <- function(pH,pKa_Donor=NA,pKa_Accept=NA)
+calc_ionization <- function(chem.cas=NULL,chem.name=NULL,pH=NULL,pKa_Donor=NA,pKa_Accept=NA)
 {
+  if(is.null(pH)) stop("pH is required to calculate the ionization.")
+  if((!is.null(chem.cas) | !is.null(chem.name)) & all(is.na(c(pKa_Donor,pKa_Accept)))){
+    out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
+    chem.cas <- out$chem.cas
+    pKa_Donor <- suppressWarnings(get_physchem_param("pKa_Donor",chem.CAS=chem.cas))
+    pKa_Accept <- suppressWarnings(get_physchem_param("pKa_Accept",chem.CAS=chem.cas))
+  }
   # Need to calculate the amount of un-ionized parent:
   neutral <- 0
   negative <- 0
@@ -104,7 +111,7 @@ is_acid <- function(pH=7,pKa_Donor=NA,pKa_Accept=NA,fraction_negative=NULL)
 {
   if (is.null(fraction_negative))
   {
-    ionization <- calc_ionization(pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
+    ionization <- calc_ionization(pH=pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
     fraction_negative  <- ionization[["fraction_negative"]]
   }
   if (fraction_negative > 0.5) return(TRUE)
@@ -115,7 +122,7 @@ is_base <- function(pH=7,pKa_Donor=NA,pKa_Accept=NA,fraction_positive=NULL)
 {
   if (is.null(fraction_positive))
   {
-    ionization <- calc_ionization(pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
+    ionization <- calc_ionization(pH=pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
     fraction_positive  <- ionization[["fraction_positive"]]
   }
   if (fraction_positive > 0.5) return(TRUE)
@@ -126,7 +133,7 @@ is_neutral <- function(pH=7,pKa_Donor=NA,pKa_Accept=NA,fraction_postive=NULL)
 {
   if (is.null(fraction_neutral))
   {
-    ionization <- calc_ionization(pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
+    ionization <- calc_ionization(pH=pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
     fraction_neutral  <- ionization[["fraction_neutral"]]
   }
   if (fraction_neutral > 0.5) return(TRUE)

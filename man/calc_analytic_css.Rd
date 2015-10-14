@@ -27,7 +27,7 @@ calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
 }
   \item{suppress.messages}{Whether or not the output message is suppressed.}
   \item{concentration}{Desired concentration type, 'blood' or default 'plasma'.}
-  \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Funbound.plasma, and Krbc2plasma.} 
+  \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Funbound.plasma, and Krbc2pu.} 
   \item{default.to.human}{
   Substitutes missing rat values with human values if true.
   }

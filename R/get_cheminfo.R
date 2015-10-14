@@ -11,6 +11,7 @@ get_cheminfo <- function(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.
   
   if(default.to.human==T) species <- 'Human'
   
+  model <- tolower(model)
   if (model == "pbtk" | model == "3compartment" | model == "1compartment")
   {
     necessary.params <- c(paste(species,"Clint",sep="."),paste(species,"Funbound.plasma",sep="."),"MW","logP")
