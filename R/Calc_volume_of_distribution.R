@@ -5,7 +5,7 @@ calc_vdist<- function(chem.cas=NULL,
                               default.to.human=F,
                               species="Human",suppress.messages=F)
 {
-  PK.physiology.data <- PK.physiology.data
+  physiology.data <- physiology.data
 
   if(is.null(parameters)){
     schmitt.parameters <- parameterize_schmitt(chem.cas=chem.cas,chem.name=chem.name,default.to.human=default.to.human,species=species)
@@ -41,30 +41,29 @@ calc_vdist<- function(chem.cas=NULL,
   
   
 # Check the species argument for capitilization problems and whether or not it is in the table:  
-  if (!(species %in% colnames(PK.physiology.data)))
+  if (!(species %in% colnames(physiology.data)))
   {
-    if (toupper(species) %in% toupper(colnames(PK.physiology.data)))
+    if (toupper(species) %in% toupper(colnames(physiology.data)))
     {
-      PK.phys.species <- colnames(PK.physiology.data)[toupper(colnames(PK.physiology.data))==toupper(species)]
-      warning(paste(species,"coerced to",PK.phys.species,"for physiological data."))
+      phys.species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Physiological PK data for",species,"not found."))
-  } else PK.phys.species <- species
+  } else phys.species <- species
 
 # Load the physiological parameters for this species
-  this.phys.data <- PK.physiology.data[,PK.phys.species]
-  names(this.phys.data) <- PK.physiology.data[,1]
+  this.phys.data <- physiology.data[,phys.species]
+  names(this.phys.data) <- physiology.data[,1]
 
   hematocrit <- this.phys.data["Hematocrit"]
   plasma.vol <- this.phys.data["Plasma Volume"]/1000 # L/kg BW
   if(schmitt.params){  
      PCs <- subset(parameters,names(parameters) %in% schmitt.names)
    # Get_lumped_tissues returns a list with the lumped PCs, vols, and flows:
-    lumped_params <- get_lumped_tissues(PCs,tissuelist=NULL,species=species)
+    lumped_params <- lump_tissues(PCs,tissuelist=NULL,species=species)
 
     RBC.vol <- plasma.vol/(1 - hematocrit)*hematocrit
     vol.dist <- plasma.vol + RBC.vol*lumped_params$Krbc2pu*parameters$Funbound.plasma+lumped_params$Krest2pu*lumped_params$Vrestc*parameters$Funbound.plasma   
   }else{
-    pbtk.name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","kdermabs","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krbc2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Qlungf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
+    pbtk.name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","kdermabs","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krbc2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
     name.list.3comp <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","Kgut2pu","Krbc2pu","kgutabs","Kliver2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc","Qgfrc","Qgutf","Qliverf","Rblood2plasma","Vgutc","Vliverc","Vrestc")
     if(!all(name.list.3comp %in% names(parameters)) | !all(names(parameters) %in% pbtk.name.list))stop("Use parameter lists from parameterize_pbtk, parameterize_3compartment, or predict_partitioning_schmitt only.")
     #necess <- c("Funbound.plasma","hematocrit","Vrestc","Krest2plasma","Krbc2plasma")

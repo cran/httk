@@ -1,6 +1,6 @@
-\name{PK.physiology.data}
+\name{physiology.data}
 \docType{data}
-\alias{PK.physiology.data}
+\alias{physiology.data}
 \title{Species-specific physiology parameters}
 \description{
 This data set contains values from Davies and Morris (1993) necessary
@@ -8,7 +8,7 @@ to paramaterize a toxicokinetic model for human, mouse, rat, dog, or
 rabbit.  The temperature for each species are taken from
 Robertshaw et al. (2004), Gordon (1993), and Stammers(1926).  
 }
-\usage{PK.physiology.data}
+\usage{physiology.data}
 \format{A data.frame containing 11 rows and 7 columns.}
 \source{Wambaugh et al. (2014), in preparation}
 \references{

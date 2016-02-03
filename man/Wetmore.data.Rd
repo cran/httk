@@ -6,7 +6,7 @@
 This data set gives the chemical specific predictions for serum concentration
 at steady state resulting from constant infusion exposure, as published in a
 series of papers from Barbara Wetmore's group at the Hamner Institutes for Life
-Sciences. Predictions include the median, and 90\% interval in uM and mg/L.
+Sciences. Predictions include the median and 90\% interval in uM and mg/L.
 Calculations were made using the 1 and 10 uM in vitro measured clearances.
 }
 \usage{Wetmore.data}

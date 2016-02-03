@@ -4,7 +4,7 @@ parameterize_schmitt <- function(chem.cas=NULL,
                                  default.to.human=F)
 {
 
-PK.physiology.data <- PK.physiology.data
+physiology.data <- physiology.data
 # Look up the chemical name/CAS, depending on what was provide:
   out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
   chem.cas <- out$chem.cas
@@ -24,19 +24,18 @@ fub <- try(get_invitroPK_param("Funbound.plasma",species,chem.CAS=chem.cas),sile
   }                                 
                                  
  # Check the species argument for capitilization problems and whether or not it is in the table:  
-  if (!(species %in% colnames(PK.physiology.data)))
+  if (!(species %in% colnames(physiology.data)))
   {
-    if (toupper(species) %in% toupper(colnames(PK.physiology.data)))
+    if (toupper(species) %in% toupper(colnames(physiology.data)))
     {
-      PK.phys.species <- colnames(PK.physiology.data)[toupper(colnames(PK.physiology.data))==toupper(species)]
-      warning(paste(species,"coerced to",PK.phys.species,"for physiological data."))
+      phys.species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Physiological PK data for",species,"not found."))
-  } else PK.phys.species <- species                                 
+  } else phys.species <- species                                 
                                  
                                                            
 # Load the physiological parameters for this species
-  this.phys.data <- PK.physiology.data[,PK.phys.species]
-  names(this.phys.data) <- PK.physiology.data[,1]
+  this.phys.data <- physiology.data[,phys.species]
+  names(this.phys.data) <- physiology.data[,1]
   
   temp <- this.phys.data[['Average Body Temperature']] 
 # Load the physico-chemical properties:  

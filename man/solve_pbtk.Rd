@@ -46,6 +46,8 @@ solve_pbtk(chem.name = NULL, chem.cas = NULL, times=NULL, parameters=NULL,
 }
 
 \details{
+Note that the model parameters have units of hours while the model output is in days.
+
 Default NULL value for doses.per.day solves for a single dose.
 
 The compartments used in this model are the gutlumen, gut, liver, kidneys, veins, arteries, lungs, and the rest of the body.  

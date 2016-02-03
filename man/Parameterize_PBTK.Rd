@@ -30,7 +30,7 @@ This function initializes the parameters needed in the functions solve_pbtk, cal
   Substitutes missing animal values with human values if true (hepatic intrinsic clearance or fraction of unbound plasma).
   }
   \item{tissuelist}{
-    Specifies which tissues will be used in the model and groups any others in the rest of the body.  However, solve_pbtk only works with the default parameters.
+    Specifies compartment names and tissues groupings. Remaining tissues in tissue.data are lumped in the rest of the body.  However, solve_pbtk only works with the default parameters.
   }
   \item{force.human.clint.fub}{
   Forces use of human values for hepatic intrinsic clearance and fraction of unbound plasma if true.
@@ -66,7 +66,6 @@ When species is specified as rabbit, dog, or mouse, the function uses the approp
      \item{Qgutf}{Fraction of cardiac output flowing to the gut.}
      \item{Qkidneyf}{Fraction of cardiac output flowing to the kidneys.}
      \item{Qliverf}{Fraction of cardiac output flowing to the liver.}
-      \item{Qlungf}{Fraction of cardiac output flowing to the lungs, not used in current model.  Entire cardiac output actually flows through the lung compartment.}
       \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma.}
      \item{Vartc}{Volume of the arteries per kg body weight, L/kg BW.}
       \item{Vgutc}{Volume of the gut per kg body weight, L/kg BW.}

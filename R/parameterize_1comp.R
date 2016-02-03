@@ -1,6 +1,6 @@
 parameterize_1comp <- function(chem.cas=NULL,chem.name=NULL,species='Human',default.to.human=F)
 {
- PK.physiology.data <- PK.physiology.data
+ physiology.data <- physiology.data
 if(is.null(chem.cas) & is.null(chem.name)) stop('Must specify chem.name or chem.cas')
 params <- list()
 
@@ -16,18 +16,17 @@ params[['million.cells.per.gliver']] <- 110
 
  
  # Check the species argument for capitilization problems and whether or not it is in the table:  
-  if (!(species %in% colnames(PK.physiology.data)))
+  if (!(species %in% colnames(physiology.data)))
   {
-    if (toupper(species) %in% toupper(colnames(PK.physiology.data)))
+    if (toupper(species) %in% toupper(colnames(physiology.data)))
     {
-      PK.phys.species <- colnames(PK.physiology.data)[toupper(colnames(PK.physiology.data))==toupper(species)]
-      warning(paste(species,"coerced to",PK.phys.species,"for physiological data."))
+      phys.species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Physiological PK data for",species,"not found."))
-  } else PK.phys.species <- species
+  } else phys.species <- species
 
 # Load the physiological parameters for this species
-  this.phys.data <- PK.physiology.data[,PK.phys.species]
-  names(this.phys.data) <- PK.physiology.data[,1]
+  this.phys.data <- physiology.data[,phys.species]
+  names(this.phys.data) <- physiology.data[,1]
   
   params[['hematocrit']] <- this.phys.data[["Hematocrit"]]
 

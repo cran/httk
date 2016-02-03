@@ -7,20 +7,20 @@
 #               tissues that are to be lumped, for example:
 #               tissuelist<-list(Rapid=c("Brain","Kidney"))
 # species specifies the flow.col and vol.col in the tissuedata.table
-get_lumped_tissues<- function(Ktissue2pu.in,
+lump_tissues <- function(Ktissue2pu.in,
                             tissuelist=NULL,
                             species="Human")
 {
-  PK.physiology.data <- PK.physiology.data
+  physiology.data <- physiology.data
   tissue.data <- tissue.data
   Parameter <- NULL
-  if (!(species %in% colnames(PK.physiology.data)))
+  if(length(Ktissue2pu.in) != length(tissue.data[,1]) | !all(tissue.data[,1] %in% c(substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3)
+  [!substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3) %in% 'rbc'],'red blood cells'))) stop(paste('Ktissue2pu.in must contain the tissues from tissue.data:',paste(tissue.data[,1],collapse=', ')))
+  if (!(species %in% colnames(physiology.data)))
   {
-    if (toupper(species) %in% toupper(colnames(PK.physiology.data)))
+    if (toupper(species) %in% toupper(colnames(physiology.data)))
     {
-      temp <- colnames(PK.physiology.data)[toupper(colnames(PK.physiology.data))==toupper(species)]
-      warning(paste(species,"coerced to",temp,"for tissue data."))
-      species <- temp
+      species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Tissue data for",species,"not found."))
   }
   vol.col <- paste(species,"Vol (L/kg)",sep=" ")  
@@ -114,7 +114,7 @@ get_lumped_tissues<- function(Ktissue2pu.in,
     names(Ktissue2pu.out) <- paste("K",names(Ktissue2pu.out),"2pu",sep='')
     names(vol) <- paste('V',names(vol),'c',sep='')
     names(flow)[names(flow) == 'liver'] <- 'total.liver'
-    flow <- subset(unlist(flow), names(flow) != 'rest') / subset(PK.physiology.data,Parameter=='Cardiac Output')[[species]]
+    flow <- subset(unlist(flow), names(flow) != 'rest') / subset(physiology.data,Parameter=='Cardiac Output')[[species]]
     names(flow) <- paste('Q',names(flow),'f',sep='')
     
  	return(c(Ktissue2pu.out,vol,flow))

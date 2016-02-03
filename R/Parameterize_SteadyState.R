@@ -3,7 +3,7 @@
 parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human",clint.pvalue.threshold=0.05,default.to.human=F,human.clint.fub=F)
 
 {
-  PK.physiology.data <- PK.physiology.data
+  physiology.data <- physiology.data
   tissue.data <- tissue.data
 # Look up the chemical name/CAS, depending on what was provide:
   out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
@@ -14,16 +14,15 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
   species <- tolower(species)
   substring(species,1,1) <- toupper(substring(species,1,1))
 
-  if (!(species %in% colnames(PK.physiology.data)))
+  if (!(species %in% colnames(physiology.data)))
   {
-    if (toupper(species) %in% toupper(colnames(PK.physiology.data)))
+    if (toupper(species) %in% toupper(colnames(physiology.data)))
     {
-      PK.phys.species <- colnames(PK.physiology.data)[toupper(colnames(PK.physiology.data))==toupper(species)]
-      warning(paste(species,"coerced to",PK.phys.species,"for physiological data."))
+      phys.species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Physiological PK data for",species,"not found."))
-  } else PK.phys.species <- species
-  this.phys.data <- PK.physiology.data[,PK.phys.species]
-  names(this.phys.data) <- PK.physiology.data[,1]
+  } else phys.species <- species
+  this.phys.data <- physiology.data[,phys.species]
+  names(this.phys.data) <- physiology.data[,1]
   
   QGFRc <- this.phys.data[["GFR"]] #mL/min/kgBW
   BW <- this.phys.data[["Average BW"]]
@@ -34,7 +33,6 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
     {
       tissue.vols <- tissue.data[,toupper(colnames(tissue.data))==toupper(paste(species,"Vol (L/kg)"))]
       tissue.flows <- tissue.data[,toupper(colnames(tissue.data))==toupper(paste(species,"Flow (mL/min/kg^(3/4))"))]
-      warning(paste(species,"coerced to",paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"for tissue data."))
     } else stop(paste("Tissue data for",species,"not found."))
   } else {
     tissue.vols <- tissue.data[,paste(species,"Vol (L/kg)")]

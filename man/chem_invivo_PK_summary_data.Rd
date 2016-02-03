@@ -4,9 +4,9 @@
 \title{Summary of published toxicokinetic time course experiments}
 \description{
 This data set summarizes the time course data in the chem.invivo.PK.data table.
-Maximum concentration (Cmax), time integrated plasma cocnentration for the
+Maximum concentration (Cmax), time integrated plasma concentration for the
 duration of treatment (AUC.treatment) and extrapolated to zero concentration
-(AUC.infinity) as well as half-life is calculated. Summary values are given
+(AUC.infinity) as well as half-life are calculated. Summary values are given
 for each study and dosage. These data can be used to evaluate toxicokinetic model
 predictions.}
 \usage{chem.invivo.PK.summary.data}

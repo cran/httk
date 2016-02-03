@@ -11,7 +11,7 @@ parameterize_pbtk <- function(chem.cas=NULL,
                               force.human.clint.fub = F,
                               clint.pvalue.threshold=0.05)
 {
-  PK.physiology.data <- PK.physiology.data
+  physiology.data <- physiology.data
 # Look up the chemical name/CAS, depending on what was provide:
   out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
   chem.cas <- out$chem.cas
@@ -49,18 +49,17 @@ parameterize_pbtk <- function(chem.cas=NULL,
     
   
  # Check the species argument for capitilization problems and whether or not it is in the table:  
-  if (!(species %in% colnames(PK.physiology.data)))
+  if (!(species %in% colnames(physiology.data)))
   {
-    if (toupper(species) %in% toupper(colnames(PK.physiology.data)))
+    if (toupper(species) %in% toupper(colnames(physiology.data)))
     {
-      PK.phys.species <- colnames(PK.physiology.data)[toupper(colnames(PK.physiology.data))==toupper(species)]
-      warning(paste(species,"coerced to",PK.phys.species,"for physiological data."))
+      phys.species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Physiological PK data for",species,"not found."))
-  } else PK.phys.species <- species
+  } else phys.species <- species
 
 # Load the physiological parameters for this species
-  this.phys.data <- PK.physiology.data[,PK.phys.species]
-  names(this.phys.data) <- PK.physiology.data[,1]
+  this.phys.data <- physiology.data[,phys.species]
+  names(this.phys.data) <- physiology.data[,1]
   
   temp <- this.phys.data[['Average Body Temperature']] 
 # Load the physico-chemical properties:  
@@ -74,7 +73,7 @@ parameterize_pbtk <- function(chem.cas=NULL,
   parm <- list(Funbound.plasma=fub,Pow=Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept,MA=MA,Fprotein.plasma = 75/1000/1.025,plasma.pH=7.4,temperature=temp)
   PCs <- predict_partitioning_schmitt(parameters=parm)
 # Get_lumped_tissues returns a list with the lumped PCs, vols, and flows:
-  lumped_params <- get_lumped_tissues(PCs,tissuelist=tissuelist,species=species)
+  lumped_params <- lump_tissues(PCs,tissuelist=tissuelist,species=species)
 
 
   outlist <- list()
@@ -86,7 +85,7 @@ parameterize_pbtk <- function(chem.cas=NULL,
 
   outlist <- c(outlist,c(
     Qcardiacc = as.numeric(Qcardiacc),
-    flows[names(flows) != 'Qtotal.liverf'],
+    flows[!names(flows) %in% c('Qlungf','Qtotal.liverf')],
     Qliverf= flows[['Qtotal.liverf']] - flows[['Qgutf']],
     Qgfrc = as.numeric(QGFRc))) 
   # end flows  

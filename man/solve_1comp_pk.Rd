@@ -44,6 +44,8 @@ solve_1comp(chem.cas=NULL,chem.name=NULL,times=NULL,parameters=NULL,daily.dose=1
 }
 
 \details{
+Note that the model parameters have units of hours while the model output is in days.
+
 Default value of NULL for doses.per.day solves for a single dose.
 
 

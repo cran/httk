@@ -27,7 +27,7 @@ solve_3comp <- function(chem.name = NULL,
   }else{
     name.list <- c("BW","Clmetabolismc","Fgutabs","Funbound.plasma","Fhep.assay.correction","hematocrit","Krbc2pu","Kgut2pu","kgutabs","Kliver2pu","Krest2pu","MW","Qcardiacc","Qgfrc","Qgutf","Qliverf","Rblood2plasma","million.cells.per.gliver","Vgutc","Vliverc","Vrestc")
     if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_3comp."))
-    name.list2 <- c("BW","Clmetabolismc","Fgutabs","Funbound.plasma","Fhep.assay.correction","hematocrit","kdermabs","Krbc2pu","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Qlungf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
+    name.list2 <- c("BW","Clmetabolismc","Fgutabs","Funbound.plasma","Fhep.assay.correction","hematocrit","kdermabs","Krbc2pu","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
     if(any(name.list2[which(!name.list2 %in% name.list)] %in% names(parameters)))stop("Parameters are from parameterize_pbtk.  Use parameters from parameterize_3comp.")
   }  
   if (is.null(times)) times <- round(seq(0, days, 1/(24*tsteps)),8)
@@ -167,6 +167,7 @@ solve_3comp <- function(chem.name = NULL,
   }
   
   out <- out[,c("time",CompartmentsToInitialize,"Cplasma","AUC","Ametabolized","Atubules")]
+  class(out) <- c('matrix','deSolve')
 if(!suppress.messages){
     if(is.null(chem.cas) & is.null(chem.name)){
       cat("Values returned in",output.units,"units.\n")

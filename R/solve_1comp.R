@@ -151,6 +151,8 @@ solve_1comp <- function(chem.cas=NULL,
   }
   
   out <- out[,c("time",CompartmentsToInitialize,"Ametabolized","AUC")]
+  class(out) <- c('matrix','deSolve')
+  
   if(!suppress.messages){
     if(is.null(chem.cas) & is.null(chem.name)){
       if(use.amounts){

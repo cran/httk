@@ -47,6 +47,8 @@ solve_3comp(chem.name = NULL, chem.cas = NULL, times=NULL,
 }
 
 \details{
+Note that the model parameters have units of hours while the model output is in days.
+
 Default of NULL for doses.per.day solves for a single dose.
 
 The compartments used in this model are the small intestine, portal vein,  liver, and systemic compartment.  
