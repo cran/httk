@@ -1,5 +1,5 @@
 # This function simulates a daily repeated dosing treatment and summarizes the PK statistics from that treatment:
-calc_chem_stats <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,days,stats=c("AUC","mean","peak"),doses.per.day=NULL,daily.dose=1,dose=NULL,species="Human",output.units="uM",concentration='plasma',model='pbtk',suppress.messages=F,...)
+calc_chem_stats <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,days,stats=c("AUC","mean","peak"),doses.per.day=NULL,daily.dose=1,dose=NULL,species="Human",output.units="uM",concentration='plasma',model='pbtk',default.to.human=F,suppress.messages=F,...)
 {        
   good.units <- c("uM","mg/L")
   if (!(tolower(output.units) %in% tolower(good.units))) stop(paste("Do not know how to calculate units",output.units,". Please select from: ",paste(good.units,collapse=" ")))
@@ -7,11 +7,11 @@ calc_chem_stats <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,days,st
   
   if(is.null(parameters)){
     if(tolower(model) == 'pbtk'){
-      parameters <- parameterize_pbtk(chem.name=chem.name,chem.cas=chem.cas,species=species)
+      parameters <- parameterize_pbtk(chem.name=chem.name,chem.cas=chem.cas,species=species,default.to.human=default.to.human)
     }else if(tolower(model) == '3compartment'){
-      parameters <- parameterize_3comp(chem.name=chem.name,chem.cas=chem.cas,species=species)
+      parameters <- parameterize_3comp(chem.name=chem.name,chem.cas=chem.cas,species=species,default.to.human=default.to.human)
     }else if(tolower(model) == '1compartment'){
-      parameters <- parameterize_1comp(chem.name=chem.name,chem.cas=chem.cas,species=species)
+      parameters <- parameterize_1comp(chem.name=chem.name,chem.cas=chem.cas,species=species,default.to.human=default.to.human)
     }else stop("Model can only be '3compartment', '1compartment', or 'pbtk'.")
   }
   

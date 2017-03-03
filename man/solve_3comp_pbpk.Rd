@@ -51,9 +51,8 @@ Note that the model parameters have units of hours while the model output is in 
 
 Default of NULL for doses.per.day solves for a single dose.
 
-The compartments used in this model are the small intestine, portal vein,  liver, and systemic compartment.  
-
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+The compartments used in this model are the gutlumen, gut, liver, and rest-of-body, with the plasma equivalent to the liver plasma.
+%%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
 
 %%  ~~ If necessary, more details than the description above ~~
 }
@@ -72,8 +71,7 @@ John Wambaugh and Robert Pearce
 }
 
 \examples{
-solve_3comp(chem.name='Bisphenol-A',doses.per.day=3,dose=1/3)
- solve_3comp(chem.name='Nicotine',doses.per.day=2)
+solve_3comp(chem.name='Bisphenol-A',doses.per.day=2,dose=.5,days=1,tsteps=2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -6,7 +6,7 @@ Monte Carlo for pharmacokinetic models
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
-This function performs Monte Carlo to assess uncertainty and variability for pharmacokinetic models.
+This function performs Monte Carlo to assess uncertainty and variability for toxicokinetic models.
 }
 \usage{
 monte_carlo(params,which.quantile=0.95,cv.params=NULL,censored.params=NULL,samples=1000,

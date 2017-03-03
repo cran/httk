@@ -6,11 +6,13 @@ Calculate the hepatic clearance.
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
-This function calculates the hepatic clearance for a well-stirred model or other type if specified.
+This function calculates the hepatic clearance in plasma for a well-stirred model or other type if specified.
 }
 \usage{
-calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Human',
-                       hepatic.model='well-stirred',suppress.messages=F)
+calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,
+                       species='Human',default.to.human=F,
+                       hepatic.model='well-stirred',
+                       suppress.messages=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,15 +22,14 @@ calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Hum
   Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human").
 %%     ~~Describe \code{ssparams.var.inv} here~~
 }
+  \item{default.to.human}{
+  Substitutes missing animal values with human values if true.
+  }
   \item{parameters}{Chemical parameters from parameterize_steadystate function, overrides chem.name and chem.cas.}
   \item{hepatic.model}{Model used in calculating hepatic clearance, unscaled, parallel tube, dispersion, or default well-stirred.}  
    \item{suppress.messages}{Whether or not to suppress the output message.}
 }
 
-\details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 \item{Hepatic Clearance}{Units of L/h/kg BW.}
 }

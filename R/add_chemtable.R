@@ -93,12 +93,15 @@ matched to a \"new.table\" column in argument \"data.list\".")
       this.table[index,"All.Compound.Names"] <- paste(this.table[index,"All.Compound.Names"],compound.name,sep="|")
     }
   }
-  if (this.property %in% paste(species,chem.invitro.cols,sep="."))
+  if (!is.null(species))
   {
-    if (!(species %in% strsplit(this.table[index,"All.Species"],"[|]")[[1]]))
+    if (this.property %in% paste(species,chem.invitro.cols,sep="."))
     {
-      if (this.table[index,"All.Species"]=="None") this.table[index,"All.Species"] <- species
-      else this.table[index,"All.Species"] <- paste(this.table[index,"All.Species"],species,sep="|")
+      if (!(species %in% strsplit(this.table[index,"All.Species"],"[|]")[[1]]))
+      {
+        if (this.table[index,"All.Species"]=="None") this.table[index,"All.Species"] <- species
+        else this.table[index,"All.Species"] <- paste(this.table[index,"All.Species"],species,sep="|")
+      }
     }
   }
   if (!(this.property %in% colnames(this.table)))
@@ -118,6 +121,8 @@ matched to a \"new.table\" column in argument \"data.list\".")
   chem.phys.cols <- sort(c(chem.phys.cols,paste(chem.phys.cols,"Reference",sep=".")))
   col.order <- c(chem.id.cols[chem.id.cols %in% colnames(this.table)],"All.Compound.Names",chem.phys.cols[chem.phys.cols %in% colnames(this.table)],"All.Species")
   col.order <- c(col.order,sort(colnames(this.table)[!(colnames(this.table) %in% col.order)]))
+  
+  if (any(is.na(this.table[,"All.Species"]))) browser()
   return(this.table[,col.order])
 }
 
@@ -166,8 +171,13 @@ columns in \"data.list\".")
     if (is.null(reference)) this.reference <- new.table[this.row,data.list[["Reference"]]]
     if (is.null(species))
     {
-      this.species <- tolower(new.table[this.row,data.list[["Species"]]])
-      substring(this.species,1,1) <- toupper(substring(this.species,1,1))
+      if ("Species" %in% names(data.list))
+      {
+        this.species <- tolower(new.table[this.row,data.list[["Species"]]])
+        substring(this.species,1,1) <- toupper(substring(this.species,1,1))
+      } else {
+        this.species <- NULL
+      }
     }
     for (this.data in new.data)
     {

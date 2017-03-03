@@ -5,7 +5,7 @@
 Calculate the constant ratio of the blood concentration to the plasma concentration.
 }
 \description{
-This function calculates the constant ratio of the blood concentration to the plasma concentration. It uses the hematocrit and the red blood cell (RBC) parition coefficient as predicted by the Schmitt (2008) method.
+This function calculates the constant ratio of the blood concentration to the plasma concentration. 
 }
 \usage{
 calc_rblood2plasma(chem.cas=NULL, chem.name=NULL, default.to.human=F, species="Human")
@@ -29,7 +29,10 @@ calc_rblood2plasma(chem.cas=NULL, chem.name=NULL, default.to.human=F, species="H
 }
 }
 \details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+The red blood cell (RBC) parition coefficient as predicted by the Schmitt (2008) method is used in the calculation.
+The value is calculated with the equation: 1 - hematocrit + hematocrit * Krbc2pu * Funbound.plasma, summing the red blood cell to plasma 
+and plasma:plasma (equal to 1) partition coefficients multiplied by their respective fractional volumes.
+%%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(hematocrit and temperature) but substitues human fraction unbound. 
 %%  ~~ If necessary, more details than the description above ~~
 }
 

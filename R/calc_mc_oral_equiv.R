@@ -9,7 +9,7 @@ calc_mc_oral_equiv <- function(conc,chem.name=NULL,chem.cas=NULL,which.quantile=
     dose <- dose /1000 / MW * 1000000 
   }else if(tolower(output.units) != 'mg') stop("Output units can only be in mg or mol.")
   if(!suppress.messages & !return.samples){
-    cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),input.units,"concentration converted to",output.units,"/kg bw/day dose for",which.quantile,"quantile.\n")
+    cat(input.units,"concentration converted to",output.units,"/kg bw/day dose for",which.quantile,"quantile.\n")
   }
 	if (class(Css) == "try-error"){
     return(NA)

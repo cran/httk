@@ -1,0 +1,34 @@
+News for R package httk
+
+
+Changes in version 1.5
+
+default.to.human argument added to calc_hepatic_clearance and calc_stats.
+calc_hepatic_clearance and calc_total_clearance do not necessarily require all parameters.
+Argument "tissue" added to calc_analytic_css, calc_mc_css, and calc_mc_oral_equiv, enabling tissue specific calculations in addition to plasma.
+get_cheminfo minor bug fix.
+calc_dow: fraction neutral argument changed to fraction charged, thus treating zwitterions as neutrals
+monte_carlo bug fix: Upper bound placed at limit of detection for censored params truncated normal distribution.  However, this has no impact on
+                     the default case where the limit of detection is .01 the mean .005 because of the small standard deviation size (.0015). 
+                     Only large coefficients of variation or Funbound.plasma values close to the limit of detection would be affected.
+Multiple iv doses enabled in solve functions.
+get_rblood2plasma function added to retrieve in vivo Rblood2plasma from chem.physical_and_invitro.data.
+
+Version: 1.4
+
+This revision incorporates changes suggested by the reviewers of Pearce et al., which was accepted, pending minor revision, in the Journal of  Statistical Software, included in vignettes. 
+Table name "PK.physiology.data" changed to "physiology.data".
+
+Version 1.3
+This revision adds ~200 more chemicals (from two recent publications including Wetmore et al. 2015) and make several small changes to improve usability and stability. 
+
+Version 1.2
+This revision changes some model parameter names to follow a more systematic naming convention. 
+Minor bugs have been fixed. 
+This version is consistent with a newly submitted article to JSS describing use of the package. 
+
+Version 1.1
+
+Initial public (CRAN) release.
+
+

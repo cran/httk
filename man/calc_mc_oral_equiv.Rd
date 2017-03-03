@@ -44,10 +44,7 @@ calc_mc_oral_equiv(conc,chem.name=NULL,chem.cas=NULL,which.quantile=0.95,
    \item{return.samples}{Whether or not to return the vector containing the samples from the simulation instead of the selected quantile.}
   \item{...}{Additional parameters passed to calc_mc_css.}
 }
-\details{
-  When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 
 Equivalent dose in specified units, default of mg/kg BW/day.
@@ -64,9 +61,10 @@ John Wambaugh
 
 \examples{
 
-calc_mc_oral_equiv(0.1,chem.cas="34256-82-1")
-
-calc_mc_oral_equiv(0.1,chem.cas="34256-82-1",which.quantile=c(0.05,0.5,0.95))
+\dontrun{
+calc_mc_oral_equiv(0.1,chem.cas="34256-82-1",which.quantile=c(0.05,0.5,0.95),
+                   method='vi',samples=100,tissue='brain')
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

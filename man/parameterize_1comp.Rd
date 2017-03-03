@@ -31,10 +31,6 @@ This function initializes the parameters needed in the function solve_1comp.
 
 }
 
-\details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 
   \item{Vdist}{Volume of distribution, units of L/kg BW.}

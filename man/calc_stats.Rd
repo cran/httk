@@ -11,7 +11,8 @@ This function calculates the area under the curve, the mean, and the peak values
 \usage{
 calc_stats(days,chem.name=NULL,chem.cas=NULL,parameters=NULL,stats=c("AUC","peak","mean"),
            species='Human',exclude.fub.zero=F,daily.dose=1,dose=NULL,doses.per.day=NULL,
-           output.units='uM',concentration='plasma',model='pbtk',suppress.messages=F,...)
+           output.units='uM',concentration='plasma',model='pbtk',
+           default.to.human=F,suppress.messages=F,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,6 +29,7 @@ calc_stats(days,chem.name=NULL,chem.cas=NULL,parameters=NULL,stats=c("AUC","peak
   \item{output.units}{Desired units (either "mg/L", "mg", "umol", or default "uM").}
   \item{model}{Model used in calculation, 'pbtk' for the multiple compartment model,'3compartment' for the three compartment model, '3compartmentss' for the three compartment steady state model, and '1compartment' for one compartment model.}
    \item{concentration}{Desired concentration type, 'blood' or default 'plasma'.}
+   \item{default.to.human}{Substitutes missing animal values with human values if true (hepatic intrinsic clearance or fraction of unbound plasma).}
    \item{suppress.messages}{Whether to suppress output message.}
   \item{...}{Arguments passed to solve function.}
 }
@@ -35,7 +37,7 @@ calc_stats(days,chem.name=NULL,chem.cas=NULL,parameters=NULL,stats=c("AUC","peak
 \details{
 Default value of 0 for doses.per.day solves for a single dose.
 
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+%%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{

@@ -28,16 +28,13 @@ This function initializes the parameters needed in the functions calc_mc_css, ca
 
 }
 
-\details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
    \item{Clint}{Hepatic Intrinsic Clearance, uL/min/10^6 cells.}
    \item{Fgutabs}{Fraction of the oral dose absorbed, i.e. the fraction of the dose that enters the gutlumen.}
    \item{Funbound.plasma}{Fraction of plasma that is not bound.}
    \item{Qtotal.liverc}{Flow rate of blood exiting the liver, L/h/kg BW^3/4.}
-   \item{Qgfrc}{Gromerular Filtration Rate, L/h/kg BW^3/4, volume of fluid filtered from kidney and excreted.}
+   \item{Qgfrc}{Glomerular Filtration Rate, L/h/kg BW^3/4, volume of fluid filtered from kidney and excreted.}
   \item{BW}{Body Weight, kg}
   \item{MW}{Molecular Weight, g/mol}
   \item{million.cells.per.gliver}{Millions cells per gram of liver tissue.}

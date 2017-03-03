@@ -25,7 +25,7 @@ Loading required package: msm
 > length(fub.zero.list)
 [1] 543
 > length(no.fub.zero.list)
-[1] 443
+[1] 427
 > 
 > proc.time()
    user  system elapsed 

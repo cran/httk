@@ -6,7 +6,7 @@ Find the monte carlo steady state concentration.
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
-This function finds the analytical steady state plasma concentration(from calc_analytic_css) for the three compartment steady state model (model = '3compartmentss') using a monte carlo simulation (monte_carlo).
+This function finds the analytical steady state plasma concentration(from calc_analytic_css) using a monte carlo simulation (monte_carlo).
 }
 \usage{
 calc_mc_css(chem.cas=NULL,chem.name=NULL,parameters=NULL,daily.dose=1,
@@ -14,7 +14,14 @@ calc_mc_css(chem.cas=NULL,chem.name=NULL,parameters=NULL,daily.dose=1,
             censored.params=list(Funbound.plasma=list(cv=0.3,lod=0.01)),
             vary.params=list(BW=0.3,Vliverc=0.3,Qgfrc=0.3,Qtotal.liverc=0.3,
             million.cells.per.gliver=0.3,Clint=0.3),samples=1000,
-            return.samples=F)
+            return.samples=F,default.to.human=F,tissue=NULL,httkpop=T,
+            model='3compartmentss',poormetab=T,fup.censor=T,Clint.vary=T,
+            sigma.factor=0.3,lod=0.01,method=NULL,
+            gendernum=NULL,agelim_years=NULL,agelim_months=NULL,
+            weight_category =  c("Underweight", "Normal", "Overweight", "Obese"),
+            gfr_category = c("Normal", "Kidney Disease", "Kidney Failure"),
+            reths = c("Mexican American", "Other Hispanic", "Non-Hispanic White",
+            "Non-Hispanic Black", "Other"),physiology.matrix=NULL,parameter.matrix=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,7 +40,8 @@ calc_mc_css(chem.cas=NULL,chem.name=NULL,parameters=NULL,daily.dose=1,
 %%     ~~Describe \code{ssparams.mean} here~~
 }
   \item{species}{
-   Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human"). 
+   Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human").  
+   Only human data are used by default since httkpop is set to TRUE. 
 %%     ~~Describe \code{ssparams.var.inv} here~~
 }
   \item{output.units}{Plasma concentration units, either uM or default mg/L.}
@@ -54,16 +62,83 @@ parameter in "parameters". New values are sampled with mean equal to the value i
 "parameters" and standard deviation equal to the mean times the CV.}
   \item{samples}{Number of samples generated in calculating quantiles.}
   \item{return.samples}{Whether or not to return the vector containing the samples from the simulation instead of the selected quantile.}
- 
-  
+    \item{default.to.human}{
+  Substitutes missing rat values with human values if true.
+  }
+  \item{tissue}{Desired steady state tissue conentration.}
+  \item{httkpop}{Whether or not to use population generator and sampler from httkpop.  This is overwrites censored.params and  vary.params and is only for human physiology.}
+   \item{model}{Model used in calculation, 'pbtk' for the multiple compartment model,'3compartment' for the three compartment model, '3compartmentss' for the three compartment steady state model, and '1compartment' for one compartment model.  This only applies when httkpop=TRUE, otherwise '3compartmentss' is used.}
+   
+\item{poormetab}{TRUE (include poor metabolizers) or FALSE (exclude poor 
+metabolizers)}
 
+\item{fup.censor}{TRUE (draw \code{Funbound.plasma} from a censored 
+distribution) or FALSE (draw \code{Funbound.plasma} from a non-censored 
+distribution)}
+
+\item{sigma.factor}{The coefficient of variation to use for \code{Clint} and 
+\code{Funbound.plasma} distributions. Default value is 0.3.}
+
+\item{Clint.vary}{TRUE (sample \code{Clint} values) or FALSE (hold 
+\code{Clint} fixed). Default TRUE. If \code{Clint.vary} is FALSE, then 
+\code{poormetab} will have no effect.}
+
+\item{lod}{The average limit of detection for Funbound.plasma. if 
+\code{fup.censor == TRUE}, the \code{Funbound.plasma} distribution will be 
+censored below \code{lod/2}. Default value is 0.01.}   
+  
+\item{method}{The population-generation method to use. Either "virtual 
+individuals" or "direct resampling." Short names may be used: "d" or "dr" 
+for "direct resampling", and "v" or "vi" for "virtual individuals".}
+
+\item{gendernum}{Optional: A named list giving the numbers of male and female 
+individuals to include in the population, e.g. \code{list(Male=100, 
+Female=100)}. Default is NULL, meaning both males and females are included, 
+in their proportions in the NHANES data. If both \code{nsamp} and 
+\code{gendernum} are provided, they must agree (i.e., \code{nsamp} must be 
+the sum of \code{gendernum}).}
+
+\item{agelim_years}{Optional: A two-element numeric vector giving the minimum 
+and maximum ages (in years) to include in the population. Default is 
+c(0,79). If only a single value is provided, both minimum and maximum ages 
+will be set to that value; e.g. \code{agelim_years=3} is equivalent to 
+\code{agelim_years=c(3,3)}. If \code{agelim_years} is provided and 
+\code{agelim_months} is not, \code{agelim_years} will override the default 
+value of \code{agelim_months}.}
+
+\item{agelim_months}{Optional: A two-element numeric vector giving the minimum
+and maximum ages (in months) to include in the population. Default is c(0, 
+959), equivalent to the default \code{agelim_years}. If only a single value
+is provided, both minimum and maximum ages will be set to that value; e.g.
+\code{agelim_months=36} is equivalent to \code{agelim_months=c(36,36)}. If
+\code{agelim_months} is provided and \code{agelim_years} is not,
+\code{agelim_months} will override the default values of \code{agelim_years}.}
+
+\item{weight_category}{Optional: The weight categories to include in the 
+population. Default is \code{c('Underweight', 'Normal', 'Overweight', 
+'Obese')}. User-supplied vector must contain one or more of these strings.}
+
+\item{gfr_category}{The kidney function categories to include in the 
+population. Default is \code{c('Normal','Kidney Disease', 'Kidney Failure')}
+to include all kidney function levels.}
+
+\item{reths}{Optional: a character vector giving the races/ethnicities to 
+include in the population. Default is \code{c('Mexican American','Other 
+Hispanic','Non-Hispanic White','Non-Hispanic Black','Other')}, to include 
+all races and ethnicities in their proportions in the NHANES data. 
+User-supplied vector must contain one or more of these strings.}
 %%     ~~Describe \code{pred} here~~
+\item{physiology.matrix}{A data table generated by \code{httkpop_generate()}.}
+\item{parameter.matrix}{A data table generated by \code{get_httk_params()}.}
 }
 
 
 \details{
-  When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+All arguments after httkpop only apply if httkpop is set to TRUE.
 
+%%  When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+
+Tissue concentrations are calculated for the pbtk model with oral infusion dosing.  All tissues other than gut, liver, and lung are the product of the steady state plasma concentration and the tissue to plasma partition coefficient.
 }
 
 \author{
@@ -75,7 +150,11 @@ John Wambaugh
 
 
 \examples{
- calc_mc_css(chem.name='Bisphenol A',output.units='uM',which.quantile=.9)
+\dontrun{
+ calc_mc_css(chem.name='Bisphenol A',output.units='uM',method='vi',
+             samples=100,return.samples=TRUE)
+ calc_mc_css(chem.name='2,4-d',which.quantile=.9,httkpop=FALSE,tissue='heart')
+}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 }

@@ -1,15 +1,15 @@
 # alpha: Ratio of Distribution coefficient D of totally charged species and that of the neurtral form
-calc_dow <- function(Pow,pH=NA,pKa_Donor=NA,pKa_Accept=NA,fraction_neutral=NULL,alpha=0.001) 
+calc_dow <- function(Pow,pH=NA,pKa_Donor=NA,pKa_Accept=NA,fraction_charged=NULL,alpha=0.001) 
 {
   # Octonol:water distribution coefficient,
-  if (is.null(fraction_neutral))
+  if (is.null(fraction_charged))
   {
-    if (is.na(pH)) stop("pH or fraction_neutral must be specified in calc_dow.")
+    if (is.na(pH)) stop("pH or fraction_charged must be specified in calc_dow.")
     ionization <- calc_ionization(pH=pH,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
-    fraction_neutral  <- ionization[["fraction_neutral"]]
+    fraction_charged  <- ionization[["fraction_charged"]]
   }
   
-  Dow <- Pow*(alpha + (1-alpha)*fraction_neutral)
+  Dow <- Pow*(1 + (alpha - 1)*fraction_charged)
   return(Dow)
 }
 

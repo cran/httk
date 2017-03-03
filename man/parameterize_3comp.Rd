@@ -34,10 +34,7 @@ This function initializes the parameters needed in the function solve_3comp.
   Forces use of human values for hepatic intrinsic clearance and fraction of unbound plasma if true.
  }
  \item{clint.pvalue.threshold}{Hepatic clearances with clearance assays having p-values greater than the threshold are set to zero.}
- }
-\details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-%%  ~~ If necessary, more details than the description above ~~
+ 
 }
 \value{
 

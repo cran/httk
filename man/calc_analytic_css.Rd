@@ -11,13 +11,13 @@ This function calculates the analytic steady state plasma or venous blood concen
 calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
                   output.units='uM',model = 'pbtk',species='Human',
                   concentration='plasma',suppress.messages=F,
-                  recalc.blood2plasma=F,default.to.human=F)
+                  recalc.blood2plasma=F,default.to.human=F,tissue=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{chem.name}{Either the chemical name, CAS number, or the parameters must be specified.}
   \item{chem.cas}{Either the chemical name, CAS number, or the parameters must be specified.}
-  \item{parameters}{Chemical parameters from parameterize_pbtk (for model = 'pbtk'), parameterize_3comp (for model = '3compartment), parmeterize_1comp(for model = '3compartmentss') or parameterize_steadystate (for model = '1compartment'), overrides chem.name and chem.cas.}
+  \item{parameters}{Chemical parameters from parameterize_pbtk (for model = 'pbtk'), parameterize_3comp (for model = '3compartment), parmeterize_1comp(for model = '1compartment') or parameterize_steadystate (for model = '3compartmentss'), overrides chem.name and chem.cas.}
   \item{daily.dose}{Total daily dose, mg/kg BW.}
   \item{output.units}{Units for returned concentrations, defaults to uM (specify units = "uM") but can also be mg/L.}
   \item{model}{Model used in calculation, 'pbtk' for the multiple compartment model,'3compartment' for the three compartment model, '3compartmentss' for the three compartment steady state model, and '1compartment' for one compartment model.}
@@ -31,11 +31,14 @@ calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
   \item{default.to.human}{
   Substitutes missing rat values with human values if true.
   }
+  \item{tissue}{Desired tissue conentration.}
 } 
  
 \details{
 
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+%%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance.
+
+Tissue concentrations are calculated for the pbtk model with oral infusion dosing.  All tissues other than gut, liver, and lung are the product of the steady state plasma concentration and the tissue to plasma partition coefficient.
 
 %%  ~~ If necessary, more details than the description above ~~
 }

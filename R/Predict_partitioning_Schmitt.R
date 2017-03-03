@@ -84,7 +84,7 @@ predict_partitioning_schmitt <- function(chem.name=NULL,
     fraction_positive <- ionization[["fraction_positive"]]
   
 		# Octonol:water distribution coefficient,
-    Dow <- calc_dow(parameters$Pow,fraction_neutral=fraction_neutral,alpha=parameters$alpha)
+    Dow <- calc_dow(parameters$Pow,fraction_charged=fraction_charged,alpha=parameters$alpha)
 
 		# neutral lipid:water partition coefficient
 		Kn_L <- Dow

@@ -26,18 +26,14 @@ solve_pbtk <- function(chem.name = NULL,
     parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human) 
   }else{
     name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","kdermabs","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krbc2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
-  if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_pbtk."))
+  if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_pbtk.")) 
   }
   if(is.null(times)) times <- round(seq(0, days, 1/(24*tsteps)),8)
   start <- times[1]
   end <- times[length(times)]
   
 
-  if(iv.dose){
-    doses.per.day <- NULL
-    dosing.matrix <- NULL
-    if(is.null(dose)) dose <- daily.dose
-  }else{
+    if(iv.dose) parameters$Fgutabs <- 1
     if(is.null(dosing.matrix)){ 
       if(is.null(dose)){
         if(!is.null(doses.per.day)){
@@ -67,7 +63,6 @@ solve_pbtk <- function(chem.name = NULL,
         dose.vector <- dose.vector[2:length(dose.vector)]
       }else dose <- 0  
     } 
-  }
 
   lastchar <- function(x){substr(x, nchar(x), nchar(x))}
   firstchar <- function(x){substr(x, 1,1)}
@@ -161,13 +156,24 @@ solve_pbtk <- function(chem.name = NULL,
     if(is.null(doses.per.day)){
       out <- ode(y = state, times = times,func="derivs", parms=parameters, method=method,rtol=rtol,atol=atol,dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,...)
     }else{
-      length <- length(seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day))
-      eventdata <- data.frame(var=rep('Agutlumen',length),time = round(seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day),8),value = rep(dose,length), method = rep("add",length))
-      out <- ode(y = state, times = times, func="derivs", parms = parameters,method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,events=list(data=eventdata),...)
-    }
+      if(iv.dose){
+        length <- length(seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day))
+        eventdata <- data.frame(var=rep('Aven',length),time = round(seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day),8),value = rep(dose,length), method = rep("add",length))
+        out <- ode(y = state, times = times, func="derivs", parms = parameters,method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,events=list(data=eventdata),...)
+      }else{
+        length <- length(seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day))
+        eventdata <- data.frame(var=rep('Agutlumen',length),time = round(seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day),8),value = rep(dose,length), method = rep("add",length))
+        out <- ode(y = state, times = times, func="derivs", parms = parameters,method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,events=list(data=eventdata),...)
+      }
+    }      
   }else{
-    eventdata <- data.frame(var=rep('Agutlumen',length(dosing.times)),time = dosing.times,value = dose.vector, method = rep("add",length(dosing.times)))                          
-    out <- ode(y = state, times = times, func="derivs", parms = parameters,method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,events=list(data=eventdata),...)
+    if(iv.dose){
+      eventdata <- data.frame(var=rep('Aven',length(dosing.times)),time = dosing.times,value = dose.vector, method = rep("add",length(dosing.times)))                          
+      out <- ode(y = state, times = times, func="derivs", parms = parameters,method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,events=list(data=eventdata),...)
+    }else{
+      eventdata <- data.frame(var=rep('Agutlumen',length(dosing.times)),time = dosing.times,value = dose.vector, method = rep("add",length(dosing.times)))                          
+      out <- ode(y = state, times = times, func="derivs", parms = parameters,method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod", nout=length(Outputs),outnames=Outputs,events=list(data=eventdata),...) 
+    }      
   }
   
  
@@ -194,6 +200,8 @@ solve_pbtk <- function(chem.name = NULL,
   if(!suppress.messages){
     if(is.null(chem.cas) & is.null(chem.name)){
       cat("Values returned in",output.units,"units.\n")
+      if(!recalc.blood2plasma) warning('Rblood2plasma not recalculated.  Set recalc.blood2plasma to TRUE if desired.') 
+      if(!recalc.clearance) warning('Clearance not recalculated.  Set recalc.clearance to TRUE if desired.') 
     }else cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"values returned in",output.units,"units.\n")
     if(tolower(output.units) == 'mg'){
       cat("AUC is area under plasma concentration in mg/L * days units with Rblood2plasma =",parameters[['Ratioblood2plasma']],".\n")

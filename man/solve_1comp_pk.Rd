@@ -49,7 +49,7 @@ Note that the model parameters have units of hours while the model output is in 
 Default value of NULL for doses.per.day solves for a single dose.
 
 
- When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance.
+ %%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance.
  
  AUC is area under plasma concentration curve. 
    
@@ -71,10 +71,8 @@ Robert Pearce
 }
 
 \examples{
-solve_1comp(chem.name='Bisphenol-A')
-\dontrun{
-solve_1comp(chem.name='Bisphenol-A',doses.per.day=3,tsteps=50,days=20)
-}
+solve_1comp(chem.name='Bisphenol-A',days=1)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

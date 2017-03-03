@@ -35,11 +35,7 @@ solve_3comp <- function(chem.name = NULL,
   end <- times[length(times)]
   
 
-  if(iv.dose){
-    doses.per.day <- NULL
-    dosing.matrix <- NULL
-    if(is.null(dose)) dose <- daily.dose
-  }else{   
+    if(iv.dose) parameters$Fgutabs <- 1
     if(is.null(dosing.matrix)){ 
       if(is.null(dose)){
         if(!is.null(doses.per.day)){
@@ -68,8 +64,7 @@ solve_3comp <- function(chem.name = NULL,
         dosing.times <- dosing.times[2:length(dosing.times)]
         dose.vector <- dose.vector[2:length(dose.vector)]
       }else dose <- 0  
-    } 
-  } 
+    }  
    
   lastchar <- function(x){substr(x, nchar(x), nchar(x))}
   firstchar <- function(x){substr(x, 1,1)}
@@ -147,15 +142,27 @@ solve_3comp <- function(chem.name = NULL,
   if(is.null(dosing.matrix)){
     if(is.null(doses.per.day)){
       out <- ode(y = state, times = times,func="derivs3comp", parms=parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,...)
-    } else {
-      dosing <- seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day)
-      length <- length(dosing)
-      eventdata <- data.frame(var=rep('Agutlumen',length),time = round(dosing,8),value = rep(dose,length), method = rep("add",length))                          
-      out <- ode(y = state, times = times, func="derivs3comp", parms = parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,events=list(data=eventdata),...)
+    }else{
+      if(iv.dose){
+        dosing <- seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day)
+        length <- length(dosing)
+        eventdata <- data.frame(var=rep('Arest',length),time = round(dosing,8),value = rep(dose,length), method = rep("add",length))                          
+        out <- ode(y = state, times = times, func="derivs3comp", parms = parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,events=list(data=eventdata),...)
+      }else{
+        dosing <- seq(start + 1/doses.per.day,end-1/doses.per.day,1/doses.per.day)
+        length <- length(dosing)
+        eventdata <- data.frame(var=rep('Agutlumen',length),time = round(dosing,8),value = rep(dose,length), method = rep("add",length))                          
+        out <- ode(y = state, times = times, func="derivs3comp", parms = parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,events=list(data=eventdata),...)
+      }
     }  
   }else{
-    eventdata <- data.frame(var=rep('Agutlumen',length(dosing.times)),time = dosing.times,value = dose.vector, method = rep("add",length(dosing.times)))
-    out <- ode(y = state, times = times, func="derivs3comp", parms = parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,events=list(data=eventdata),...)
+    if(iv.dose){
+      eventdata <- data.frame(var=rep('Arest',length(dosing.times)),time = dosing.times,value = dose.vector, method = rep("add",length(dosing.times)))
+      out <- ode(y = state, times = times, func="derivs3comp", parms = parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,events=list(data=eventdata),...)
+    }else{
+      eventdata <- data.frame(var=rep('Agutlumen',length(dosing.times)),time = dosing.times,value = dose.vector, method = rep("add",length(dosing.times)))
+      out <- ode(y = state, times = times, func="derivs3comp", parms = parameters, method=method,rtol=rtol,atol=atol, dllname="httk",initfunc="initmod3comp", nout=length(Outputs3comp),outnames=Outputs3comp,events=list(data=eventdata),...)
+    }
   }
   colnames(out)[[which(colnames(out)=='Cserum')]] <- 'Cplasma'
   
@@ -171,6 +178,8 @@ solve_3comp <- function(chem.name = NULL,
 if(!suppress.messages){
     if(is.null(chem.cas) & is.null(chem.name)){
       cat("Values returned in",output.units,"units.\n")
+      if(!recalc.blood2plasma) warning('Rblood2plasma not recalculated.  Set recalc.blood2plasma to TRUE if desired.') 
+      if(!recalc.clearance) warning('Clearance not recalculated.  Set recalc.clearance to TRUE if desired.') 
     }else cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"values returned in",output.units,"units.\n")
     if(tolower(output.units) == 'mg'){
       cat("AUC is area under plasma concentration in mg/L * days units with Rblood2plasma =",parameters[['Ratioblood2plasma']],".\n")

@@ -24,8 +24,9 @@ monte_carlo <- function(params,which.quantile=0.95,cv.params=NULL,censored.param
     if (!(this.param %in% names(params))) stop(paste("Cannot find censored.params parameter",this.param,"in parameter list."))
     if (!("cv" %in% names(censored.params[[this.param]]))) stop(paste("cv (coefficient of variation) must be specified for parameter",this.param))
     if (!("lod" %in% names(censored.params[[this.param]]))) stop(paste("lod (limit of detection) must be specified for parameter",this.param))
-    
-    MC.matrix[,this.param] <- r.left.censored.norm(samples,mean=params[[this.param]],sd=params[[this.param]]*censored.params[[this.param]]$cv,lod=censored.params[[this.param]]$lod)
+    if(this.param %in% c('Funbound.plasma','Fhep.assay.correction'))  upper <- 1
+    else upper <- Inf
+    MC.matrix[,this.param] <- r_left_censored_norm(samples,mean=params[[this.param]],sd=params[[this.param]]*censored.params[[this.param]]$cv,lod=censored.params[[this.param]]$lod,upper=upper)
   }
 # these.params starts with the default paramter values from the argument 
 # provided to the function

@@ -1,18 +1,18 @@
 # from Ito and Houston (2004)
-calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Human',hepatic.model='well-stirred',suppress.messages=F)
+calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Human',default.to.human=F,hepatic.model='well-stirred',suppress.messages=F)
 {
   model <- hepatic.model
   name.list <- c("Clint","Funbound.plasma","Qtotal.liverc","million.cells.per.gliver","Vliverc","BW","liver.density",'Fhep.assay.correction')
   if(is.null(parameters)){
-  parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species)
+  parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
   }else if(!all(name.list %in% names(parameters))){
     if(is.null(chem.cas) & is.null(chem.name))stop('chem.cas or chem.name must be specified when not including all necessary 3compartmentss parameters.')
-    params <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species)
+    params <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
     parameters <- c(parameters,params[name.list[!(name.list %in% names(parameters))]])
   }
   Clint <- get_param("Clint",parameters,"calc_Hepatic_Clearance") # uL/min/10^6 cells
 
-    fu_hep <- get_param("Fhep.assay.correction",parameters,"calc_Hepatic_Clearance") 
+  fu_hep <- get_param("Fhep.assay.correction",parameters,"calc_Hepatic_Clearance") 
    #try(get_param("Fraction_unbound_hepatocyteassay",parameters,"calc_Hepatic_Clearance")) # fraction set if paramaterize function called with fu_hep_correct=TRUE
   #if (class(fu_hep) == "try-error") fu_hep <- 1
 # Correct for fraction of chemical unbound in in vitro hepatocyte assay:
@@ -37,21 +37,17 @@ calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,
   Clint <- Clint/10^6*60 
 
   Qtotal.liverc <- Qtotal.liverc / parameters[['BW']]^0.25
-  if (tolower(model) == "unscaled")
+  if(tolower(model) == "unscaled"){
     CLh <- Clint
-  else if (tolower(model) == "well-stirred")
-    CLh <- Qtotal.liverc*fub*Clint/(Qtotal.liverc+fub*Clint)  
-  else if (tolower(model) == "parallel tube")
+  }else if (tolower(model) == "well-stirred"){
+    CLh <- Qtotal.liverc*fub*Clint/(Qtotal.liverc+fub*Clint)   
+  }else if(tolower(model) == "parallel tube"){
     CLh <- Qtotal.liverc*(1-exp(-fub*Clint/Qtotal.liverc))
-  else if (tolower(model) == "dispersion")
-  {
+  }else if(tolower(model) == "dispersion"){
     Rn <- fub*Clint/Qtotal.liverc
     a <- sqrt(1 + 4*Rn*Dn)
     CLh <- Qtotal.liverc*(1 - 4*a/((1+a)^2*exp((a-1)/2/Dn)-(1-a)^2*exp(-(a+1)/2/Dn)))
   }
-  
-  if(!suppress.messages) cat("Hepatic clearance calculated with the",hepatic.model,"model in units of L/h/kg.\n")
-  
+  if(!suppress.messages) cat("Hepatic clearance calculated with the",hepatic.model,"model in units of L/h/kg.\n")  
   return(as.numeric(CLh))
 }
-

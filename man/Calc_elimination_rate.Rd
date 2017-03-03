@@ -37,7 +37,8 @@ calc_elimination_rate(chem.cas=NULL,chem.name=NULL,parameters=NULL,species="Huma
 
 }
 \details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+Elimination rate calculated by dividing the total clearance (using the default well-stirred hepatic model) by the volume of distribution.
+%%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
 
 %%  ~~ If necessary, more details than the description above ~~
 }
@@ -56,7 +57,6 @@ John Wambaugh
 \examples{
 calc_elimination_rate(chem.name="Bisphenol A")
 calc_elimination_rate(chem.name="Bisphenol A",species="Rat")
-calc_elimination_rate(chem.name="Bisphenol A",species="Rabbit")
 calc_elimination_rate(chem.cas="80-05-7")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -56,7 +56,7 @@ The extra compartments include the amounts or concentrations metabolized by the 
 
 AUC is the area under the curve of the plasma concentration.
 
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
+%%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
 
 %%  ~~ If necessary, more details than the description above ~~
 }
@@ -75,8 +75,7 @@ John Wambaugh and Robert Pearce
 }
 
 \examples{
-solve_pbtk(chem.name='Bisphenol-A',plots=TRUE,doses.per.day=3,dose=1/3)
- solve_pbtk(chem.name='Nicotine',doses.per.day=2)
+solve_pbtk(chem.name='Bisphenol-A',dose=.5,days=1,doses.per.day=2,tsteps=2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

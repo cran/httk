@@ -21,7 +21,7 @@ calc_elimination_rate <- function(chem.cas=NULL,chem.name=NULL,parameters=NULL,s
         Vd <- calc_vdist(parameters=parameters,chem.cas=chem.cas,chem.name=chem.name,species=species,suppress.messages=T,default.to.human=default.to.human) 
       }    
     } 
-    clearance <- calc_total_clearance(parameters=parameters,suppress.messages=T,default.to.human=default.to.human) #L/h/kgBW
+    clearance <- calc_total_clearance(chem.name=chem.name,chem.cas=chem.cas,species=species,parameters=parameters,suppress.messages=T,default.to.human=default.to.human) #L/h/kgBW
 
     if(!suppress.messages)cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"elimination rate returned in units of 1/h.\n")
     return(as.numeric(clearance/Vd))

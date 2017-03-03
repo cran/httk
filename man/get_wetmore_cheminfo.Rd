@@ -35,10 +35,10 @@ John Wambaugh
 
 \examples{
 
+\dontrun{
 get_wetmore_cheminfo()
-
 get_wetmore_cheminfo(info=c('CAS','MW'))
-
+}
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

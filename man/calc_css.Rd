@@ -38,7 +38,7 @@ calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", f = .01,
   \item{output.units}{Units for returned concentrations, defaults to uM (specify units = "uM") but can also be mg/L.}
    \item{concentration}{Desired concentration type, 'blood' or default 'plasma'.}
    \item{suppress.messages}{Whether or not to suppress messages.}
-   \item{model}{Model used in calculation, 'pbtk' for the multiple compartment model,'3compartment' for the three compartment model, '3compartmentss' for the three compartment steady state model, and '1compartment' for one compartment model.}
+   \item{model}{Model used in calculation, 'pbtk' for the multiple compartment model,'3compartment' for the three compartment model, and '1compartment' for the one compartment model.}
   \item{default.to.human}{
   Substitutes missing animal values with human values if true (hepatic intrinsic clearance or fraction of unbound plasma).
   }
@@ -56,10 +56,6 @@ calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", f = .01,
 \item{the.day}{The day the average concentration comes within 100 * p percent of the true steady state concentration.}
 
 }
-\details{
- When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-
-}
 
 \author{
 Robert Pearce
@@ -68,7 +64,9 @@ Robert Pearce
 \examples{
 parms <- parameterize_pbtk(chem.name='Bisphenol-A')
 calc_css(parms,concentration='blood')
+\dontrun{
 calc_css(chem.name='Bisphenol-A',doses.per.day=5,f=.001,output.units='mg/L')
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

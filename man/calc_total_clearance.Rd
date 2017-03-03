@@ -29,10 +29,6 @@ calc_total_clearance(chem.cas=NULL,chem.name=NULL,parameters=NULL,species="Human
  
 }
 
-\details{
-When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 \item{Total Clearance}{Units of L/h/kg BW.}
 }
