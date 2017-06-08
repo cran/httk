@@ -17,7 +17,10 @@
 
 convert_httk <- function(indiv.model.bio, 
                          model,
-                         this.chem){
+                         this.chem,
+                         Funbound.plasma.pc.correction=T,
+                         well.stirred.correction=T,
+                         restrictive.clearance=T){
   #R CMD CHECK throws notes about "no visible binding for global variable", for
   #each time a data.table column name is used without quotes. To appease R CMD
   #CHECK, a variable has to be created for each of these column names and set to
@@ -56,10 +59,12 @@ convert_httk <- function(indiv.model.bio,
                             '3compartmentss'='parameterize_steadystate')
   #And get the default HTTK parameters. These values will be used for all
   #parameters not being Monte Carlo sampled
+  if(paramfun == 'parameterize_steadystate') p <- parameterize_steadystate(chem.cas=this.chem,species='Human',Funbound.plasma.correction=Funbound.plasma.pc.correction)
+  else{
   p <- do.call(getFromNamespace(paramfun, "httk"),
                args=list(chem.cas=this.chem, 
-                         species='Human'))
-  
+                         species='Human',Funbound.plasma.pc.correction=Funbound.plasma.pc.correction))
+  }
   #Depending on model, choose which parameters are not to be Monte Carlo sampled
   noMC.names <- switch(model,
                        '1compartment'=c('kgutabs',
@@ -99,7 +104,8 @@ convert_httk <- function(indiv.model.bio,
     #coefficient it is, e.g. Kliver2plasma, Kgut2plasma, etc.
     PCs <- httk::predict_partitioning_schmitt(parameters=pschmitt,
                                               chem.cas=this.chem,
-                                              species='Human')
+                                              species='Human',
+                                              regression=Funbound.plasma.pc.correction)
     
     #Depending on model, get the list of compartments.
     #All other tissues will be lumped into a "rest" compartment.
@@ -201,7 +207,7 @@ convert_httk <- function(indiv.model.bio,
                                                               suppress.messages=TRUE)]
       
       
-    } else if (model=='1compartment'){ 
+    }else if (model=='1compartment'){ 
       #for 1-compartment model, don't need to compute total hepatic clearance,
       #but do need to compute volume of distribution and elimination rate.
       
@@ -241,19 +247,24 @@ convert_httk <- function(indiv.model.bio,
       #because it uses the vector of Funbound.plasma that we give it.
       ke <- httk::calc_elimination_rate(parameters=calc_elim_params,
                                         chem.cas=this.chem,
-                                        suppress.messages=TRUE)
+                                        suppress.messages=TRUE,
+                                        Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,
+                                        well.stirred.correction=well.stirred.correction,
+                                        restrictive.clearance=restrictive.clearance)
       #Add kelim to the population data.table.
       indiv.model[, kelim:=ke]
     }
     #For 1 compartment, 3 compartment, or PBTK models: Calculate Rblood2plasma
     #based on hematocrit and Krbc2plasma. This is the ratio of chemical in blood
     #vs. in plasma.
-    indiv.model[, 
-                Rblood2plasma:=(1-
-                                  hematocrit + 
-                                  hematocrit*
-                                  Krbc2pu*
-                                  Funbound.plasma)]
+    Rblood2plasma <- get_rblood2plasma(chem.cas=this.chem,species='Human')
+    if(!is.na(Rblood2plasma)) warning('Human in vivo Rblood2plasma substituted.')
+    else Rblood2plasma <- (1-
+                           hematocrit + 
+                           hematocrit*
+                           Krbc2pu*
+                           Funbound.plasma)
+    indiv.model[,Rblood2plasma:=Rblood2plasma]
   }
   
   #Return only the HTTK parameters for the specified model. That is, only the

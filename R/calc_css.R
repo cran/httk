@@ -12,27 +12,30 @@ calc_css <- function(parameters=NULL,
                     model='pbtk',
                     default.to.human=F,
                     f.change = 0.00001,
+                    Funbound.plasma.pc.correction=T,
+                    well.stirred.correction=T,
+                    restrictive.clearance=T,
                     ...)
 {
   
   if(is.null(parameters)){
     if(tolower(model)=='pbtk'){
-      parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+      parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction)
     }else if(tolower(model)=='3compartment'){
-      parameters <- parameterize_3comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+      parameters <- parameterize_3comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction)
     }else if(tolower(model)=='1compartment'){
-      parameters <- parameterize_1comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+      parameters <- parameterize_1comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,well.stirred.correction=well.stirred.correction,restrictive.clearance=restrictive.clearance)
     }
   } 
 
-  css <- calc_analytic_css(parameters=parameters,daily.dose=daily.dose,concentration='plasma',model=model,suppress.messages=T) 
+  css <- calc_analytic_css(parameters=parameters,daily.dose=daily.dose,concentration='plasma',model=model,suppress.messages=T,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,well.stirred.correction=well.stirred.correction,restrictive.clearance=restrictive.clearance) 
   conc <- (1 - f) * css 
 
   if(tolower(model) == 'pbtk'){
-    out <- solve_pbtk(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day,days = days,suppress.messages=T,...)
+    out <- solve_pbtk(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day,days = days,suppress.messages=T,restrictive.clearance=restrictive.clearance,...)
     Final_Conc <- out[dim(out)[1],c("Agutlumen","Cart","Cven","Clung","Cgut","Cliver","Ckidney","Crest")]
   }else if(tolower(model) =='3compartment'){
-    out <- solve_3comp(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
+    out <- solve_3comp(parameters=parameters, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,restrictive.clearance=restrictive.clearance,...)
     Final_Conc <- out[dim(out)[1],c("Agutlumen","Cgut","Cliver","Crest")]
   }else if(tolower(model)=='1compartment'){
     out <- solve_1comp(parameters=parameters,daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
@@ -54,11 +57,11 @@ calc_css <- function(parameters=NULL,
     
   if(tolower(model) == 'pbtk'){
     past.out <- as.data.frame(out)
-    out <- solve_pbtk(parameters=parameters,initial.values = Final_Conc, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
+    out <- solve_pbtk(parameters=parameters,initial.values = Final_Conc, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,restrictive.clearance=restrictive.clearance,...)
     Final_Conc <- out[dim(out)[1],c("Agutlumen","Cart","Cven","Clung","Cgut","Cliver","Ckidney","Crest")]
   }else if(tolower(model) =='3compartment'){
     past.out <- as.data.frame(out)
-    out <- solve_3comp(parameters=parameters,initial.values = Final_Conc, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,...)
+    out <- solve_3comp(parameters=parameters,initial.values = Final_Conc, daily.dose=daily.dose,doses.per.day=doses.per.day, days = days,suppress.messages=T,restrictive.clearance=restrictive.clearance,...)
     Final_Conc <- out[dim(out)[1],c("Agutlumen","Cgut","Cliver","Crest")]
   }else if(tolower(model)=='1compartment'){
     past.out <- as.data.frame(out)

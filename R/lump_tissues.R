@@ -13,9 +13,10 @@ lump_tissues <- function(Ktissue2pu.in,
 {
   physiology.data <- physiology.data
   tissue.data <- tissue.data
-  Parameter <- NULL
-  if(length(Ktissue2pu.in) != length(tissue.data[,1]) | !all(tissue.data[,1] %in% c(substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3)
-  [!substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3) %in% 'rbc'],'red blood cells'))) stop(paste('Ktissue2pu.in must contain the tissues from tissue.data:',paste(tissue.data[,1],collapse=', ')))
+  Tissue <- Species <- varable <- Parameter <- variable <- NULL
+
+  if(length(Ktissue2pu.in) != length(unique(tissue.data[,'Tissue'])) | !all(unique(tissue.data[,'Tissue']) %in% c(substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3)
+  [!substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3) %in% 'rbc'],'red blood cells'))) stop(paste('Ktissue2pu.in must contain the tissues from tissue.data:',paste(unique(tissue.data[,'Tissue']),collapse=', ')))
   if (!(species %in% colnames(physiology.data)))
   {
     if (toupper(species) %in% toupper(colnames(physiology.data)))
@@ -23,8 +24,6 @@ lump_tissues <- function(Ktissue2pu.in,
       species <- colnames(physiology.data)[toupper(colnames(physiology.data))==toupper(species)]
     } else stop(paste("Tissue data for",species,"not found."))
   }
-  vol.col <- paste(species,"Vol (L/kg)",sep=" ")  
-  flow.col <- paste(species,"Flow (mL/min/kg^(3/4))",sep=" ")
 
 # Initialize the output lists:
 	vol <- list()
@@ -32,8 +31,8 @@ lump_tissues <- function(Ktissue2pu.in,
 	Ktissue2pu.out <- list()
  
 # The vector all.tissues indicates whether each tissue in tissue.data has been lumped yet (TRUE/FALSE)
-	all.tissues <- rep(FALSE,length(tissue.data$Tissue))
-	names(all.tissues) <- tissue.data$Tissue
+	all.tissues <- rep(FALSE,length(unique(tissue.data[,'Tissue'])))
+	names(all.tissues) <- unique(tissue.data[,'Tissue'])
   #Renames pcs to match tissue names
   names(Ktissue2pu.in) <- substr(names(Ktissue2pu.in),2,nchar(names(Ktissue2pu.in))-3)
   names(Ktissue2pu.in)[names(Ktissue2pu.in) == 'rbc'] <- 'red blood cells'
@@ -57,7 +56,7 @@ lump_tissues <- function(Ktissue2pu.in,
         Ktissue2pu.out[["rest"]] <- 0
 			}
 # Every tissue not already lumped gets added to "Rest"
-			these.lumped.tissues <- tissue.data$Tissue[!all.tissues]
+			these.lumped.tissues <- unique(tissue.data[,'Tissue'])[!all.tissues]
 		}	else{
 			vol[[this.lumped.tissue]] <- 0
 			flow[[this.lumped.tissue]] <- 0
@@ -67,24 +66,22 @@ lump_tissues <- function(Ktissue2pu.in,
 # Loop over every tissue that is lumped into the tissue:   
 		for (this.tissue in these.lumped.tissues)
 		{
-			if (!(this.tissue %in% tissue.data$Tissue))
-				stop(paste(this.tissue,"not in list:",paste(tissue.data$Tissue,collapse=', ')))
+			if (!(this.tissue %in% unique(tissue.data[,'Tissue'])))
+				stop(paste(this.tissue,"not in list:",paste(unique(tissue.data[,'Tissue']),collapse=', ')))
 			if (all.tissues[[this.tissue]] & this.tissue !="rest")
 				stop(paste(this.tissue,"assigned to multiple lumped tissues"))
 
 # Mark that this tissue has been lumped:
 			all.tissues[[this.tissue]] <- TRUE
-# Find the row in the tissue.data table that corresponds to this tissue: 
-			this.row <- tissue.data$Tissue==this.tissue
-			
+			this.subset <- subset(tissue.data,Tissue == this.tissue & tolower(Species) == tolower(species))
 #Add the volume for this tissue to the lumped tissue:
-			vol[[this.lumped.tissue]] <- vol[[this.lumped.tissue]] + as.numeric(tissue.data[this.row,vol.col])
+			vol[[this.lumped.tissue]] <- vol[[this.lumped.tissue]] +  as.numeric(subset(this.subset,variable == 'Vol (L/kg)')[,'value']) 
 #Add the flow for this tissue to the lumped tissue:                             
-			flow[[this.lumped.tissue]] <- flow[[this.lumped.tissue]] + as.numeric(tissue.data[this.row,flow.col])
+			flow[[this.lumped.tissue]] <- flow[[this.lumped.tissue]] + as.numeric(subset(this.subset,variable == 'Flow (mL/min/kg^(3/4))')[,'value']) 
 			 
 #Add a contribution to the partition coefficient weighted by the volume of this tissue:
 
-			Ktissue2pu.out[[this.lumped.tissue]] <- Ktissue2pu.out[[this.lumped.tissue]] + as.numeric(tissue.data[this.row,vol.col])*Ktissue2pu.in[[this.tissue]]
+			Ktissue2pu.out[[this.lumped.tissue]] <- Ktissue2pu.out[[this.lumped.tissue]] + as.numeric(subset(this.subset,variable == 'Vol (L/kg)')[,'value'])*Ktissue2pu.in[[this.tissue]]
 		}
 #Calculate the average parition coefficient by dividing by the total volume of
 #the lumped tissue:
@@ -94,22 +91,13 @@ lump_tissues <- function(Ktissue2pu.in,
   # Must have tissue-specific flows for these tissues (even if lumped) in order
   # to calculate other quantities (e.g. rate of metabolism, renal clearance):
   for (this.tissue in c("liver","gut","kidney"))
-    if (is.null(flow[[this.tissue]])) 
-    {
-      if(this.tissue %in% tissue.data[,"Tissue"]) flow[[this.tissue]] <- as.numeric(tissue.data[tissue.data[,"Tissue"]==this.tissue,flow.col])
-      else if (paste(this.tissue,"s",sep="") %in% tissue.data[,"Tissue"]) flow[[this.tissue]] <- as.numeric(tissue.data[tissue.data[,"Tissue"]==paste(this.tissue,"s",sep=""),flow.col])
-      else stop(paste("Tissue",this.tissue,"not found in tissue.data table."))            
-    }
-
+    if (is.null(flow[[this.tissue]]))  flow[[this.tissue]] <- as.numeric(subset(tissue.data,Tissue == this.tissue & tolower(Species) == tolower(species) &  variable == 'Flow (mL/min/kg^(3/4))')[,'value'])          
+    
   # Must have tissue-specific volumes for these tissues (even if lumped) in order
   # to calculate other quantities (e.g. rate of metabolism):
     for (this.tissue in c("liver"))
-    if (is.null(vol[[this.tissue]])) 
-    {
-      if (this.tissue %in% tissue.data[,"Tissue"]) vol[[this.tissue]] <- as.numeric(tissue.data[tissue.data[,"Tissue"]==this.tissue,vol.col])
-      else if (paste(this.tissue,"s",sep="") %in% tissue.data[,"Tissue"]) vol[[this.tissue]] <- as.numeric(tissue.data[tissue.data[,"Tissue"]==paste(this.tissue,"s",sep=""),vol.col])
-      else stop(paste("Tissue",this.tissue,"not found in tissue.data table."))
-    }
+     if (is.null(vol[[this.tissue]])) vol[[this.tissue]] <- as.numeric(subset(tissue.data,Tissue == this.tissue & tolower(Species) == tolower(species) &  variable == 'Vol (L/kg)')[,'value'])
+
     names(Ktissue2pu.out)[names(Ktissue2pu.out) == 'red blood cells'] <- 'rbc'
     names(Ktissue2pu.out) <- paste("K",names(Ktissue2pu.out),"2pu",sep='')
     names(vol) <- paste('V',names(vol),'c',sep='')

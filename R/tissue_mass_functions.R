@@ -20,7 +20,7 @@ blood_weight <- function(BSA, gender){
 #'
 #'If blood mass from \code{\link{blood_weight}} is negative or very small, then
 #'just default to the mean blood mass by age. (Geigy Scientific Tables, 7th ed.)
-#'
+#'                                     
 #'@param blood_mass A vector of blood masses in kg to be replaced with averages.
 #'@param age_months A vector of ages in months.
 #'@param age_years A vector of ages in years.

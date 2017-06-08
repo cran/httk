@@ -65,7 +65,7 @@ A data.table where each row represents an individual, and
 Generate a virtual population
 }
 \examples{
-\dontrun{
+ \dontrun{
 #Simply generate a virtual population of 100 individuals,
  #using the direct-resampling method
  set.seed(42)
@@ -86,6 +86,5 @@ weight_category=c('Underweight',
 'Normal',
 'Overweight'))
 }
-
 }
 

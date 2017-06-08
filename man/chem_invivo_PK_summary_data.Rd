@@ -11,7 +11,7 @@ for each study and dosage. These data can be used to evaluate toxicokinetic mode
 predictions.}
 \usage{chem.invivo.PK.summary.data}
 \format{A data.frame containing 100 rows and 25 columns.}
-\source{Wambaugh et al. (2014), in preparation}
+\source{Wambaugh, John F., et al. "Toxicokinetic triage for environmental chemicals." Toxicological Sciences (2015): 228-237.}
 \references{
 Aanderud L, Bakke OM (1983). Pharmacokinetics of antipyrine, paracetamol, and morphine in rat at 71 ATA. Undersea Biomed Res. 10(3):193-201. PMID: 6636344
 

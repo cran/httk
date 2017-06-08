@@ -28,7 +28,7 @@
 #'  
 #'@return A data.table whose columns correspond to the parameters of the HTTK 
 #'  model specified in \code{model}, and whose rows correspond to the 
-#'  individuals (rows) of \code{indiv_dt}.
+#'  individuals (rows) of \code{indiv_dt}.                                                                               
 #'  
 #'  @examples 
 #'  set.seed(42)
@@ -47,7 +47,10 @@ get_httk_params <- function(indiv_dt,
                             fup.censor,
                             sigma.factor=0.3,
                             Clint.vary=TRUE,
-                            lod=0.01){
+                            lod=0.01,
+                            Funbound.plasma.pc.correction=T,
+                            well.stirred.correction=T,
+                            restrictive.clearance=T){
   
   #First convert to physiological parameters used by HTTK
   indiv_bio <- httkpop_bio(indiv_dt = indiv_dt)
@@ -61,12 +64,16 @@ get_httk_params <- function(indiv_dt,
                poormetab=poormetab,
                fup.censor=fup.censor,
                Clint.vary=Clint.vary,
-               lod=lod))
+               lod=lod,
+               Funbound.plasma.correction=Funbound.plasma.pc.correction))
   
   #Next convert the whole thing to the HTTK parameters for a specified model
   indiv_httk <- convert_httk(indiv.model.bio=indiv_fc, 
                  model=model,
-                 this.chem=chemcas)
+                 this.chem=chemcas,
+                 Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,
+                 well.stirred.correction=well.stirred.correction,
+                 restrictive.clearance=restrictive.clearance)
   
   return(indiv_httk)
 }

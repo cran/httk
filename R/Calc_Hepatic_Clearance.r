@@ -1,13 +1,13 @@
 # from Ito and Houston (2004)
-calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Human',default.to.human=F,hepatic.model='well-stirred',suppress.messages=F)
+calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,species='Human',default.to.human=F,hepatic.model='well-stirred',suppress.messages=F,well.stirred.correction=T,restrictive.clearance=T,Funbound.plasma.pc.correction=T,...)
 {
   model <- hepatic.model
   name.list <- c("Clint","Funbound.plasma","Qtotal.liverc","million.cells.per.gliver","Vliverc","BW","liver.density",'Fhep.assay.correction')
   if(is.null(parameters)){
-  parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+  parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,...)
   }else if(!all(name.list %in% names(parameters))){
     if(is.null(chem.cas) & is.null(chem.name))stop('chem.cas or chem.name must be specified when not including all necessary 3compartmentss parameters.')
-    params <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+    params <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.correction=Funbound.plasma.pc.correction)
     parameters <- c(parameters,params[name.list[!(name.list %in% names(parameters))]])
   }
   Clint <- get_param("Clint",parameters,"calc_Hepatic_Clearance") # uL/min/10^6 cells
@@ -19,6 +19,7 @@ calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,
   Clint <- Clint / fu_hep
 
   fub <- get_param("Funbound.plasma",parameters,"calc_Hepatic_Clearance") # unitless fraction
+  if(!restrictive.clearance) fub <- 1
   Qtotal.liverc <- get_param("Qtotal.liverc",parameters,"calc_Hepatic_Clearance",default=1.24) # L/h/kgBW
   Vliverc <- get_param("Vliverc",parameters,"calc_Hepatic_Clearance") #  L/kg BW
   liver.density <- get_param("liver.density",parameters,"calc_Hepatic_Clearance") # g/mL
@@ -26,7 +27,7 @@ calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,
   #model <- get_param("model",parameters,"calc_Hepatic_Clearance",default="well-stirred")
   million.cells.per.gliver <- get_param("million.cells.per.gliver",parameters,"calc_Hepatic_Clearance") # 10^6 cells/g-liver
   
-  if (!(tolower(model) %in% c("well-stirred","parallel tube","dispersion","unscaled")))
+  if(!(tolower(model) %in% c("well-stirred","parallel tube","dispersion","unscaled")))
     stop("Model other than \"well-stirred,\" \"parallel tube,\", \"dispersion\", or \"unscaled\" specified.")
 
   # Convert from uL/min/10^6 cells to uL/min/g-liver to uL/min/kg BW
@@ -40,7 +41,13 @@ calc_hepatic_clearance <- function(chem.name=NULL,chem.cas=NULL,parameters=NULL,
   if(tolower(model) == "unscaled"){
     CLh <- Clint
   }else if (tolower(model) == "well-stirred"){
-    CLh <- Qtotal.liverc*fub*Clint/(Qtotal.liverc+fub*Clint)   
+    if(well.stirred.correction){
+      if('Rblood2plasma' %in% names(parameters)) Rblood2plasma <- parameters$Rblood2plasma
+      else if(!(is.null(chem.cas) & is.null(chem.name))){
+        Rblood2plasma <- available_rblood2plasma(chem.name=chem.name,chem.cas=chem.cas,species=species,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction)
+      }else(stop("Enter chem.cas or chem.name with corresponding species or enter Rblood2plasma as a parameter for the well-stirred model correction."))
+      CLh <- Qtotal.liverc*fub*Clint/(Qtotal.liverc+fub*Clint / Rblood2plasma)
+    }else CLh <- Qtotal.liverc*fub*Clint/(Qtotal.liverc+fub*Clint)   
   }else if(tolower(model) == "parallel tube"){
     CLh <- Qtotal.liverc*(1-exp(-fub*Clint/Qtotal.liverc))
   }else if(tolower(model) == "dispersion"){

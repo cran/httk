@@ -5,7 +5,7 @@
 \title{Draw Funbound.plasma and Clint from censored or non-censored distributions.}
 \usage{
 draw_fup_clint(this.chem, nsamp, sigma.factor = 0.3, poormetab, fup.censor,
-  Clint.vary = TRUE, lod = 0.01)
+  Clint.vary = TRUE, lod = 0.01,Funbound.plasma.correction=T)
 }
 \arguments{
 \item{this.chem}{A CAS number in the HTTK data set}
@@ -25,6 +25,7 @@ fixed at its measured value (FALSE), or as a random variable (TRUE).}
 
 \item{lod}{The average limit of detection for \code{Funbound.plasma}, below 
 which distribution will be censored if fup.censor is TRUE. Default 0.01.}
+\item{Funbound.plasma.correction}{Uses corrected Funbound.plasma value if TRUE.}
 }
 \value{
 A data.table with three columns:

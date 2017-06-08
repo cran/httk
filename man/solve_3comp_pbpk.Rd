@@ -15,7 +15,8 @@ solve_3comp(chem.name = NULL, chem.cas = NULL, times=NULL,
             species="Human", iv.dose=F,output.units='uM',
             method="lsoda",rtol=1e-8,
             atol=1e-12,default.to.human=F,recalc.blood2plasma=F,
-            recalc.clearance=F,dosing.matrix=NULL,...)
+            recalc.clearance=F,dosing.matrix=NULL,Funbound.plasma.pc.correction=T, 
+            restrictive.clearance = T,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,6 +44,8 @@ solve_3comp(chem.name = NULL, chem.cas = NULL, times=NULL,
     \item{recalc.blood2plasma}{Recalculates the ratio of the amount of chemical in the blood to plasma using the input parameters, calculated with hematocrit, Funbound.plasma, and Krbc2pu.}
     \item{recalc.clearance}{Recalculates the the hepatic clearance (Clmetabolism) with new million.cells.per.gliver parameter.}
       \item{dosing.matrix}{Vector of dosing times or a matrix consisting of two columns or rows named "dose" and "time" containing the time and amount, in mg/kg BW, of each dose.}
+      \item{Funbound.plasma.pc.correction}{Uses corrected Funbound.plasma when set to TRUE along with parition coefficients calculated with this value and regressions.}
+ \item{restrictive.clearance}{Protein binding not taken into account (set to 1) in liver clearance if FALSE.}
   \item{...}{Additional arguments passed to the integrator.}
 }
 

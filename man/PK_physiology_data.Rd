@@ -10,7 +10,7 @@ Robertshaw et al. (2004), Gordon (1993), and Stammers(1926).
 }
 \usage{physiology.data}
 \format{A data.frame containing 11 rows and 7 columns.}
-\source{Wambaugh et al. (2014), in preparation}
+\source{Wambaugh, John F., et al. "Toxicokinetic triage for environmental chemicals." Toxicological Sciences (2015): 228-237.}
 \references{
 Davies, B. and Morris, T. (1993). Physiological Parameters in Laboratory Animals and Humans. Pharmaceutical Research 10(7), 1093-1095, 10.1023/a:1018943613122.   %gfr and other flows
 Anderson and Holford (2009) %scaling gfr by 3/4

@@ -110,7 +110,7 @@ matched to a \"new.table\" column in argument \"data.list\".")
     ref.name <- paste(this.property,"Reference",sep=".")
     this.table[,ref.name] <- NA
   }
-  if (is.na(this.table[index,this.property]) | overwrite)
+  if (is.na(this.table[index,this.property]) | overwrite | (this.property == paste(species,'Funbound.plasma',sep=".") & this.table[index,this.property] == 0))
   {
     if (!(this.property %in% c("pKa_Donor","pKa_Accept","SMILES.desalt"))) this.table[index,this.property] <- as.numeric(value)
     else this.table[index,this.property] <- as.character(value)

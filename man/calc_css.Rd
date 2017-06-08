@@ -12,7 +12,8 @@ This function finds the day a chemical comes within the specified range of the a
 calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", f = .01,
          daily.dose=1, doses.per.day=3,days = 10,output.units = "uM",
          concentration='plasma',suppress.messages=F,model='pbtk',default.to.human=F,
-         f.change=0.00001,...)
+         f.change=0.00001,Funbound.plasma.pc.correction=T,
+         well.stirred.correction=T, restrictive.clearance=T,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,6 +44,10 @@ calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", f = .01,
   Substitutes missing animal values with human values if true (hepatic intrinsic clearance or fraction of unbound plasma).
   }
   \item{f.change}{Fractional change of daily steady state concentration reached to stop calculating.}
+  \item{Funbound.plasma.pc.correction}{Uses corrected Funbound.plasma when set to TRUE along with parition coefficients calculated with this value and regressions.}
+  \item{well.stirred.correction}{Uses correction in calculation of hepatic clearance for well-stirred model if TRUE for model 1compartment elimination rate.  
+                                  This assumes clearance relative to amount unbound in whole blood instead of plasma, but converted to use with plasma concentration.}
+ \item{restrictive.clearance}{Protein binding not taken into account (set to 1) in liver clearance if FALSE.}
   \item{...}{Additional arguments passed to model solver (default of solve_pbtk).}
   
 
@@ -54,7 +59,6 @@ calc_css(parameters=NULL,chem.name=NULL,chem.cas=NULL,species="Human", f = .01,
 \item{max}{The maximum concentration of the simulation.}
 \item{avg}{The average concentration on the final day of the simulation.}
 \item{the.day}{The day the average concentration comes within 100 * p percent of the true steady state concentration.}
-
 }
 
 \author{
@@ -62,10 +66,47 @@ Robert Pearce
 }
 
 \examples{
-parms <- parameterize_pbtk(chem.name='Bisphenol-A')
-calc_css(parms,concentration='blood')
-\dontrun{
 calc_css(chem.name='Bisphenol-A',doses.per.day=5,f=.001,output.units='mg/L')
+\dontrun{
+parms <- parameterize_3comp(chem.name='Bisphenol-A')
+parms$Funbound.plasma <- .07
+calc_css(parms,concentration='blood',model='3compartment')
+
+
+library("ggplot2")
+out <- solve_pbtk(chem.name = "Bisphenol A", days = 50, doses.per.day = 3)
+plot.data <- as.data.frame(out)
+css <- calc_analytic_css(chem.name = "Bisphenol A")
+c.vs.t <- ggplot(plot.data,aes(time, Cplasma)) + geom_line() +
+geom_hline(yintercept = css) + ylab("Plasma Concentration (uM)") +
+xlab("Day") + theme(axis.text = element_text(size = 16), axis.title =
+element_text(size = 16), plot.title = element_text(size = 17)) +
+ggtitle("Bisphenol A")
+print(c.vs.t)
+
+days <- NULL
+avg <- NULL
+max <- NULL
+for(this.cas in get_cheminfo()){
+css.info <- calc_css(chem.cas = this.cas, doses.per.day = 1,suppress.messages=T)
+days[[this.cas]] <- css.info[["the.day"]]
+avg[[this.cas]] <- css.info[["avg"]]
+max[[this.cas]] <- css.info[["max"]]
+}
+days.data <- as.data.frame(days)
+hist <- ggplot(days.data, aes(days)) +
+geom_histogram(fill = "blue", binwidth = 1/6) + scale_x_log10() +
+ylab("Number of Chemicals") + xlab("Days") + theme(axis.text =
+element_text(size = 16), axis.title = element_text(size = 16))
+print(hist)
+avg.max.data <- as.data.frame(cbind(avg, max))
+avg.vs.max <- ggplot(avg.max.data, aes(avg, max)) + geom_point() +
+geom_abline() + scale_x_log10() + scale_y_log10() +
+xlab("Average Concentration at Steady State (uM)") +
+ylab("Max Concentration at Steady State (uM)") +
+theme(axis.text = element_text(size = 16),
+axis.title = element_text(size = 16))
+print(avg.vs.max)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

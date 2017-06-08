@@ -10,7 +10,7 @@
 #'   
 #' @return A named list with members 'ages_months' and 'ages_years', each 
 #'   numeric of length \code{nsamp}, giving the sampled ages in months and 
-#'   years.
+#'   years. 
 age_draw_smooth <- function(g, r, nsamp, agelim_months){
   #R CMD CHECK throws notes about "no visible binding for global variable", for 
   #each time a data.table column name is used without quotes. To appease R CMD 
@@ -18,6 +18,7 @@ age_draw_smooth <- function(g, r, nsamp, agelim_months){
   #NULL. Note that within the data.table, these variables will not be NULL! Yes,
   #this is pointless and annoying.
   gender <- reth <- smth <- NULL
+  physiology.data <- physiology.data
   #End R CMD CHECK appeasement.
 
   indiv_ages_m <- vector()

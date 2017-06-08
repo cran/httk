@@ -11,7 +11,8 @@ This function initializes the parameters needed in the function solve_3comp.
 \usage{
  parameterize_3comp(chem.cas=NULL,chem.name=NULL,species="Human",
                     default.to.human=F,force.human.clint.fub = F,
-                    clint.pvalue.threshold=0.05)
+                    clint.pvalue.threshold=0.05,Funbound.plasma.pc.correction=T,
+                    suppress.messages=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,8 +35,10 @@ This function initializes the parameters needed in the function solve_3comp.
   Forces use of human values for hepatic intrinsic clearance and fraction of unbound plasma if true.
  }
  \item{clint.pvalue.threshold}{Hepatic clearances with clearance assays having p-values greater than the threshold are set to zero.}
- 
-}
+  \item{Funbound.plasma.pc.correction}{Returns corrected Funbound.plasma when set to TRUE along with parition coefficients calculated with this value and regressions.}
+  \item{suppress.messages}{Whether or not the output message is suppressed.} 
+ }
+
 \value{
 
   \item{BW}{Body Weight, kg.}
@@ -74,8 +77,9 @@ Kilford, P. J., Gertz, M., Houston, J. B. and Galetin, A. (2008). Hepatocellular
 }
 \examples{
  parameters <- parameterize_3comp(chem.name='Bisphenol-A',species='Rat')
- parameters <- parameterize_3comp(chem.cas='80-05-7')
- 
+ parameters <- parameterize_3comp(chem.cas='80-05-7',
+                                  species='rabbit',default.to.human=TRUE)
+ out <- solve_3comp(parameters=parameters,plots=TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

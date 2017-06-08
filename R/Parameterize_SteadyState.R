@@ -1,8 +1,7 @@
 # This function retrieves the paramters needed to run the constant infusion dose model for determining steady-state concentration.
-
-parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human",clint.pvalue.threshold=0.05,default.to.human=F,human.clint.fub=F)
-
+parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human",clint.pvalue.threshold=0.05,default.to.human=F,human.clint.fub=F,Funbound.plasma.correction=T)
 {
+  Parameter <- Species <- variable <- Tissue <- NULL
   physiology.data <- physiology.data
   tissue.data <- tissue.data
 # Look up the chemical name/CAS, depending on what was provide:
@@ -27,22 +26,9 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
   QGFRc <- this.phys.data[["GFR"]] #mL/min/kgBW
   BW <- this.phys.data[["Average BW"]]
     
-  if (!(paste(species,"Vol (L/kg)") %in% colnames(tissue.data)))
-  {
-    if (toupper(paste(species,"Vol (L/kg)")) %in% toupper(colnames(tissue.data)))
-    {
-      tissue.vols <- tissue.data[,toupper(colnames(tissue.data))==toupper(paste(species,"Vol (L/kg)"))]
-      tissue.flows <- tissue.data[,toupper(colnames(tissue.data))==toupper(paste(species,"Flow (mL/min/kg^(3/4))"))]
-    } else stop(paste("Tissue data for",species,"not found."))
-  } else {
-    tissue.vols <- tissue.data[,paste(species,"Vol (L/kg)")]
-    tissue.flows <- tissue.data[,paste(species,"Flow (mL/min/kg^(3/4))")]
-  }
-  names(tissue.vols) <- tissue.data[,1]
-  names(tissue.flows) <- tissue.data[,1]
 
-  Qtotal.liverc <- tissue.flows[["liver"]]  #mL/min/kgBW
-  Vliverc <- tissue.vols[["liver"]] # L/kg BW
+  Qtotal.liverc <- subset(tissue.data,tolower(Species) == tolower(species) & variable == 'Flow (mL/min/kg^(3/4))' & Tissue == 'liver')[,'value']  #mL/min/kgBW^3/4
+  Vliverc <- subset(tissue.data,tolower(Species) == tolower(species) & variable == 'Vol (L/kg)' & Tissue == 'liver')[,'value'] # L/kg BW
   Clint <- try(get_invitroPK_param("Clint",species,chem.CAS=chem.cas),silent=T)
   if (class(Clint) == "try-error" & default.to.human || human.clint.fub) 
   {
@@ -67,9 +53,20 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
     fub <- 0.005
     warning("Fraction unbound = 0, changed to 0.005.")
   }
+  if(Funbound.plasma.correction){
+    if(human.clint.fub) Flipid <- subset(physiology.data,Parameter=='Plasma Effective Neutral Lipid Volume Fraction')[,which(colnames(physiology.data) == 'Human')]
+    else Flipid <- subset(physiology.data,Parameter=='Plasma Effective Neutral Lipid Volume Fraction')[,which(tolower(colnames(physiology.data)) == tolower(species))]
+    pKa_Donor <- suppressWarnings(get_physchem_param("pKa_Donor",chem.CAS=chem.cas))
+    pKa_Accept <- suppressWarnings(get_physchem_param("pKa_Accept",chem.CAS=chem.cas))
+    Pow <- 10^get_physchem_param("logP",chem.CAS=chem.cas)
+    ion <- calc_ionization(pH=7.4,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
+    dow <- Pow * (ion$fraction_neutral + 0.001 * ion$fraction_charged + ion$fraction_zwitter)
+    fub <- 1 / ((dow - 1) * Flipid + 1 / fub)
+    warning('Funbound.plasma recalculated with correction.  Set Funbound.plasma.pc.correction to FALSE to use original value.')
+  }
   
   Fgutabs <- try(get_invitroPK_param("Fgutabs",species,chem.CAS=chem.cas),silent=T)
-  if (class(Fgutabs) == "try-error") Fgutabs <- 1
+  if(class(Fgutabs) == "try-error") Fgutabs <- 1
  
 
   Params <- list()
@@ -94,4 +91,3 @@ parameterize_steadystate <- function(chem.cas=NULL,chem.name=NULL,species="Human
 
   return(Params)
 }
-

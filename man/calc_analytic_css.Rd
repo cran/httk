@@ -11,7 +11,9 @@ This function calculates the analytic steady state plasma or venous blood concen
 calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
                   output.units='uM',model = 'pbtk',species='Human',
                   concentration='plasma',suppress.messages=F,
-                  recalc.blood2plasma=F,default.to.human=F,tissue=NULL)
+                  recalc.blood2plasma=F,default.to.human=F,tissue=NULL,
+                  well.stirred.correction=T,Funbound.plasma.pc.correction=T,
+                  restrictive.clearance=T,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,8 +33,14 @@ calc_analytic_css(chem.name=NULL,chem.cas = NULL,parameters=NULL,daily.dose=1,
   \item{default.to.human}{
   Substitutes missing rat values with human values if true.
   }
-  \item{tissue}{Desired tissue conentration.}
+  \item{tissue}{Desired tissue conentration, overwrites concentration argument.}
+  \item{Funbound.plasma.pc.correction}{Uses corrected Funbound.plasma when set to TRUE along with parition coefficients calculated with this value and regressions.}
+  \item{well.stirred.correction}{Uses correction in calculation of hepatic clearance for well-stirred model if TRUE for model 1compartment and 3compartmentss.  
+                                  This assumes clearance relative to amount unbound in whole blood instead of plasma, but converted to use with plasma concentration.}
+ \item{restrictive.clearance}{Protein binding not taken into account (set to 1) in liver clearance if FALSE.}
+   \item{...}{Additional parameters passed to parameterize functions if parameters is NULL.}
 } 
+
  
 \details{
 
@@ -50,9 +58,7 @@ Tissue concentrations are calculated for the pbtk model with oral infusion dosin
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
-\references{
-Schmitt W. "General approach for the calculation of tissue to plasma partition coefficients." Toxicology In Vitro, 22, 457-467 (2008).
-}
+
 \author{
 Robert Pearce
 }
@@ -60,6 +66,8 @@ Robert Pearce
 \examples{
 calc_analytic_css(chem.name='Bisphenol-A',output.units='mg/L',
                   model='3compartment',concentration='blood')
+calc_analytic_css(chem.name='Bisphenol-A',tissue='liver',species='rabbit',
+                  default.to.human=TRUE,daily.dose=2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

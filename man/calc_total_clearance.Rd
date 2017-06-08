@@ -11,7 +11,8 @@ clearance is entirely due to metablism by the liver and glomerular filtration in
 }
 \usage{
 calc_total_clearance(chem.cas=NULL,chem.name=NULL,parameters=NULL,species="Human",
-                     suppress.messages=F,default.to.human=F)
+                     suppress.messages=F,default.to.human=F,well.stirred.correction=T,
+                     restrictive.clearance=T,Funbound.plasma.pc.correction=T,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,8 +27,14 @@ calc_total_clearance(chem.cas=NULL,chem.name=NULL,parameters=NULL,species="Human
    \item{default.to.human}{
   Substitutes missing animal values with human values if true.
   } 
- 
+  \item{Funbound.plasma.pc.correction}{Uses corrected Funbound.plasma when set to TRUE. Krbc2pu is then also predicted with regressions if using well-stirred correction and in vivo Rblood2plasma is unavailable.}
+ \item{restrictive.clearance}{Protein binding is not taken into account (set to 1) in liver clearance if FALSE.}
+  \item{well.stirred.correction}{Uses correction in calculation of hepatic clearance for well-stirred model if TRUE.  
+                                  This assumes clearance relative to amount unbound in whole blood instead of plasma, but converted to use with plasma concentration.}
+
+ \item{...}{Additional parameters passed to parameterize_steadystate if parameters is NULL.} 
 }
+
 
 \value{
 \item{Total Clearance}{Units of L/h/kg BW.}
@@ -38,7 +45,7 @@ John Wambaugh
 }
 
 \examples{
-calc_total_clearance(chem.name="Ibuprofen")
+calc_total_clearance(chem.name="Ibuprofen") 
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

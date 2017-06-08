@@ -18,12 +18,15 @@ solve_pbtk <- function(chem.name = NULL,
                     recalc.blood2plasma=F,
                     recalc.clearance=F,
                     dosing.matrix=NULL,
+                    Funbound.plasma.pc.correction=T,
+                    restrictive.clearance = T,
                     ...)
 {
   Aart <- Agut <- Agutlumen <- Alung <- Aliver <- Aven <- Arest <- Akidney <- Cgut <- Vgut <- Cliver <- Vliver <- Cven <- Vven <- Clung <- Vlung <- Cart <- Vart <- Crest <- Vrest <- Ckidney <- Vkidney <- NULL
   if(is.null(chem.cas) & is.null(chem.name) & is.null(parameters)) stop('Parameters, chem.name, or chem.cas must be specified.')
   if(is.null(parameters)){
-    parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human) 
+    parameters <- parameterize_pbtk(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,suppress.messages=suppress.messages,
+                                    Funbound.plasma.pc.correction=Funbound.plasma.pc.correction) 
   }else{
     name.list <- c("BW","Clmetabolismc","Funbound.plasma","Fgutabs","Fhep.assay.correction","hematocrit","kdermabs","Kgut2pu","kgutabs","kinhabs","Kkidney2pu","Kliver2pu","Klung2pu","Krbc2pu","Krest2pu","million.cells.per.gliver","MW","Qcardiacc" ,"Qgfrc","Qgutf","Qkidneyf","Qliverf","Rblood2plasma","Vartc","Vgutc","Vkidneyc","Vliverc","Vlungc","Vrestc","Vvenc")
   if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_pbtk.")) 
@@ -139,7 +142,8 @@ solve_pbtk <- function(chem.name = NULL,
     ss.params[['million.cells.per.gliver']] <- parameters[['million.cells.per.gliver']]
     parameters[['Clmetabolismc']] <- calc_hepatic_clearance(parameters=ss.params,hepatic.model='unscaled',suppress.messages=T)
   } 
-
+  if(!restrictive.clearance) parameters$Clmetabolismc <- parameters$Clmetabolismc / parameters$Funbound.plasma
+  
   parameters[['CLmetabolismc']] <- parameters[['Clmetabolismc']] 
   parameters[['Fraction_unbound_plasma']] <- parameters[['Funbound.plasma']]
   parameters[['Ratioblood2plasma']] <- parameters[['Rblood2plasma']]

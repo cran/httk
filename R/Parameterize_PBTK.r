@@ -9,7 +9,9 @@ parameterize_pbtk <- function(chem.cas=NULL,
                               default.to.human=F,
                               tissuelist=list(liver=c("liver"),kidney=c("kidney"),lung=c("lung"),gut=c("gut")),
                               force.human.clint.fub = F,
-                              clint.pvalue.threshold=0.05)
+                              clint.pvalue.threshold=0.05,
+                              Funbound.plasma.pc.correction=T,
+                              suppress.messages=F)
 {
   physiology.data <- physiology.data
 # Look up the chemical name/CAS, depending on what was provide:
@@ -23,27 +25,26 @@ parameterize_pbtk <- function(chem.cas=NULL,
   if ((class(Clint) == "try-error" & default.to.human) || force.human.clint.fub) 
   {
     Clint <- try(get_invitroPK_param("Clint","Human",chem.CAS=chem.cas),silent=T)
-    warning(paste(species,"coerced to Human for metabolic clerance data."))
+    warning(paste(species,"coerced to Human for metabolic clearance data."))
   }
   if (class(Clint) == "try-error") stop("Missing metabolic clearance data for given species. Set default.to.human to true to substitute human value.")
     # Check that the trend in the CLint assay was significant:
   Clint.pValue <- get_invitroPK_param("Clint.pValue",species,chem.CAS=chem.cas)
   if (!is.na(Clint.pValue) & Clint.pValue > clint.pvalue.threshold) Clint <- 0
   
-  # unitless fraction of chemical unbound with plasma
-  fub <- try(get_invitroPK_param("Funbound.plasma",species,chem.CAS=chem.cas),silent=T)
-  if ((class(fub) == "try-error" & default.to.human) || force.human.clint.fub) 
-  {
-    fub <- try(get_invitroPK_param("Funbound.plasma","Human",chem.CAS=chem.cas),silent=T)
-    warning(paste(species,"coerced to Human for protein binding data."))
-  }
-  if (class(fub) == "try-error") stop("Missing protein binding data for given species. Set default.to.human to true to substitute human value.")
-  if (fub == 0)
-  {
-    fub <- 0.005
-    warning("Fraction unbound = 0, changed to 0.005.")
-  }
   
+# Predict the PCs for all tissues in the tissue.data table:
+  schmitt.params <- parameterize_schmitt(chem.cas=chem.cas,species=species,default.to.human=default.to.human,force.human.fub=force.human.clint.fub)
+  if(Funbound.plasma.pc.correction) regression <- T
+  else regression <- F
+  PCs <- predict_partitioning_schmitt(parameters=schmitt.params,species=species,regression=regression)
+# Get_lumped_tissues returns a list with the lumped PCs, vols, and flows:
+  lumped_params <- lump_tissues(PCs,tissuelist=tissuelist,species=species)
+  if(Funbound.plasma.pc.correction){
+    fub <- schmitt.params$Funbound.plasma
+    warning('Funbound.plasma recalculated with correction.  Set Funbound.plasma.pc.correction to FALSE to use original value.')
+  }else fub <- schmitt.params$Funbound.plasma.uncorrected
+
   Fgutabs <- try(get_invitroPK_param("Fgutabs",species,chem.CAS=chem.cas),silent=T)
   if (class(Fgutabs) == "try-error") Fgutabs <- 1
     
@@ -61,20 +62,7 @@ parameterize_pbtk <- function(chem.cas=NULL,
   this.phys.data <- physiology.data[,phys.species]
   names(this.phys.data) <- physiology.data[,1]
   
-  temp <- this.phys.data[['Average Body Temperature']] 
-# Load the physico-chemical properties:  
   MW <- get_physchem_param("MW",chem.CAS=chem.cas) #g/mol
-  pKa_Donor <- suppressWarnings(get_physchem_param("pKa_Donor",chem.CAS=chem.cas))
-  pKa_Accept <- suppressWarnings(get_physchem_param("pKa_Accept",chem.CAS=chem.cas))
-  Pow <- 10^get_physchem_param("logP",chem.CAS=chem.cas)
-  MA <- suppressWarnings(10^(get_physchem_param("logMA",chem.CAS=chem.cas)))
-  
-# Predict the PCs for all tissues in the tissue.data table:
-  parm <- list(Funbound.plasma=fub,Pow=Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept,MA=MA,Fprotein.plasma = 75/1000/1.025,plasma.pH=7.4,temperature=temp)
-  PCs <- predict_partitioning_schmitt(parameters=parm)
-# Get_lumped_tissues returns a list with the lumped PCs, vols, and flows:
-  lumped_params <- lump_tissues(PCs,tissuelist=tissuelist,species=species)
-
 
   outlist <- list()
    # Begin flows:
@@ -114,7 +102,7 @@ parameterize_pbtk <- function(chem.cas=NULL,
     MW = MW)) #g/mol
   
   # Correct for unbound fraction of chemical in the hepatocyte intrinsic clearance assay (Kilford et al., 2008)
- outlist <- c(outlist,list(Fhep.assay.correction=calc_fu_hep(Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)))  # fraction 
+ outlist <- c(outlist,list(Fhep.assay.correction=calc_fu_hep(schmitt.params$Pow,pKa_Donor=schmitt.params$pKa_Donor,pKa_Accept=schmitt.params$pKa_Accept)))  # fraction 
 
   outlist <- c(outlist,
     list(Clmetabolismc= as.numeric(calc_hepatic_clearance(hepatic.model="unscaled",parameters=list(
@@ -128,6 +116,6 @@ parameterize_pbtk <- function(chem.cas=NULL,
                                 Qtotal.liverc=(lumped_params$Qtotal.liverc)/1000*60),suppress.messages=T)),million.cells.per.gliver=110,Fgutabs=Fgutabs)) #L/h/kg BW
   
 
-    outlist <- c(outlist,Rblood2plasma=as.numeric(1 - hematocrit + hematocrit * PCs[["Krbc2pu"]] * fub))
+    outlist <- c(outlist,Rblood2plasma=available_rblood2plasma(chem.cas=chem.cas,species=species,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction))
   return(outlist[sort(names(outlist))])
 }

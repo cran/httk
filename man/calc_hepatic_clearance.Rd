@@ -12,7 +12,8 @@ This function calculates the hepatic clearance in plasma for a well-stirred mode
 calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,
                        species='Human',default.to.human=F,
                        hepatic.model='well-stirred',
-                       suppress.messages=F)
+                       suppress.messages=F,well.stirred.correction=T,
+                       restrictive.clearance=T,Funbound.plasma.pc.correction=T,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,6 +29,11 @@ calc_hepatic_clearance(chem.name=NULL,chem.cas=NULL,parameters=NULL,
   \item{parameters}{Chemical parameters from parameterize_steadystate function, overrides chem.name and chem.cas.}
   \item{hepatic.model}{Model used in calculating hepatic clearance, unscaled, parallel tube, dispersion, or default well-stirred.}  
    \item{suppress.messages}{Whether or not to suppress the output message.}
+  \item{well.stirred.correction}{Uses correction in calculation of hepatic clearance for well-stirred model if TRUE for hepatic.model well-stirred.  
+                                  This assumes clearance relative to amount unbound in whole blood instead of plasma, but converted to use with plasma concentration.}
+ \item{restrictive.clearance}{Protein binding not taken into account (set to 1) in liver clearance if FALSE.}
+    \item{Funbound.plasma.pc.correction}{Uses corrected Funbound.plasma when set to TRUE along with parition coefficients calculated with this value and regressions.  Only applies to calculation of Rblood2plasma in well-stirred correction when in vivo Rblood2plasma is unavailable.}
+   \item{...}{Additional parameters passed to parameterize_steadystate if parameters is NULL.}
 }
 
 \value{
@@ -39,7 +45,8 @@ John Wambaugh
 }
 
 \examples{
-calc_hepatic_clearance(chem.name="Ibuprofen")
+calc_hepatic_clearance(chem.name="Ibuprofen",hepatic.model='unscaled')
+calc_hepatic_clearance(chem.name="Ibuprofen",well.stirred.correction=FALSE)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -11,7 +11,7 @@ This function initializes the parameters needed in the functions calc_mc_css, ca
 \usage{
  parameterize_steadystate(chem.cas=NULL,chem.name=NULL,species="Human",
                           clint.pvalue.threshold=0.05,default.to.human=F,
-                          human.clint.fub=F)
+                          human.clint.fub=F,Funbound.plasma.correction=T)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +25,7 @@ This function initializes the parameters needed in the functions calc_mc_css, ca
    \item{human.clint.fub}{
   Uses human hepatic intrinsic clearance and fraction of unbound plasma in calculation of partition coefficients for rats if true.
  }
-
+  \item{Funbound.plasma.correction}{Returns corrected Funbound.plasma when set to TRUE.}
 }
 
 

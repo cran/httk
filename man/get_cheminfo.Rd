@@ -14,7 +14,7 @@ get_cheminfo(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.default=0.00
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-\item{info}{A single character vector (or collection of character vectors) from "Compound", "CAS", "logP", "pKa_Donor"," pKa_Accept", "MW", "Clint", "Clint.pValue", or "Funbound.plasma". info="all" gives all information for the model and species.} 
+\item{info}{A single character vector (or collection of character vectors) from "Compound", "CAS", "logP", "pKa_Donor"," pKa_Accept", "MW", "Clint", "Clint.pValue", "Funbound.plasma", "DSSTox_Substance_Id","Structure_Formula", or "Substance_Type". info="all" gives all information for the model and species.} 
 \item{species}{Species desired (either "Rat", "Rabbit", "Dog", "Mouse", or default "Human").}
 \item{exclude.fub.zero}{Whether or not to exclude chemicals with a fraction of unbound plasma equal to zero or include them with a value of fub.lod.default. Defaults to TRUE for '3compartmentss' and FALSE for pk models and schmitt.}
 \item{fub.lod.default}{Default value used for fraction of unbound plasma for chemicals where measured value was below the limit of detection. Default value is 0.0005.}
@@ -24,8 +24,6 @@ get_cheminfo(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.default=0.00
 
 \details{
 When default.to.human is set to TRUE, and the species-specific data, Funbound.plasma and Clint, are missing from chem.physical_and_invitro.data, human values are given instead.
- 
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
 \item{info}{Table/vector containing values specified in "info" for valid chemicals.}

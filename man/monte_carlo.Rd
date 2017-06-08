@@ -66,10 +66,28 @@ John Wambaugh
 }
 
 \examples{
-# Fig 1 SimCYP vs. our predictions:
+#Example from httk jss paper:
 \dontrun{
-library(httk)
 library(ggplot2)
+library(scales)
+vary.params <- NULL
+params <- parameterize_pbtk(chem.name = "Zoxamide")
+for(this.param in names(subset(params,
+names(params) != "Funbound.plasma"))) vary.params[this.param] <- .2
+censored.params <- list(Funbound.plasma = list(cv = 0.2, lod = 0.01))
+set.seed(1)
+out <- monte_carlo(params, cv.params = vary.params,
+censored.params = censored.params, return.samples = T,
+model = "pbtk", suppress.messages = T)
+zoxamide <- ggplot(as.data.frame(out), aes(out)) +
+geom_histogram(fill="blue", binwidth=1/6) + scale_x_log10() +
+ylab("Number of Samples") + xlab("Steady State Concentration (uM)") +
+theme(axis.text = element_text(size = 16),
+axis.title = element_text(size = 16))
+print(zoxamide)
+
+
+# Fig 1 in Wambaugh et al. (2015) SimCYP vs. our predictions:
 
 vary.params <- list(BW=0.3)
 vary.params[["Vliverc"]]<-0.3
@@ -85,15 +103,15 @@ pValues.rat <- get_cheminfo(c("Compound","CAS","Clint.pValue"),species="Rat")
 
  
 Wetmore.table <- NULL
-for (this.CAS in get_cheminfo(model="3compartmentss"))
-  if (this.CAS \%in\% get_wetmore_cheminfo())
-  {
+for (this.CAS in get_cheminfo(model="3compartmentss")){
+  if (this.CAS \%in\% get_wetmore_cheminfo()){
     print(this.CAS)
     these.params <- parameterize_steadystate(chem.cas=this.CAS)
     if (these.params[["Funbound.plasma"]] == 0.0) 
     {
       these.params[["Funbound.plasma"]] <- 0.005
     }
+    these.params[["Fhep.assay.correction"]] <- 1
     vLiver.human.values <- monte_carlo(these.params,
                                        cv.params=vary.params,
                                        censored.params=censored.params,
@@ -101,7 +119,8 @@ for (this.CAS in get_cheminfo(model="3compartmentss"))
                                        output.units="mg/L",
                                        model='3compartmentss',
                                        suppress.messages=T,
-                                       fu.hep.correct=F)
+                                       well.stirred.correction=F,
+                                       Funbound.plasma.correction=F)
     percentiles <- c("5","50","95")
     for (this.index in 1:3)
     {
@@ -119,6 +138,7 @@ for (this.CAS in get_cheminfo(model="3compartmentss"))
       Wetmore.table <- Wetmore.table <- rbind(Wetmore.table,this.row)
     }
   }
+}
 
 scientific_10 <- function(x) {
   out <- gsub("1e", "10^", scientific_format()(x))
@@ -147,6 +167,7 @@ Fig1a.fit <- lm(log(Wetmore) ~ log(Predicted)*Percentile, Wetmore.table)
 ## End(**Not run**)
 }
 }
+
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{Monte Carlo }

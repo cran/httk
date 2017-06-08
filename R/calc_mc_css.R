@@ -14,6 +14,9 @@ calc_mc_css <- function(chem.cas=NULL,
                             return.samples=F,
                             default.to.human=F,
                             tissue=NULL,
+                            well.stirred.correction=T,
+                            Funbound.plasma.pc.correction=T,
+                            restrictive.clearance=T,
                             httkpop=T,
                             model='3compartmentss',
                             poormetab=T,
@@ -21,7 +24,7 @@ calc_mc_css <- function(chem.cas=NULL,
                             Clint.vary=T,
                             sigma.factor=0.3,
                             lod=0.01,
-                            method=NULL,
+                            method='direct resampling',
                             gendernum=NULL,
                             agelim_years=NULL,
                             agelim_months=NULL,
@@ -30,13 +33,13 @@ calc_mc_css <- function(chem.cas=NULL,
                             reths = c("Mexican American", "Other Hispanic", "Non-Hispanic White","Non-Hispanic Black", "Other"),
                             physiology.matrix=NULL,parameter.matrix=NULL)
 {
-  css_apply <- function(params,model=NULL,daily.dose=NULL,output.units=NULL,tissue=NULL,chem.name=chem.name,chem.cas=chem.cas){
+  css_apply <- function(params,model=NULL,daily.dose=NULL,output.units=NULL,tissue=NULL,chem.name=chem.name,chem.cas=chem.cas,well.stirred.correction=well.stirred.correction,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,restrictive.clearance=restrictive.clearance){
     params <- as.list(params)
-    css <- calc_analytic_css(parameters=params,model=model,suppress.messages=T,output.units=output.units,tissue=tissue,chem.cas=chem.cas,chem.name=chem.name)
+    css <- calc_analytic_css(parameters=params,model=model,suppress.messages=T,output.units=output.units,tissue=tissue,chem.cas=chem.cas,chem.name=chem.name,well.stirred.correction=well.stirred.correction,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,restrictive.clearance=restrictive.clearance)
     return(css)
   }
-  if(httkpop == T){
-    if(!is.null(parameter.matrix)) css.list <- apply(parameter.matrix,1,css_apply,model=model,daily.dose=daily.dose,output.units=output.units,tissue=tissue,chem.cas=chem.cas,chem.name=chem.name)
+  if(httkpop == T & tolower(species) == 'human'){
+    if(!is.null(parameter.matrix)) css.list <- apply(parameter.matrix,1,css_apply,model=model,daily.dose=daily.dose,output.units=output.units,tissue=tissue,chem.cas=chem.cas,chem.name=chem.name,well.stirred.correction=well.stirred.correction,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,restrictive.clearance=restrictive.clearance)
     else{
       if(is.null(chem.cas) & is.null(chem.name)) stop('Must specify chem.cas or chem.name.')
       out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
@@ -47,32 +50,27 @@ calc_mc_css <- function(chem.cas=NULL,
         else if(! method %in% c('direct resampling','virtual individuals','v','vi','direct resampling','dr','d')) stop('Specify method as \"virtual individuals\" (\"v\" or \"vi\") or \"direct resampling\" (\"dr\" or \"d\").')
         physiology.matrix <- httkpop_generate(method=method,nsamp=nsamp,gendernum=gendernum,agelim_years=agelim_years,agelim_months=agelim_months,weight_category=weight_category,gfr_category=gfr_category,reths=reths)
       } 
-      parameter.matrix <- get_httk_params(physiology.matrix,model=model,chemcas=this.chem,poormetab=poormetab,fup.censor=fup.censor,sigma.factor=sigma.factor,Clint.vary=Clint.vary,lod=lod)
-      css.list <- apply(parameter.matrix,1,css_apply,model=model,daily.dose=daily.dose,output.units=output.units,tissue=tissue,chem.cas=chem.cas,chem.name=chem.name) 
+      parameter.matrix <- get_httk_params(physiology.matrix,model=model,chemcas=this.chem,poormetab=poormetab,fup.censor=fup.censor,sigma.factor=sigma.factor,Clint.vary=Clint.vary,lod=lod,well.stirred.correction=well.stirred.correction,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,restrictive.clearance=restrictive.clearance)
+      css.list <- apply(parameter.matrix,1,css_apply,model=model,daily.dose=daily.dose,output.units=output.units,tissue=tissue,chem.cas=chem.cas,chem.name=chem.name,well.stirred.correction=well.stirred.correction,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,restrictive.clearance=restrictive.clearance) 
     }
     if(return.samples) out <- css.list
     else out <- quantile(css.list,which.quantile)       
   }else{
     if(is.null(chem.cas) & is.null(chem.name) & is.null(parameters)) stop('Must specify chem.cas, chem.name, or parameters.')
     if (is.null(parameters)){
-        parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+        parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.correction=Funbound.plasma.pc.correction,)
     }else{
       name.list <- c("Clint","Funbound.plasma","Fhep.assay.correction","Qtotal.liverc","Qgfrc","BW","MW","million.cells.per.gliver","Vliverc","liver.density")
       if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_steadystate."))
     }
   
-    out <- monte_carlo(params=parameters,censored.params=censored.params,which.quantile=which.quantile,cv.params=vary.params,samples=samples,model='3compartmentss',daily.dose=daily.dose,output.units=output.units,tissue=tissue,chem.name=chem.name,chem.cas=chem.cas,suppress.messages=T,return.samples=return.samples)    
+    out <- monte_carlo(params=parameters,censored.params=censored.params,which.quantile=which.quantile,cv.params=vary.params,samples=samples,model='3compartmentss',daily.dose=daily.dose,output.units=output.units,tissue=tissue,chem.name=chem.name,chem.cas=chem.cas,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,well.stirred.correction=well.stirred.correction,suppress.messages=T,return.samples=return.samples,restrictive.clearance=restrictive.clearance)
+    if(httkpop==T) warning('httkpop model only available for human and thus not used.  Set species=\"Human\" to run httkpop model.')   
   }  
   if(!suppress.messages & !return.samples){
     if(is.null(chem.cas) & is.null(chem.name)){
       cat("Plasma concentration returned in",output.units,"units.\n")
-    }else{
-      if(httkpop & ! species == 'Human'){
-        species <- 'Human'
-        warning('Species coerced to \"Human\".  Set httkpop=FALSE for other species.')
-      }
-      cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"plasma concentration returned in",output.units,"units for",which.quantile,"quantile.\n") 
-    }
+    }else cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"plasma concentration returned in",output.units,"units for",which.quantile,"quantile.\n") 
   }
   return(as.numeric(out))
 }

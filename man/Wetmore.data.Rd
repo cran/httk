@@ -11,7 +11,7 @@ Calculations were made using the 1 and 10 uM in vitro measured clearances.
 }
 \usage{Wetmore.data}
 \format{A data.frame containing 577 rows and 20 columns.}
-\source{Wambaugh et al. (2014), in preparation}
+\source{Wambaugh, John F., et al. "Toxicokinetic triage for environmental chemicals." Toxicological Sciences (2015): 228-237.}
 \references{
 Wetmore, B.A., Wambaugh, J.F., Ferguson, S.S., Sochaski, M.A., Rotroff, D.M., Freeman, K., Clewell, H.J., Dix, D.H., Andersen, M.E., Houck, K.A., Allen, B., Judson, R.S., Sing, R., Kavlock, R.J., Richard, A.M., and Thomas, R.S., "Integration of Dosimetry, Exposure and High-Throughput Screening Data in Chemical Toxicity Assessment," Toxicological Sciences 125 157-174 (2012)
 

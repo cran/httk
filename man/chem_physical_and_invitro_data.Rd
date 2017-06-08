@@ -4,12 +4,12 @@
 \title{Physico-chemical properties and in vitro measurements for toxicokinetics}
 \description{
 This data set contains the necessary information to make basic, high-throughput
-toxicokinetic (HTTK) predictions for compounds, including Funbound.plasma, molecular weight, logP, logMA (membrane affinity), intrinsic clearance(uL/min/10^6 cells), and pKa. These data have been compiled
+toxicokinetic (HTTK) predictions for compounds, including Funbound.plasma, molecular weight (g/mol), logP, logMA (membrane affinity), intrinsic clearance(uL/min/10^6 cells), and pKa. These data have been compiled
 from multiple sources, and can be used to parameterize a variety of toxicokinetic models.
 }
 \usage{chem.physical_and_invitro.data}
 \format{A data.frame containing 565 rows and 33 columns.}
-\source{Wambaugh et al. (2014), in preparation}
+\source{Wambaugh, John F., et al. "Toxicokinetic triage for environmental chemicals." Toxicological Sciences (2015): 228-237.}
 \references{
 DSStox database (http:// www.epa.gov/ncct/dsstox
 
@@ -33,11 +33,15 @@ Obach, R. S., Lombardo, F. and Waters, N. J. (2008). Trend analysis of a databas
 
 Paixao, P., Gouveia, L. F., & Morais, J. A. (2012). Prediction of the human oral bioavailability by using in vitro and in silico drug related parameters in a physiologically based absorption model. International journal of pharmaceutics, 429(1), 84-98.
 
+Pirovano, Alessandra, et al. "QSARs for estimating intrinsic hepatic clearance of organic chemicals in humans." Environmental toxicology and pharmacology 42 (2016): 190-197.
+
 Schmitt, W. (2008). General approach for the calculation of tissue to plasma partition coefficients. Toxicology in vitro : an international journal published in association with BIBRA 22(2), 457-67, 10.1016/j.tiv.2007.09.010.
 
 Shibata, Y., Takahashi, H., Chiba, M. and Ishii, Y. (2002). Prediction of Hepatic Clearance and Availability by Cryopreserved Human Hepatocytes: An Application of Serum Incubation Method. Drug Metabolism and Disposition 30(8), 892-896, 10.1124/dmd.30.8.892.
 
 Tonnelier, A., Coecke, S. and Zaldivar, J.-M. (2012). Screening of chemicals for human bioaccumulative potential with a physiologically based toxicokinetic model. Archives of Toxicology 86(3), 393-403, 10.1007/s00204-011-0768-0.
+
+Uchimura, Takahide, et al. "Prediction of human blood-to-plasma drug concentration ratio." Biopharmaceutics & drug disposition 31.5-6 (2010): 286-297.
 
 Wetmore, B. A., Wambaugh, J. F., Ferguson, S. S., Sochaski, M. A., Rotroff, D. M., Freeman, K., Clewell, H. J., 3rd, Dix, D. J., Andersen, M. E., Houck, K. A., Allen, B., Judson, R. S., Singh, R., Kavlock, R. J., Richard, A. M. and Thomas, R. S. (2012). Integration of dosimetry, exposure, and high-throughput screening data in chemical toxicity assessment. Toxicological sciences : an official journal of the Society of Toxicology 125(1), 157-74, 10.1093/toxsci/kfr254.
 

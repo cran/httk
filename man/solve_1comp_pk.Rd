@@ -13,7 +13,9 @@ solve_1comp(chem.cas=NULL,chem.name=NULL,times=NULL,parameters=NULL,daily.dose=1
             dose=NULL,doses.per.day=NULL, days=10,tsteps = 4, suppress.messages=F,
             species='Human',output.units='uM',plots=F,initial.values=NULL,
             iv.dose=F,method="lsoda",rtol=1e-8,atol=1e-12,
-            default.to.human=F,dosing.matrix=NULL,recalc.elimination=F,...)
+            default.to.human=F,dosing.matrix=NULL,recalc.elimination=F,
+            Funbound.plasma.pc.correction=T,restrictive.clearance=T,
+            well.stirred.correction=T,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -38,6 +40,10 @@ solve_1comp(chem.cas=NULL,chem.name=NULL,times=NULL,parameters=NULL,daily.dose=1
   \item{default.to.human}{Substitutes missing rat values with human values if true. }
   \item{dosing.matrix}{Vector of dosing times or a matrix consisting of two columns or rows named "dose" and "time" containing the time and amount, in mg/kg BW, of each dose.}
   \item{recalc.elimination}{Whether or not to recalculate the elimination rate.}
+  \item{Funbound.plasma.pc.correction}{If set to TRUE, volume of distribution and elimination are calculated with the corrected partition coefficients, using regressions, and corrected Funbound.plasma.}
+ \item{restrictive.clearance}{In calculating elimination rate, protein binding is not taken into account (set to 1) in liver clearance if FALSE.}
+  \item{well.stirred.correction}{Uses correction in calculation of hepatic clearance for well-stirred model if TRUE.  
+                                  This assumes clearance relative to amount unbound in whole blood instead of plasma, but converted to use with plasma concentration.}
   \item{...}{Additional arguments passed to the integrator.}
 
 

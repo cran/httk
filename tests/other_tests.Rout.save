@@ -1,11 +1,13 @@
 
-R Under development (unstable) (2017-01-29 r72049) -- "Unsuffered Consequences"
+R Under development (unstable) (2017-05-29 r72746) -- "Unsuffered Consequences"
 Copyright (C) 2017 The R Foundation for Statistical Computing
-Platform: i386-w64-mingw32/i386 (32-bit)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -19,30 +21,44 @@ Type 'q()' to quit R.
 > calc_css(chem.name='nicotine')
 Human plasma concentrations returned in uM units.
 $avg
-[1] 0.62175
+[1] 0.6293984
 
 $frac
-[1] 0.9974387
+[1] 0.9996466
 
 $max
-[1] 0.9049084
+[1] 0.9755984
 
 $the.day
 [1] 2
 
+Warning messages:
+1: In predict_partitioning_schmitt(parameters = schmitt.params, species = species,  :
+  Human fractional tissue volumes used in calculation.  Parameters should match species argument.
+2: In parameterize_pbtk(chem.cas = chem.cas, chem.name = chem.name,  :
+  Funbound.plasma recalculated with correction.  Set Funbound.plasma.pc.correction to FALSE to use original value.
+3: In available_rblood2plasma(chem.cas = chem.cas, species = species,  :
+  Human in vivo Rblood2plasma returned.
 > calc_stats(chem.name='nicotine',days=10)
 Human plasma concentrations returned in uM units.
-AUC is area under plasma concentration curve in uM * days units with Rblood2plasma = 0.9525788 .
+AUC is area under plasma concentration curve in uM * days units with Rblood2plasma = 0.82 .
 $AUC
-[1] 0.62175
+[1] 0.6293984
 
 $peak
-[1] 1.865565
+[1] 2.317977
 
 $mean
-[1] 0.062175
+[1] 0.06293984
 
+Warning messages:
+1: In predict_partitioning_schmitt(parameters = schmitt.params, species = species,  :
+  Human fractional tissue volumes used in calculation.  Parameters should match species argument.
+2: In parameterize_pbtk(chem.name = chem.name, chem.cas = chem.cas,  :
+  Funbound.plasma recalculated with correction.  Set Funbound.plasma.pc.correction to FALSE to use original value.
+3: In available_rblood2plasma(chem.cas = chem.cas, species = species,  :
+  Human in vivo Rblood2plasma returned.
 > 
 > proc.time()
    user  system elapsed 
-   3.75    0.14    4.75 
+   3.57    0.15    4.02 

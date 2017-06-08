@@ -51,9 +51,12 @@ John Wambaugh and Robert Pearce
 }
 
 \examples{
-calc_stats(chem.name='Bisphenol-A',days=100,stats='mean')
+calc_stats(chem.name='Bisphenol-A',days=100,stats='mean',model='3compartment')
 calc_stats(chem.name='Bisphenol-A',days=100,stats=c('peak','mean'),species='Rat')
-
+\dontrun{
+all.peak.stats <- calc_stats(days=10, doses.per.day = 3, stats = "peak")
+}
+triclosan.stats <- calc_stats(days=10, chem.name = "triclosan")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

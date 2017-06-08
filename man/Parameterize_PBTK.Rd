@@ -11,7 +11,8 @@ This function initializes the parameters needed in the functions solve_pbtk, cal
 \usage{
  parameterize_pbtk(chem.cas=NULL,chem.name=NULL,species="Human",default.to.human=F,
  tissuelist=list(liver=c("liver"),kidney=c("kidney"),lung=c("lung"),gut=c("gut")),
- force.human.clint.fub = F,clint.pvalue.threshold=0.05)
+ force.human.clint.fub = F,clint.pvalue.threshold=0.05,
+ Funbound.plasma.pc.correction=T, suppress.messages=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,6 +37,8 @@ This function initializes the parameters needed in the functions solve_pbtk, cal
   Forces use of human values for hepatic intrinsic clearance and fraction of unbound plasma if true.
  }
  \item{clint.pvalue.threshold}{Hepatic clearances with clearance assays having p-values greater than the threshold are set to zero.}
+ \item{Funbound.plasma.pc.correction}{Returns corrected Funbound.plasma when set to TRUE along with parition coefficients calculated with this value and regressions.}
+  \item{suppress.messages}{Whether or not the output message is suppressed.} 
 }
 
 \value{
@@ -62,7 +65,7 @@ This function initializes the parameters needed in the functions solve_pbtk, cal
      \item{Qgutf}{Fraction of cardiac output flowing to the gut.}
      \item{Qkidneyf}{Fraction of cardiac output flowing to the kidneys.}
      \item{Qliverf}{Fraction of cardiac output flowing to the liver.}
-      \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma.}
+      \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma from available_rblood2plasma.}
      \item{Vartc}{Volume of the arteries per kg body weight, L/kg BW.}
       \item{Vgutc}{Volume of the gut per kg body weight, L/kg BW.}
       \item{Vkidneyc}{Volume of the kidneys per kg body weight, L/kg BW.}

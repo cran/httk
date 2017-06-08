@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 ```
 
-This vignette includes the code to perform the global sensitivity analysis described in the paper.
+This vignette includes the code to perform the global sensitivity analysis described in the HTTK-Pop paper.
 
 ```{r}
 library(httk)

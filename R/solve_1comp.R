@@ -16,12 +16,15 @@ solve_1comp <- function(chem.cas=NULL,
                         method="lsoda",rtol=1e-8,atol=1e-12,
                         default.to.human=F,
                         dosing.matrix = NULL,
-                        recalc.elimination=F,                        
+                        recalc.elimination=F,
+                        Funbound.plasma.pc.correction=T,
+                        restrictive.clearance=T,
+                        well.stirred.correction=T,                        
                         ...)
 {     
    Agutlumen <- Acompartment <- Ccompartment <- NULL 
   if(is.null(chem.cas) & is.null(chem.name) & is.null(parameters)) stop('Parameters, chem.name, or chem.cas must be specified.')
-  if(is.null(parameters)){  parameters <- parameterize_1comp(chem.name=chem.name,chem.cas=chem.cas,species=species,default.to.human=default.to.human) 
+  if(is.null(parameters)){  parameters <- parameterize_1comp(chem.name=chem.name,chem.cas=chem.cas,species=species,default.to.human=default.to.human,Funbound.plasma.pc.correction=Funbound.plasma.pc.correction,restrictive.clearance=restrictive.clearance,well.stirred.correction=well.stirred.correction,suppress.messages=suppress.messages) 
   }else{
     name.list <- c("Vdist","kelim","kgutabs","Rblood2plasma","MW","million.cells.per.gliver","hematocrit","Fgutabs")
     if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_1comp."))

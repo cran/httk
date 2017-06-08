@@ -1,7 +1,7 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
-Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: i386-w64-mingw32/i386 (32-bit)
+R Under development (unstable) (2017-05-29 r72746) -- "Unsuffered Consequences"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -18,15 +18,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(httk)
-Loading required package: deSolve
-Loading required package: msm
 > fub.zero.list <- get_cheminfo()
 > no.fub.zero.list <- get_cheminfo(model='pbtk')
 > length(fub.zero.list)
-[1] 543
+[1] 553
 > length(no.fub.zero.list)
-[1] 427
+[1] 430
 > 
 > proc.time()
    user  system elapsed 
-   4.19    0.15    4.36 
+   1.96    0.17    2.32 

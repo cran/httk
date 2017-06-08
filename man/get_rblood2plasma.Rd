@@ -33,7 +33,6 @@ A value of NA is returned when the requested value is unavailable.  Values are r
 %%  ~~ If necessary, more details than the description above ~~
 }
 
-
 \author{
 Robert Pearce
 }

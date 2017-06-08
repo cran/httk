@@ -18,12 +18,15 @@ solve_3comp <- function(chem.name = NULL,
                     recalc.blood2plasma=F,
                     recalc.clearance=F,
                     dosing.matrix=NULL,
+                    Funbound.plasma.pc.correction=T,
+                    restrictive.clearance = T,
                     ...)
 {
   Agutlumen <- Agut <- Aliver <- Arest <- Cgut <- Cliver <- Crest <- NULL
   if(is.null(chem.cas) & is.null(chem.name) & is.null(parameters)) stop('Parameters, chem.name, or chem.cas must be specified.')
   if (is.null(parameters)){
-    parameters <- parameterize_3comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human)
+    parameters <- parameterize_3comp(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,suppress.messages=suppress.messages,
+                                     Funbound.plasma.pc.correction=Funbound.plasma.pc.correction)
   }else{
     name.list <- c("BW","Clmetabolismc","Fgutabs","Funbound.plasma","Fhep.assay.correction","hematocrit","Krbc2pu","Kgut2pu","kgutabs","Kliver2pu","Krest2pu","MW","Qcardiacc","Qgfrc","Qgutf","Qliverf","Rblood2plasma","million.cells.per.gliver","Vgutc","Vliverc","Vrestc")
     if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_3comp."))
@@ -129,6 +132,8 @@ solve_3comp <- function(chem.name = NULL,
     ss.params[['million.cells.per.gliver']] <- parameters[['million.cells.per.gliver']]
     parameters[['Clmetabolismc']] <- calc_hepatic_clearance(parameters=ss.params,hepatic.model='unscaled',suppress.messages=T)
   }
+  if(!restrictive.clearance) parameters$Clmetabolismc <- parameters$Clmetabolismc / parameters$Funbound.plasma
+    
   parameters[['CLmetabolismc']] <- parameters[['Clmetabolismc']] 
   parameters[['Fraction_unbound_plasma']] <- parameters[['Funbound.plasma']]
   parameters[['Ratioblood2plasma']] <- parameters[['Rblood2plasma']]

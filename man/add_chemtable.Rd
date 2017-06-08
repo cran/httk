@@ -18,7 +18,7 @@ add_chemtable(new.table, data.list, current.table=NULL,
   \item{current.table}{This is the table to which data are being added.}
   \item{reference}{This is the reference for the data in the new table. This may be omitted if a column in data.list gives the reference value for each chemical.}
   \item{species}{This is the species for the data in the new table. This may be omitted if a column in data.list gives the species value for each chemical or if the data are not species-specific (e.g., MW).}
-  \item{overwrite}{If overwrite=TRUE then data in current.table will be replaced by any data in new.table that is for the same chemical and property. If overwrite=FALSE (DEFAULT) then new data for the same chemical and property are ignored.}
+  \item{overwrite}{If overwrite=TRUE then data in current.table will be replaced by any data in new.table that is for the same chemical and property. If overwrite=FALSE (DEFAULT) then new data for the same chemical and property are ignored.  Funbound.plasma values of 0 (below limit of detection) are overwritten either way.}
 }
 \value{
 \item{data.frame}{A new data.frame containing the data in current.table augmented by new.table}
@@ -53,8 +53,8 @@ chem.physical_and_invitro.data <- add_chemtable(my.new.data,
                                   Clint="CLint"),
                                   species="Human",
                                   reference="MyPaper 2015")
-parameterize_steadystate(chem.name="C")                                  
-calc_css(chem.name="B")
+parameterize_steadystate(chem.name="C")  
+calc_css(chem.name="B")                                
 }                                   
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

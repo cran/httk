@@ -1,8 +1,7 @@
 get_rblood2plasma <- function(chem.name=NULL,chem.cas=NULL,species='Human',default.to.human=F){
-  # Look up the chemical name/CAS, depending on what was provide:
   chem.physical_and_invitro.data <- chem.physical_and_invitro.data
   CAS <- NULL
-  
+  # Look up the chemical name/CAS, depending on what was provide:
   if(is.null(chem.cas)){
     out <- get_chem_id(chem.cas=chem.cas,chem.name=chem.name)
     chem.cas <- out$chem.cas

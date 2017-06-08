@@ -3,13 +3,15 @@ calc_vdist<- function(chem.cas=NULL,
                               chem.name=NULL,
                               parameters=NULL,
                               default.to.human=F,
-                              species="Human",suppress.messages=F)
+                              species="Human",suppress.messages=F,Funbound.plasma.pc.correction=T)
 {
   physiology.data <- physiology.data
+  Parameter <- NULL
 
   if(is.null(parameters)){
     schmitt.parameters <- parameterize_schmitt(chem.cas=chem.cas,chem.name=chem.name,default.to.human=default.to.human,species=species)
-    parameters <- c(predict_partitioning_schmitt(parameters=schmitt.parameters),schmitt.parameters['Funbound.plasma'])
+    if(Funbound.plasma.pc.correction) parameters <- c(suppressWarnings(predict_partitioning_schmitt(parameters=schmitt.parameters,species=species,regression=T)),schmitt.parameters[['Funbound.plasma']])
+    else parameters <- c(predict_partitioning_schmitt(parameters=schmitt.parameters,species=species,regression=F),Funbound.plasma=schmitt.parameters['Funbound.plasma.uncorrected'])
   }
    
   schmitt.names <- c("Kadipose2pu","Kbone2pu","Kbrain2pu","Kgut2pu","Kheart2pu","Kkidney2pu","Kliver2pu","Klung2pu","Kmuscle2pu","Kskin2pu","Kspleen2pu","Krbc2pu", "Krest2pu")  
@@ -35,6 +37,15 @@ calc_vdist<- function(chem.cas=NULL,
     {
       fub <- 0.005
       warning("Fraction unbound = 0, changed to 0.005.")
+    }
+    if(Funbound.plasma.pc.correction){
+      Flipid <- subset(physiology.data,Parameter=='Plasma Effective Neutral Lipid Volume Fraction')[,which(tolower(colnames(physiology.data)) == tolower(species))]
+      pKa_Donor <- suppressWarnings(get_physchem_param("pKa_Donor",chem.CAS=chem.cas))
+      pKa_Accept <- suppressWarnings(get_physchem_param("pKa_Accept",chem.CAS=chem.cas))
+      Pow <- 10^get_physchem_param("logP",chem.CAS=chem.cas)
+      ion <- calc_ionization(pH=7.4,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
+      dow <- Pow * (ion$fraction_neutral + 0.001 * ion$fraction_charged + ion$fraction_zwitter)
+      fub <- 1 / ((dow - 1) * Flipid + 1 / fub)
     }
     parameters <- c(parameters,Funbound.plasma=fub)  
   }
@@ -89,6 +100,6 @@ calc_vdist<- function(chem.cas=NULL,
   if(!suppress.messages){
     if(is.null(chem.name) & is.null(chem.cas)) cat("Volume of distribution returned in units of L/kg BW.\n")
     else cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"volume of distribution returned in units of L/kg BW.\n")
-  } 
+  }
   return(as.numeric(vol.dist))
 }

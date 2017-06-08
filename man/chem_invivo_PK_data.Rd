@@ -8,11 +8,11 @@ concentration in tissues taken from animals administered control doses of the
 chemicals either orally or intravenously. This plasma concentration-time data 
 is from rat experiments reported in public sources. Toxicokinetic data were 
 retrieved from those studies by the Netherlands Organisation for Applied 
-Scientific Research (TNO) using curve stripping (TechDig v2).  This data is provided for statistical analysis as in Wambaugh (2014). 
+Scientific Research (TNO) using curve stripping (TechDig v2).  This data is provided for statistical analysis as in Wambaugh et al. 2015. 
 }
 \usage{chem.invivo.PK.data}
 \format{A data.frame containing 597 rows and 13 columns.}
-\source{Wambaugh et al. (2014), in preparation}
+\source{Wambaugh, John F., et al. "Toxicokinetic triage for environmental chemicals." Toxicological Sciences (2015): 228-237.}
 \references{
 Aanderud L, Bakke OM (1983). Pharmacokinetics of antipyrine, paracetamol, and morphine in rat at 71 ATA. Undersea Biomed Res. 10(3):193-201. PMID: 6636344
 
