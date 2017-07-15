@@ -109,7 +109,7 @@ for(this.comp in c('Fcell','Fint','FWc','FLc','FPc','Fn_Lc','Fn_PLc','Fa_PLc','p
 		# acidic phospholipid:water partition coefficient:
 		Ka_PL <- Kn_PL * (fraction_neutral + fraction_zwitter + 20*fraction_positive + 0.05*fraction_negative)
 
-  	Kint <- (FWint +   FPint/parameters$Fprotein.plasma*(1/parameters$Funbound.plasma.uncorrected - FWpl))
+  	Kint <- (FWint +   FPint/parameters$Fprotein.plasma*(1/parameters$Funbound.plasma - FWpl))
 		
 		Kcell <- (FW  + Kn_L * Fn_L + Kn_PL * Fn_PL + Ka_PL * Fa_PL + KP * FP) 
 		

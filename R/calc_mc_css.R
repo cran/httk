@@ -58,7 +58,7 @@ calc_mc_css <- function(chem.cas=NULL,
   }else{
     if(is.null(chem.cas) & is.null(chem.name) & is.null(parameters)) stop('Must specify chem.cas, chem.name, or parameters.')
     if (is.null(parameters)){
-        parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.correction=Funbound.plasma.pc.correction,)
+        parameters <- parameterize_steadystate(chem.cas=chem.cas,chem.name=chem.name,species=species,default.to.human=default.to.human,Funbound.plasma.correction=Funbound.plasma.pc.correction)
     }else{
       name.list <- c("Clint","Funbound.plasma","Fhep.assay.correction","Qtotal.liverc","Qgfrc","BW","MW","million.cells.per.gliver","Vliverc","liver.density")
       if(!all(name.list %in% names(parameters)))stop(paste("Missing parameters:",paste(name.list[which(!name.list %in% names(parameters))],collapse=', '),".  Use parameters from parameterize_steadystate."))
@@ -69,8 +69,12 @@ calc_mc_css <- function(chem.cas=NULL,
   }  
   if(!suppress.messages & !return.samples){
     if(is.null(chem.cas) & is.null(chem.name)){
-      cat("Plasma concentration returned in",output.units,"units.\n")
-    }else cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"plasma concentration returned in",output.units,"units for",which.quantile,"quantile.\n") 
+      if(is.null(tissue)) cat("Plasma concentration returned in",output.units,"units.\n")
+      else cat(paste(toupper(substr(tissue,1,1)),substr(tissue,2,nchar(species)),sep=''),"concentration returned in",output.units,"units.\n")
+    }else{
+      if(is.null(tissue))cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),"plasma concentration returned in",output.units,"units for",which.quantile,"quantile.\n") 
+      else cat(paste(toupper(substr(species,1,1)),substr(species,2,nchar(species)),sep=''),tissue,"concentration returned in",output.units,"units.\n")
+    }
   }
   return(as.numeric(out))
 }

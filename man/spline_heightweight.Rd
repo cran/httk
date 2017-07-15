@@ -23,4 +23,4 @@ residuals pre-calculated from NHANES height, weight, and age data by
 race/ethnicity and gender.
 }
 \keyword{datasets}
-
+\references{Ring, Caroline L., et al. "Identifying populations sensitive to environmental chemicals by simulating toxicokinetic variability." Environment International 106 (2017): 105-118.}

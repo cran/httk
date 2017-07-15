@@ -217,7 +217,8 @@ convert_httk <- function(indiv.model.bio,
       #instead, I've re-implemented the Vdist equation here.
       
       #To compute volume of distribution, need to get volume of red blood cells.
-      #Can compute that from plasma volume and hematocrit.
+      #Can compute that from plasma volume and hematocrit. 
+                  
       indiv.model[, RBC.vol:=plasma.vol/
                     (1 - hematocrit)*
                     hematocrit]
@@ -258,19 +259,22 @@ convert_httk <- function(indiv.model.bio,
     #based on hematocrit and Krbc2plasma. This is the ratio of chemical in blood
     #vs. in plasma.
     Rblood2plasma <- get_rblood2plasma(chem.cas=this.chem,species='Human')
-    if(!is.na(Rblood2plasma)) warning('Human in vivo Rblood2plasma substituted.')
-    else Rblood2plasma <- (1-
-                           hematocrit + 
-                           hematocrit*
-                           Krbc2pu*
-                           Funbound.plasma)
-    indiv.model[,Rblood2plasma:=Rblood2plasma]
-  }
-  
+    if(!is.na(Rblood2plasma)){
+      indiv.model[,Rblood2plasma:=Rblood2plasma]    
+      warning('Human in vivo Rblood2plasma substituted.')
+    }else{ indiv.model[, 
+                Rblood2plasma:=(1-
+                                  hematocrit + 
+                                  hematocrit*
+                                  Krbc2pu*
+                                  Funbound.plasma)]
+    }
+  }else indiv.model[,Rblood2plasma:=available_rblood2plasma(chem.cas=this.chem,species='Human',Funbound.plasma.pc.correction=Funbound.plasma.pc.correction)]
+
   #Return only the HTTK parameters for the specified model. That is, only the
   #columns whose names are in the names of the default parameter set.
   indiv.model<- indiv.model[, 
-                            names(indiv.model)[names(indiv.model) %in% names(p)], 
+                            names(indiv.model)[names(indiv.model) %in% c('Rblood2plasma',names(p))], 
                             with=FALSE]
   
   return(indiv.model)

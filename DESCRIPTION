@@ -1,7 +1,7 @@
 Title: High-Throughput Toxicokinetics
 Package: httk
-Version: 1.6
-Date: 2017-6-8
+Version: 1.7
+Date: 2017-7-13
 Author: John Wambaugh, Robert Pearce, Caroline Ring, Jimena Davis, Nisha Sipes, and R. Woodrow Setzer
 Suggests: ggplot2, knitr, rmarkdown, R.rsp, GGally, gplots, scales,
         EnvStats, MASS, RColorBrewer, TeachingDemos, classInt, ks,
@@ -15,6 +15,6 @@ Imports: deSolve, msm, data.table, survey, mvtnorm, truncnorm, stats,
 Depends: R (>= 2.10)
 VignetteBuilder: knitr, R.rsp
 NeedsCompilation: yes
-Packaged: 2017-06-08 15:27:39 UTC; Rpearce
+Packaged: 2017-07-14 23:27:29 UTC; Rpearce
 Repository: CRAN
-Date/Publication: 2017-06-08 16:55:45 UTC
+Date/Publication: 2017-07-15 06:28:45 UTC

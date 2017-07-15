@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2017-06-08" />
+<meta name="date" content="2017-07-14" />
 
 <title>Vignette 3: Generating Figure 2</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Vignette 3: Generating Figure 2</h1>
 <h4 class="author"><em>Caroline Ring</em></h4>
-<h4 class="date"><em>2017-06-08</em></h4>
+<h4 class="date"><em>2017-07-14</em></h4>
 
 
 
@@ -79,6 +79,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>First, load some packages.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">'data.table'</span>)
 <span class="kw">library</span>(<span class="st">'GGally'</span>)
+<span class="co">#&gt; Warning: package 'GGally' was built under R version 3.4.1</span>
 <span class="kw">library</span>(<span class="st">'ggplot2'</span>)</code></pre></div>
 <p>Next, read in the data. Figure 2 used the Age 20-65 subpopulation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">subpop &lt;-<span class="st"> 'Age.20.65'</span>
@@ -168,7 +169,7 @@ inboth &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

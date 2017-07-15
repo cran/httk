@@ -32,4 +32,4 @@ A data.table whose columns are the parameters of the HTTK model
 Converts HTTK-Pop virtual population into parameters relevant to an HTTK 
 model.
 }
-
+\references{Ring, Caroline L., et al. "Identifying populations sensitive to environmental chemicals by simulating toxicokinetic variability." Environment International 106 (2017): 105-118.}

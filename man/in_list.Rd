@@ -13,7 +13,7 @@
 \alias{is.expocast}
 \alias{is.httk}
 \title{
-Convenience Boolean (yes/no) functions to idnetify chemical membership in several key lists.
+Convenience Boolean (yes/no) functions to identify chemical membership in several key lists.
 }
 \description{
 These functions allow easy identification of whether or not a chemical CAS is
