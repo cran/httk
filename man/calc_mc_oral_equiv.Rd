@@ -42,7 +42,7 @@ calc_mc_oral_equiv(conc,chem.name=NULL,chem.cas=NULL,which.quantile=0.95,
 %%     ~~Describe \code{ssparams.var.inv} here~~
 }
    \item{return.samples}{Whether or not to return the vector containing the samples from the simulation instead of the selected quantile.}
-  \item{...}{Additional parameters passed to calc_mc_css.}
+  \item{...}{Additional parameters passed to calc_mc_css for httkpop and variance of parameters.}
 }
 
 \value{
