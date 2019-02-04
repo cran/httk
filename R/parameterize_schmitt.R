@@ -1,3 +1,4 @@
+# Written by Robert Pearce
 parameterize_schmitt <- function(chem.cas=NULL,
                                  chem.name=NULL,
                                  species="Human",
@@ -51,8 +52,17 @@ Species <- variable <- Tissue <- Parameter <- NULL
   ion <- calc_ionization(pH=7.4,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept)
   dow <- Pow * (ion$fraction_neutral + 0.001 * ion$fraction_charged + ion$fraction_zwitter)
   fub.corrected <- 1 / ((dow) * Flipid + 1 / fub)
-  outlist <- list(Funbound.plasma=fub.corrected,unadjusted.Funbound.plasma=fub,Pow=Pow,pKa_Donor=pKa_Donor,pKa_Accept=pKa_Accept,MA=MA,Fprotein.plasma = Fprotein,plasma.pH=7.4,alpha=0.001)
+  outlist <- list(Funbound.plasma=fub.corrected,
+                  unadjusted.Funbound.plasma=fub,
+                  Funbound.plasma.adjustment=fub.corrected/fub,
+                  Pow=Pow,
+                  pKa_Donor=pKa_Donor,
+                  pKa_Accept=pKa_Accept,
+                  MA=MA,
+                  Fprotein.plasma = Fprotein,
+                  plasma.pH=7.4,
+                  alpha=0.001)
   
-  return(outlist)                                
+  return(c(predict_partitioning_schmitt(parameters=outlist),outlist))                                
                                  
 }

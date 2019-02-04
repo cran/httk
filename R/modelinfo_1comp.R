@@ -1,3 +1,28 @@
+#Define the parameter names for each model in one place so that all functions can use them:
+param.names.1comp <- c("BW",
+                     "Clint",
+                     "Fgutabs",
+                     "Fhep.assay.correction",
+                     "Funbound.plasma",
+                     "Funbound.plasma.adjustment",
+                     "hepatic.bioavailability",
+                     "hematocrit",
+                     "kelim",
+                     "kgutabs",
+                     "liver.density",
+                     "million.cells.per.gliver",
+                     "MA",
+                     "MW",
+                     "Rblood2plasma",
+                     "Pow",
+                     "pKa_Donor",
+                     "pKa_Accept",
+                     "Vdist")
+
+param.names.1comp.solver <- c("vdist",
+                     "ke",
+                     "kgutabs")
+
 initparms1comp <- function(newParms = NULL){
   parms <- c(
     vdist = 0,

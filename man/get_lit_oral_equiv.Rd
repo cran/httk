@@ -1,52 +1,59 @@
-\name{get_wetmore_css}
-\alias{get_wetmore_css}
+\name{get_lit_oral_equiv}
+\alias{get_lit_oral_equiv}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
- Get Wetmore Css
+Get Literature Oral Equivalent Dose
 }
 \description{
-This function retrives a steady-state plasma concentration as a result of infusion dosing from the Wetmore et al. (2012) and (2013) publications.
+This function converts a chemical plasma concetration to an oral equivalent dose using the values from the Wetmore et al. (2012) and (2013) publications and other literature.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-get_wetmore_css(chem.cas=NULL,chem.name=NULL,daily.dose=1,which.quantile=0.95,
-                species="Human",clearance.assay.conc=NULL,output.units="mg/L",
-                suppress.messages=F)
+get_lit_oral_equiv(conc,chem.name=NULL,chem.cas=NULL,suppress.messages=F,
+                       which.quantile=0.95,species="Human",input.units='uM',
+                       output.units='mg',clearance.assay.conc=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
+  \item{conc}{
+  Bioactive in vitro concentration in units of specified input.units, default of uM.
 %%     ~~Describe \code{ssparams.i} here~~
+}
   \item{chem.name}{
   Either the chemical name or the CAS number must be specified.
 %%     ~~Describe \code{obs} here~~
 }
   \item{chem.cas}{
-  Either the cas number or the chemical name must be specified.
+  Either the CAS number or the chemical name must be specified.
 %%     ~~Describe \code{pred} here~~
 }
-
+  \item{input.units}{Units of given concentration, default of uM but can also be mg/L.}
+  \item{output.units}{Units of dose, default of 'mg' for mg/kg BW/ day or 'mol' for mol/ kg BW/ day.}
+  \item{suppress.messages}{
+  Suppress output messages.
+%%     ~~Describe \code{sds} here~~
+}
   \item{which.quantile}{
-  Which quantile from the SimCYP Monte Carlo simulation is requested. Can be a vector.
+  Which quantile from the SimCYP Monte Carlo simulation is requested. Can be a vector.  Papers include 0.05, 0.5, and 0.95 for humans and 0.5 for rats.
 %%     ~~Describe \code{ssparams.mean} here~~
 }
   \item{species}{
- Species desired (either "Rat" or default "Human"). 
+  Species desired (either "Rat" or default "Human").
 %%     ~~Describe \code{ssparams.var.inv} here~~
 }
   \item{clearance.assay.conc}{Concentration of chemical used in measureing intrinsic clearance data, 1 or 10 uM.}
-  \item{daily.dose}{
-  Total daily dose infused in units of mg/kg BW/day.  Defaults to 1 mg/kg/day.
-  %%     ~~Describe \code{ssparams.var.inv} here~~
-}
-  \item{output.units}{
-  Returned units for function, defaults to mg/L but can also be uM (specify units = "uM").
-%%     ~~Describe \code{ssparams.var.inv} here~~
-}
-  \item{suppress.messages}{Whether or not the output message is suppressed.}
-  
+  \item{...}{Additional parameters passed to get_lit_css.}
 }
 
+\value{
 
+Equivalent dose in specified units, default of mg/kg BW/day.
+%%  ~Describe the value returned
+%%  If it is a LIST, use
+%%  \item{comp1 }{Description of 'comp1'}
+%%  \item{comp2 }{Description of 'comp2'}
+%% ...
+}
 \references{
 Wetmore, B.A., Wambaugh, J.F., Ferguson, S.S., Sochaski, M.A., Rotroff, D.M., Freeman, K., Clewell, H.J., Dix, D.H., Andersen, M.E., Houck, K.A., Allen, B., Judson, R.S., Sing, R., Kavlock, R.J., Richard, A.M., and Thomas, R.S., "Integration of Dosimetry, Exposure and High-Throughput Screening Data in Chemical Toxicity Assessment," Toxicological Sciences 125 157-174 (2012)
 
@@ -59,16 +66,18 @@ John Wambaugh
 }
 
 \examples{
+table <- NULL
+for(this.cas in sample(get_lit_cheminfo(),50)) table <- rbind(table,cbind(
+as.data.frame(this.cas),as.data.frame(get_lit_oral_equiv(conc=1,chem.cas=this.cas))))
 
-get_wetmore_css(chem.cas="34256-82-1")
 
 
-get_wetmore_css(chem.cas="34256-82-1",species="Rat",which.quantile=0.5)
 
-get_wetmore_css(chem.cas="80-05-7", daily.dose = 1,which.quantile = 0.5, output.units = "uM")
+get_lit_oral_equiv(0.1,chem.cas="34256-82-1")
 
+get_lit_oral_equiv(0.1,chem.cas="34256-82-1",which.quantile=c(0.05,0.5,0.95))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Wetmore}
+\keyword{Literature}
 \keyword{Monte Carlo}% __ONLY ONE__ keyword per line

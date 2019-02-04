@@ -1,5 +1,6 @@
 #declare names of data variables as global
 #Effectively they are global anyway, but R CMD CHECK wants it explicit
+
 if (getRversion() >= "2.15.1") {
   utils::globalVariables(c('age_dist_smooth', 'bmiage', 'spline_heightweight',
                   'nhanes_mec_svy', 'spline_hematocrit', 'mcnally_dt', 
@@ -51,6 +52,7 @@ if (getRversion() >= "2.15.1") {
 #'  each column represents a demographic, anthropometric, or physiological 
 #'  parameter.
 #'@examples
+#'\dontrun{
 #' #Simply generate a virtual population of 100 individuals,
 #'  #using the direct-resampling method
 #'  set.seed(42)
@@ -70,7 +72,15 @@ if (getRversion() >= "2.15.1") {
 #' weight_category=c('Underweight',
 #' 'Normal',
 #' 'Overweight'))
+#'}
 #'
+#'@keywords httk-pop
+#'
+#'@author Caroline Ring
+#'
+#'@references Ring, Caroline L., et al. "Identifying populations sensitive to 
+#'environmental chemicals by simulating toxicokinetic variability." Environment 
+#'International 106 (2017): 105-118
 #'
 httkpop_generate <- function(method,
                              nsamp=NULL,

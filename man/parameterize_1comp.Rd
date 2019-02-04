@@ -12,7 +12,7 @@ This function initializes the parameters needed in the function solve_1comp.
  parameterize_1comp(chem.cas=NULL,chem.name=NULL,species="Human",
                     default.to.human=F,adjusted.Funbound.plasma=T,regression=T,
                     restrictive.clearance=T,well.stirred.correction=T,
-                    suppress.messages=F)
+                    suppress.messages=F,clint.pvalue.threshold = 0.05)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,6 +36,7 @@ This function initializes the parameters needed in the function solve_1comp.
   \item{well.stirred.correction}{Uses correction in calculation of hepatic clearance for well-stirred model if TRUE.  
                                   This assumes clearance relative to amount unbound in whole blood instead of plasma, but converted to use with plasma concentration.}
  \item{suppress.messages}{Whether or not to suppress messages.}
+ \item{clint.pvalue.threshold}{Hepatic clearance for chemicals where the in vitro clearance assay result has a p-values greater than the threshold are set to zero.}
 }
 
 
@@ -48,8 +49,9 @@ This function initializes the parameters needed in the function solve_1comp.
   \item{kgutabs}{Rate chemical is absorbed, 1/h.}
   \item{million.cells.per.gliver}{Millions cells per gram of liver tissue.}
    \item{MW}{Molecular Weight, g/mol.} 
-   \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma. Only included for the conversion of plasma outputs.}
+   \item{Rblood2plasma}{The ratio of the concentration of the chemical in the blood to the concentration in the plasma. Not used in calculations but included for the conversion of plasma outputs.}
    \item{hepatic.bioavailability}{Fraction of dose remaining after first pass clearance, calculated from the corrected well-stirred model.}
+   \item{BW}{Body Weight, kg.}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

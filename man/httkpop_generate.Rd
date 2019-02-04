@@ -65,7 +65,7 @@ A data.table where each row represents an individual, and
 Generate a virtual population
 }
 \examples{
- \dontrun{
+\dontrun{
 #Simply generate a virtual population of 100 individuals,
  #using the direct-resampling method
  set.seed(42)
@@ -86,5 +86,14 @@ weight_category=c('Underweight',
 'Normal',
 'Overweight'))
 }
+
 }
-\references{Ring, Caroline L., et al. "Identifying populations sensitive to environmental chemicals by simulating toxicokinetic variability." Environment International 106 (2017): 105-118.}
+\references{
+Ring, Caroline L., et al. "Identifying populations sensitive to 
+environmental chemicals by simulating toxicokinetic variability." Environment 
+International 106 (2017): 105-118
+}
+\author{
+Caroline Ring
+}
+\keyword{httk-pop}

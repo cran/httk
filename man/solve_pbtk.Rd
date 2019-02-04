@@ -60,6 +60,10 @@ The extra compartments include the amounts or concentrations metabolized by the 
 
 AUC is the area under the curve of the plasma concentration.
 
+Model Figure
+\if{html}{\figure{pbtk.png}{options: width="60\%" alt="Figure: PBTK Model Schematic"}}
+ \if{latex}{\figure{pbtk.pdf}{options: width=12cm alt="Figure: PBTK Model Schematic"}}
+
 %%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
 
 %%  ~~ If necessary, more details than the description above ~~
@@ -78,11 +82,18 @@ A matrix of class deSolve with a column for time(in days), each compartment, the
 John Wambaugh and Robert Pearce
 }
 
+\references{
+Pearce, Robert G., et al. "Httk: R package for high-throughput toxicokinetics." Journal of statistical software 79.4 (2017): 1.
+}
+
 \examples{
 
 solve_pbtk(chem.name='Bisphenol-A',dose=.5,days=1,doses.per.day=2,tsteps=2)
 out <- solve_pbtk(chem.name='bisphenola',dose=0,output.units='mg', 
                   plots=TRUE,initial.values=c(Agut=200))
+params <- parameterize_pbtk(chem.cas="80-05-7")
+solve_pbtk(parameters=params)
+                  
 \dontrun{
 parameters <- parameterize_pbtk(chem.name = "triclosan", species = "rat")
 parameters["Funbound.plasma"] <- 0.1

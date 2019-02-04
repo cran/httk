@@ -56,6 +56,11 @@ Note that the model parameters have units of hours while the model output is in 
 Default of NULL for doses.per.day solves for a single dose.
 
 The compartments used in this model are the gutlumen, gut, liver, and rest-of-body, with the plasma equivalent to the liver plasma.
+
+ Model Figure
+\if{html}{\figure{3comp.png}{options: width="60\%" alt="Figure: Three Compartment Model Schematic"}}
+\if{latex}{\figure{3comp.pdf}{options: width=12cm alt="Figure: Three Compartment Model Schematic"}}
+
 %%When species is specified as rabbit, dog, or mouse, the function uses the appropriate physiological data(volumes and flows) but substitues human fraction unbound, partition coefficients, and intrinsic hepatic clearance. 
 
 %%  ~~ If necessary, more details than the description above ~~
@@ -74,8 +79,14 @@ A matrix of class deSolve with a column for time(in days) and each compartment, 
 John Wambaugh and Robert Pearce
 }
 
+\references{
+Pearce, Robert G., et al. "Httk: R package for high-throughput toxicokinetics." Journal of statistical software 79.4 (2017): 1.
+}
+
 \examples{
 solve_3comp(chem.name='Bisphenol-A',doses.per.day=2,dose=.5,days=1,tsteps=2)
+params <-parameterize_3comp(chem.cas="80-05-7")
+solve_3comp(parameters=params)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
