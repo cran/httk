@@ -31,7 +31,7 @@ get_cheminfo <- function(info="CAS",species="Human",exclude.fub.zero=NA,fub.lod.
         warning('Human values substituted for Clint and Clint.pValue.')
       }
       if(model == '3compartmentss'){
-        necessary.params <- c(species.clint,species.fub,"MW")
+        necessary.params <- c(species.clint,species.fub,"MW","logP")
         if(is.na(exclude.fub.zero)) exclude.fub.zero <- F 
       }else{
         necessary.params <- c(species.clint,species.fub,"MW","logP")
