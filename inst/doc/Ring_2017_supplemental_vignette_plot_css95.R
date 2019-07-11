@@ -8,11 +8,11 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  library('reshape2')
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  data_read <- function(model, poormetab, fup.censor, chemlist){
+#  data_read <- function(model, poormetab, fup.censored.dist, chemlist){
 #  httk.dat <- readRDS(paste0('data/',
 #                        paste('allchems', 'indepMC',
 #                              'poormetab', poormetab,
-#                              'fup.censor', fup.censor,
+#                              'fup.censored.dist', fup.censored.dist,
 #                              model, "FuptoFub", sep='_'),
 #                        '.Rdata'))
 #  
@@ -84,11 +84,11 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                        "ReproAgeFemale",
 #                        "Age.20.50.nonobese")
 #  
-#  tmpfun <- function(grp, popmethod, poormetab, fup.censor){
+#  tmpfun <- function(grp, popmethod, poormetab, fup.censored.dist){
 #    tmp.dt <- readRDS(paste0('data/',
 #                                paste('allchems', grp, popmethod,
 #                                      'poormetab', poormetab,
-#                                      'fup.censor', fup.censor,
+#                                      'fup.censored.dist', fup.censored.dist,
 #                                      model, "FuptoFub", sep='_'),
 #                                '.Rdata'))
 #    tmp.dt[, ExpoCast.group:=grp]
@@ -97,7 +97,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  }
 #  httkpop.dat <- rbindlist(lapply(ExpoCast.groups, tmpfun, popmethod='dr',
 #                                  poormetab=poormetab,
-#                                  fup.censor=fup.censor))
+#                                  fup.censored.dist=fup.censored.dist))
 #  
 #  httkpop.LCL <- melt(httkpop.dat[,
 #                                      c('chemcas',
@@ -165,7 +165,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                 use.names=TRUE)
 #  m.dat <- merge(m.dat, chemlist, by='chemcas') #Add compound name and MW columns
 #  m.dat[, poormetab:=poormetab]
-#  m.dat[, fup.censor:=fup.censor]
+#  m.dat[, fup.censored.dist:=fup.censored.dist]
 #  
 #  paramfun <- switch(model,
 #                     '3compartmentss'='parameterize_steadystate',
@@ -224,15 +224,15 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  use.seed <- TRUE
 #  pmlist <- c(TRUE, FALSE)
 #  fclist <- c(TRUE, FALSE)
-#  pmfc <- expand.grid(poormetab=pmlist,fup.censor=fclist)
+#  pmfc <- expand.grid(poormetab=pmlist,fup.censored.dist=fclist)
 #  chemlist <- as.data.table(get_cheminfo(info=c('CAS', 'Compound', 'MW'),
 #                                           species='Human',
 #                                           model=model,
-#                                           exclude.fub.zero=FALSE))
+#                                           exclude.fup.zero=FALSE))
 #    setnames(chemlist, 'CAS', 'chemcas')
 #  
 #    data.read.list <- mapply(data_read,
-#                             fup.censor=pmfc$fup.censor,
+#                             fup.censored.dist=pmfc$fup.censored.dist,
 #                             poormetab=pmfc$poormetab,
 #                             MoreArgs=list(model='3compartmentss',
 #                                           chemlist=chemlist),
@@ -246,7 +246,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  tmp.css<-dcast.data.table(m.dat[method %in% methodvect &
 #                                    pctile %in% pctilevect],
 #                            Compound+chemcas+ExpoCast.group+pctile+fup.lod+
-#                              metab.zero+fup.censor+poormetab+metab+fup~method,
+#                              metab.zero+fup.censored.dist+poormetab+metab+fup~method,
 #                            value.var=c('css'))
 #  setnames(tmp.css, methodvect,
 #          paste(methodvect,
@@ -255,7 +255,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  tmp.LCL <- dcast.data.table(m.dat[method %in% methodvect &
 #                                      pctile %in% pctilevect],
 #                              Compound+chemcas+ExpoCast.group+pctile+
-#                                fup.lod+metab.zero+fup.censor+poormetab+metab+fup~method,
+#                                fup.lod+metab.zero+fup.censored.dist+poormetab+metab+fup~method,
 #                              value.var=c('LCL'))
 #  setnames(tmp.LCL, methodvect,
 #           paste(methodvect,
@@ -264,7 +264,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  tmp.UCL <- dcast.data.table(m.dat[method %in% methodvect &
 #                                      pctile %in% pctilevect],
 #                              Compound+chemcas+ExpoCast.group+pctile+
-#                                fup.lod+metab.zero+fup.censor+poormetab+metab+fup~method,
+#                                fup.lod+metab.zero+fup.censored.dist+poormetab+metab+fup~method,
 #                              value.var=c('UCL'))
 #  setnames(tmp.UCL, methodvect,
 #           paste(methodvect,
@@ -279,7 +279,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                    'fup.lod',
 #                    'metab.zero',
 #                    'poormetab',
-#                    'fup.censor',
+#                    'fup.censored.dist',
 #                    'metab',
 #                    'fup'))
 #  tmp <- merge(tmp,
@@ -291,7 +291,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                    'fup.lod',
 #                    'metab.zero',
 #                    'poormetab',
-#                    'fup.censor',
+#                    'fup.censored.dist',
 #                    'metab',
 #                    'fup'))
 
@@ -316,7 +316,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                          'fup.lod',
 #                          'metab.zero',
 #                          'poormetab',
-#                          'fup.censor',
+#                          'fup.censored.dist',
 #                          'metab',
 #                          'fup'))
 #  tmp <- copy(tmp.merge)
@@ -336,7 +336,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #   tmp[, poormetab:=factor(poormetab,
 #                            levels=c(TRUE, FALSE),
 #                            labels=c('included', 'excluded'))]
-#    setnames(tmp, 'fup.censor', 'Fub') #rename this column for better labeling
+#    setnames(tmp, 'fup.censored.dist', 'Fub') #rename this column for better labeling
 #    tmp[, Fub:=factor(Fub,
 #                      levels=c(TRUE, FALSE),
 #                      labels=c('<lod censored', '<lod=lod/2'))]

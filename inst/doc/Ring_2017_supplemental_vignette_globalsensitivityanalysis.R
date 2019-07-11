@@ -260,7 +260,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                            indiv.model.bio2, #output of httkbio()
 #                            ExpoCast.group, #subpopulation of interest
 #                            poormetab, #TRUE or FALSE
-#                            fup.censor){ #TRUE or FALSE
+#                            fup.censored.dist){ #TRUE or FALSE
 #  
 #    #To avoid making changes outside the function
 #    indiv.model.bio1 <- copy(indiv.model.bio1)
@@ -272,13 +272,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                       nsamp=nrow(indiv.model.bio1),
 #                                       sigma.factor=sigma.factor,
 #                                       poormetab=poormetab,
-#                                       fup.censor=fup.censor))
+#                                       fup.censored.dist=fup.censored.dist))
 #    indiv.B <- cbind(indiv.model.bio2,
 #                     httk::draw_fup_clint(this.chem=this.chemcas,
 #                                       nsamp=nrow(indiv.model.bio2),
 #                                       sigma.factor=sigma.factor,
 #                                       poormetab=poormetab,
-#                                       fup.censor=fup.censor))
+#                                       fup.censored.dist=fup.censored.dist))
 #    #Convert to HTTK parameters for matrix A and matrix B
 #    indiv.A.httk <- httk::convert_httk(indiv.model.bio = indiv.A,
 #                                          model = model,
@@ -452,7 +452,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                              sigma.factor = 0.3, #Coefficient of variation
 #                              css.method = 'analytic', #or 'full'
 #                              poormetab, #TRUE or FALSE
-#                              fup.censor, #TRUE or FALSE
+#                              fup.censored.dist, #TRUE or FALSE
 #                              cluster){ #The parallel cluster to use (we'll parallelize the loop over chemicals)
 #    #First read in the virtual population data.
 #    indiv1.dt<-readRDS(paste0('data/httkpop_',
@@ -483,7 +483,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                  indiv.model.bio2=indiv.model.bio2,
 #                  ExpoCast.group=ecg,
 #                  poormetab=poormetab,
-#                  fup.censor=fup.censor,
+#                  fup.censored.dist=fup.censored.dist,
 #                  nsamp=nsamp))
 #    #Add a column to the data.table denoting the subpopulation
 #    eff.allchems[,ExpoCast.group:=ecg]
@@ -497,7 +497,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  sigma.factor <- 0.3
 #  css.method <- "analytic"
 #  chemlist <- httk::get_cheminfo(info="CAS",
-#                                 exclude.fub.zero=FALSE)
+#                                 exclude.fup.zero=FALSE)
 #  
 #  cluster <- parallel::makeCluster(2, # Changed number of corse from 40 to 2
 #                                   outfile='globalsens_parallel_out.txt')
@@ -514,7 +514,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                TeachingDemos::char2seed("Caroline Ring"))
 #  
 #  system.time({for (poormetab in c(TRUE, FALSE)){
-#    for (fup.censor in c(TRUE, FALSE)) {
+#    for (fup.censored.dist in c(TRUE, FALSE)) {
 #      eff.all<-rbindlist(lapply(ExpoCast.group,
 #                                doforeachsubpop,
 #                                nsamp=nsamp,
@@ -524,7 +524,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                sigma.factor=sigma.factor,
 #                                css.method=css.method,
 #                                poormetab=poormetab,
-#                                fup.censor=fup.censor,
+#                                fup.censored.dist=fup.censored.dist,
 #                                cluster=cluster))
 #      saveRDS(eff.all,
 #              paste0('data/',
@@ -535,7 +535,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                     '_',
 #                     css.method,
 #                     '_fup_censor_',
-#                     fup.censor,
+#                     fup.censored.dist,
 #                     '_poormetab_',
 #                     poormetab,
 #                     "_FuptoFub",
@@ -642,7 +642,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                  indep.model.bio1, #output of indep_gen()
 #                                  indep.model.bio2, #output of indep_gen()
 #                                  poormetab, #TRUE or FALSE
-#                                  fup.censor){  #TRUE or FALSE
+#                                  fup.censored.dist){  #TRUE or FALSE
 #    #To avoid making changes outside the function
 #    indiv.model.bio1 <- copy(indep.model.bio1)
 #    indiv.model.bio2 <- copy(indep.model.bio2)
@@ -652,12 +652,12 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                       indiv.bio.tmp=indiv.model.bio1,
 #                                       sigma.factor=sigma.factor,
 #                                       poormetab=poormetab,
-#                                       fup.censor=fup.censor)
+#                                       fup.censored.dist=fup.censored.dist)
 #    indiv.B <- httk::draw_fup_clint(this.chem=this.chemcas,
 #                                       indiv.bio.tmp=indiv.model.bio2,
 #                                       sigma.factor=sigma.factor,
 #                                       poormetab=poormetab,
-#                                       fup.censor=fup.censor)
+#                                       fup.censored.dist=fup.censored.dist)
 #    #Convert to HTTK parameters for matrix A and matrix B
 #    indiv.A.httk <- httk::convert_httk(indiv.model.bio = indiv.A,
 #                                          model = model,
@@ -855,7 +855,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  sigma.factor <- 0.3
 #  css.method <- "analytic"
 #  chemlist <- httk::get_cheminfo(info="CAS",
-#                                 exclude.fub.zero=FALSE)
+#                                 exclude.fup.zero=FALSE)
 #  
 #  cluster <- parallel::makeCluster(2, # Was 40, reduced for simpler processors
 #                                   outfile='globalsens_indep_parallel_out.txt')
@@ -869,7 +869,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  parallel::clusterSetRNGStream(cluster,
 #                                TeachingDemos::char2seed("Caroline Ring"))
 #  for (poormetab in c(TRUE, FALSE)){
-#    for (fup.censor in c(TRUE, FALSE)) {
+#    for (fup.censored.dist in c(TRUE, FALSE)) {
 #      Now loop over the chemicals
 #      eff.allchems <- rbindlist(
 #        parLapplyLB(cl=cluster,
@@ -882,7 +882,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                    indep.model.bio1=indep.bio1,
 #                    indep.model.bio2=indep.bio2,
 #                    poormetab=poormetab,
-#                    fup.censor=fup.censor,
+#                    fup.censored.dist=fup.censored.dist,
 #                    nsamp=10))  should be 1000, reduced for speed
 #      saveRDS(eff.allchems,
 #              paste0('data/',
@@ -893,7 +893,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                     '_',
 #                     css.method,
 #                     '_fup_censor_',
-#                     fup.censor,
+#                     fup.censored.dist,
 #                     '_poormetab_',
 #                     poormetab,
 #                     "_FuptoFub",

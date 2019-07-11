@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2019-04-25" />
+<meta name="date" content="2019-07-11" />
 
 <title>Ring et al. 2017 Vignette 4: Generating Figure 3</title>
 
@@ -291,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -299,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Ring et al. 2017 Vignette 4: Generating Figure 3</h1>
-<h4 class="author"><em>Caroline Ring</em></h4>
-<h4 class="date"><em>2019-04-25</em></h4>
+<h4 class="author">Caroline Ring</h4>
+<h4 class="date">2019-07-11</h4>
 
 
 
@@ -311,7 +314,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(<span class="st">&#39;httk&#39;</span>)</a></code></pre></div>
 <p>Next, load in the model-predicted median Css values for the Age 20-50 non-obese sub-population.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">poormetab &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb2-2" title="2">fup.censor &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb2-2" title="2">fup.censored.dist &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
 <a class="sourceLine" id="cb2-3" title="3">grp &lt;-<span class="st"> &#39;Age.20.50.nonobese&#39;</span></a>
 <a class="sourceLine" id="cb2-4" title="4">model &lt;-<span class="st"> &#39;3compartmentss&#39;</span></a>
 <a class="sourceLine" id="cb2-5" title="5">popmethod &lt;-<span class="st"> &#39;dr&#39;</span></a>
@@ -322,8 +325,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-10" title="10">                              popmethod,</a>
 <a class="sourceLine" id="cb2-11" title="11">                              <span class="st">&#39;poormetab&#39;</span>,</a>
 <a class="sourceLine" id="cb2-12" title="12">                              poormetab,</a>
-<a class="sourceLine" id="cb2-13" title="13">                              <span class="st">&#39;fup.censor&#39;</span>,</a>
-<a class="sourceLine" id="cb2-14" title="14">                              fup.censor,</a>
+<a class="sourceLine" id="cb2-13" title="13">                              <span class="st">&#39;fup.censored.dist&#39;</span>,</a>
+<a class="sourceLine" id="cb2-14" title="14">                              fup.censored.dist,</a>
 <a class="sourceLine" id="cb2-15" title="15">                              model,</a>
 <a class="sourceLine" id="cb2-16" title="16">                              <span class="st">&quot;FuptoFub&quot;</span>,</a>
 <a class="sourceLine" id="cb2-17" title="17">                              <span class="dt">sep=</span><span class="st">&#39;_&#39;</span>),</a>
@@ -363,7 +366,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb6-7" title="7">chemlist &lt;-<span class="st"> </span><span class="kw">as.data.table</span>(httk<span class="op">::</span><span class="kw">get_cheminfo</span>(<span class="dt">info=</span><span class="kw">c</span>(<span class="st">&#39;CAS&#39;</span>, <span class="st">&#39;Compound&#39;</span>, <span class="st">&#39;MW&#39;</span>),</a>
 <a class="sourceLine" id="cb6-8" title="8">                                             <span class="dt">species=</span><span class="st">&#39;Human&#39;</span>,</a>
 <a class="sourceLine" id="cb6-9" title="9">                                             <span class="dt">model=</span>model,</a>
-<a class="sourceLine" id="cb6-10" title="10">                                             <span class="dt">exclude.fub.zero=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb6-10" title="10">                                             <span class="dt">exclude.fup.zero=</span><span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb6-11" title="11"><span class="kw">setnames</span>(chemlist, <span class="st">&#39;CAS&#39;</span>, <span class="st">&#39;chemcas&#39;</span>)</a>
 <a class="sourceLine" id="cb6-12" title="12">litCss.dt &lt;-<span class="st"> </span><span class="kw">merge</span>(litCss.dt,</a>
 <a class="sourceLine" id="cb6-13" title="13">                   chemlist[, .(Compound, MW)],</a>

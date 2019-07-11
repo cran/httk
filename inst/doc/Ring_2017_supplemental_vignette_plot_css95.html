@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2019-04-25" />
+<meta name="date" content="2019-07-11" />
 
 <title>Ring et al. 2017 Plotting Css95</title>
 
@@ -291,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -299,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Ring et al. 2017 Plotting Css95</h1>
-<h4 class="author"><em>Caroline Ring</em></h4>
-<h4 class="date"><em>2019-04-25</em></h4>
+<h4 class="author">Caroline Ring</h4>
+<h4 class="date">2019-07-11</h4>
 
 
 
@@ -310,11 +313,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(<span class="st">&#39;httk&#39;</span>)</a>
 <a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(<span class="st">&#39;reshape2&#39;</span>)</a></code></pre></div>
 <p>First, we set up a function to read in the data files and do some reshaping.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">data_read &lt;-<span class="st"> </span><span class="cf">function</span>(model, poormetab, fup.censor, chemlist){</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">data_read &lt;-<span class="st"> </span><span class="cf">function</span>(model, poormetab, fup.censored.dist, chemlist){</a>
 <a class="sourceLine" id="cb2-2" title="2">httk.dat &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">paste0</span>(<span class="st">&#39;data/&#39;</span>,</a>
 <a class="sourceLine" id="cb2-3" title="3">                      <span class="kw">paste</span>(<span class="st">&#39;allchems&#39;</span>, <span class="st">&#39;indepMC&#39;</span>,</a>
 <a class="sourceLine" id="cb2-4" title="4">                            <span class="st">&#39;poormetab&#39;</span>, poormetab,</a>
-<a class="sourceLine" id="cb2-5" title="5">                            <span class="st">&#39;fup.censor&#39;</span>, fup.censor,</a>
+<a class="sourceLine" id="cb2-5" title="5">                            <span class="st">&#39;fup.censored.dist&#39;</span>, fup.censored.dist,</a>
 <a class="sourceLine" id="cb2-6" title="6">                            model, <span class="st">&quot;FuptoFub&quot;</span>, <span class="dt">sep=</span><span class="st">&#39;_&#39;</span>),</a>
 <a class="sourceLine" id="cb2-7" title="7">                      <span class="st">&#39;.Rdata&#39;</span>))</a>
 <a class="sourceLine" id="cb2-8" title="8"></a>
@@ -386,11 +389,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-74" title="74">                      <span class="st">&quot;ReproAgeFemale&quot;</span>,</a>
 <a class="sourceLine" id="cb2-75" title="75">                      <span class="st">&quot;Age.20.50.nonobese&quot;</span>)</a>
 <a class="sourceLine" id="cb2-76" title="76"></a>
-<a class="sourceLine" id="cb2-77" title="77">tmpfun &lt;-<span class="st"> </span><span class="cf">function</span>(grp, popmethod, poormetab, fup.censor){</a>
+<a class="sourceLine" id="cb2-77" title="77">tmpfun &lt;-<span class="st"> </span><span class="cf">function</span>(grp, popmethod, poormetab, fup.censored.dist){</a>
 <a class="sourceLine" id="cb2-78" title="78">  tmp.dt &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">paste0</span>(<span class="st">&#39;data/&#39;</span>,</a>
 <a class="sourceLine" id="cb2-79" title="79">                              <span class="kw">paste</span>(<span class="st">&#39;allchems&#39;</span>, grp, popmethod,</a>
 <a class="sourceLine" id="cb2-80" title="80">                                    <span class="st">&#39;poormetab&#39;</span>, poormetab,</a>
-<a class="sourceLine" id="cb2-81" title="81">                                    <span class="st">&#39;fup.censor&#39;</span>, fup.censor,</a>
+<a class="sourceLine" id="cb2-81" title="81">                                    <span class="st">&#39;fup.censored.dist&#39;</span>, fup.censored.dist,</a>
 <a class="sourceLine" id="cb2-82" title="82">                                    model, <span class="st">&quot;FuptoFub&quot;</span>, <span class="dt">sep=</span><span class="st">&#39;_&#39;</span>),</a>
 <a class="sourceLine" id="cb2-83" title="83">                              <span class="st">&#39;.Rdata&#39;</span>))</a>
 <a class="sourceLine" id="cb2-84" title="84">  tmp.dt[, ExpoCast.group<span class="op">:</span><span class="er">=</span>grp]</a>
@@ -399,7 +402,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-87" title="87">}</a>
 <a class="sourceLine" id="cb2-88" title="88">httkpop.dat &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(<span class="kw">lapply</span>(ExpoCast.groups, tmpfun, <span class="dt">popmethod=</span><span class="st">&#39;dr&#39;</span>,</a>
 <a class="sourceLine" id="cb2-89" title="89">                                <span class="dt">poormetab=</span>poormetab,</a>
-<a class="sourceLine" id="cb2-90" title="90">                                <span class="dt">fup.censor=</span>fup.censor))</a>
+<a class="sourceLine" id="cb2-90" title="90">                                <span class="dt">fup.censored.dist=</span>fup.censored.dist))</a>
 <a class="sourceLine" id="cb2-91" title="91"></a>
 <a class="sourceLine" id="cb2-92" title="92">httkpop.LCL &lt;-<span class="st"> </span><span class="kw">melt</span>(httkpop.dat[, </a>
 <a class="sourceLine" id="cb2-93" title="93">                                    <span class="kw">c</span>(<span class="st">&#39;chemcas&#39;</span>, </a>
@@ -467,7 +470,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-155" title="155">               <span class="dt">use.names=</span><span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb2-156" title="156">m.dat &lt;-<span class="st"> </span><span class="kw">merge</span>(m.dat, chemlist, <span class="dt">by=</span><span class="st">&#39;chemcas&#39;</span>) <span class="co">#Add compound name and MW columns</span></a>
 <a class="sourceLine" id="cb2-157" title="157">m.dat[, poormetab<span class="op">:</span><span class="er">=</span>poormetab]</a>
-<a class="sourceLine" id="cb2-158" title="158">m.dat[, fup.censor<span class="op">:</span><span class="er">=</span>fup.censor]</a>
+<a class="sourceLine" id="cb2-158" title="158">m.dat[, fup.censored.dist<span class="op">:</span><span class="er">=</span>fup.censored.dist]</a>
 <a class="sourceLine" id="cb2-159" title="159"></a>
 <a class="sourceLine" id="cb2-160" title="160">paramfun &lt;-<span class="st"> </span><span class="cf">switch</span>(model,</a>
 <a class="sourceLine" id="cb2-161" title="161">                   <span class="st">&#39;3compartmentss&#39;</span>=<span class="st">&#39;parameterize_steadystate&#39;</span>,</a>
@@ -525,15 +528,15 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb3-3" title="3">use.seed &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
 <a class="sourceLine" id="cb3-4" title="4">pmlist &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb3-5" title="5">fclist &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb3-6" title="6">pmfc &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">poormetab=</span>pmlist,<span class="dt">fup.censor=</span>fclist)</a>
+<a class="sourceLine" id="cb3-6" title="6">pmfc &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">poormetab=</span>pmlist,<span class="dt">fup.censored.dist=</span>fclist)</a>
 <a class="sourceLine" id="cb3-7" title="7">chemlist &lt;-<span class="st"> </span><span class="kw">as.data.table</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info=</span><span class="kw">c</span>(<span class="st">&#39;CAS&#39;</span>, <span class="st">&#39;Compound&#39;</span>, <span class="st">&#39;MW&#39;</span>),</a>
 <a class="sourceLine" id="cb3-8" title="8">                                         <span class="dt">species=</span><span class="st">&#39;Human&#39;</span>,</a>
 <a class="sourceLine" id="cb3-9" title="9">                                         <span class="dt">model=</span>model,</a>
-<a class="sourceLine" id="cb3-10" title="10">                                         <span class="dt">exclude.fub.zero=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb3-10" title="10">                                         <span class="dt">exclude.fup.zero=</span><span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb3-11" title="11">  <span class="kw">setnames</span>(chemlist, <span class="st">&#39;CAS&#39;</span>, <span class="st">&#39;chemcas&#39;</span>)</a>
 <a class="sourceLine" id="cb3-12" title="12">  </a>
 <a class="sourceLine" id="cb3-13" title="13">  data.read.list &lt;-<span class="st"> </span><span class="kw">mapply</span>(data_read,</a>
-<a class="sourceLine" id="cb3-14" title="14">                           <span class="dt">fup.censor=</span>pmfc<span class="op">$</span>fup.censor,</a>
+<a class="sourceLine" id="cb3-14" title="14">                           <span class="dt">fup.censored.dist=</span>pmfc<span class="op">$</span>fup.censored.dist,</a>
 <a class="sourceLine" id="cb3-15" title="15">                           <span class="dt">poormetab=</span>pmfc<span class="op">$</span>poormetab,</a>
 <a class="sourceLine" id="cb3-16" title="16">                           <span class="dt">MoreArgs=</span><span class="kw">list</span>(<span class="dt">model=</span><span class="st">&#39;3compartmentss&#39;</span>,</a>
 <a class="sourceLine" id="cb3-17" title="17">                                         <span class="dt">chemlist=</span>chemlist),</a>
@@ -546,7 +549,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-4" title="4">tmp.css&lt;-<span class="kw">dcast.data.table</span>(m.dat[method <span class="op">%in%</span><span class="st"> </span>methodvect <span class="op">&amp;</span></a>
 <a class="sourceLine" id="cb4-5" title="5"><span class="st">                                  </span>pctile <span class="op">%in%</span><span class="st"> </span>pctilevect], </a>
 <a class="sourceLine" id="cb4-6" title="6">                          Compound<span class="op">+</span>chemcas<span class="op">+</span>ExpoCast.group<span class="op">+</span>pctile<span class="op">+</span>fup.lod<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="st">                            </span>metab.zero<span class="op">+</span>fup.censor<span class="op">+</span>poormetab<span class="op">+</span>metab<span class="op">+</span>fup<span class="op">~</span>method, </a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="st">                            </span>metab.zero<span class="op">+</span>fup.censored.dist<span class="op">+</span>poormetab<span class="op">+</span>metab<span class="op">+</span>fup<span class="op">~</span>method, </a>
 <a class="sourceLine" id="cb4-8" title="8">                          <span class="dt">value.var=</span><span class="kw">c</span>(<span class="st">&#39;css&#39;</span>))</a>
 <a class="sourceLine" id="cb4-9" title="9"><span class="kw">setnames</span>(tmp.css, methodvect,</a>
 <a class="sourceLine" id="cb4-10" title="10">        <span class="kw">paste</span>(methodvect,</a>
@@ -555,7 +558,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-13" title="13">tmp.LCL &lt;-<span class="st"> </span><span class="kw">dcast.data.table</span>(m.dat[method <span class="op">%in%</span><span class="st"> </span>methodvect <span class="op">&amp;</span></a>
 <a class="sourceLine" id="cb4-14" title="14"><span class="st">                                    </span>pctile <span class="op">%in%</span><span class="st"> </span>pctilevect], </a>
 <a class="sourceLine" id="cb4-15" title="15">                            Compound<span class="op">+</span>chemcas<span class="op">+</span>ExpoCast.group<span class="op">+</span>pctile<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="st">                              </span>fup.lod<span class="op">+</span>metab.zero<span class="op">+</span>fup.censor<span class="op">+</span>poormetab<span class="op">+</span>metab<span class="op">+</span>fup<span class="op">~</span>method, </a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="st">                              </span>fup.lod<span class="op">+</span>metab.zero<span class="op">+</span>fup.censored.dist<span class="op">+</span>poormetab<span class="op">+</span>metab<span class="op">+</span>fup<span class="op">~</span>method, </a>
 <a class="sourceLine" id="cb4-17" title="17">                            <span class="dt">value.var=</span><span class="kw">c</span>(<span class="st">&#39;LCL&#39;</span>))</a>
 <a class="sourceLine" id="cb4-18" title="18"><span class="kw">setnames</span>(tmp.LCL, methodvect,</a>
 <a class="sourceLine" id="cb4-19" title="19">         <span class="kw">paste</span>(methodvect,</a>
@@ -564,7 +567,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-22" title="22">tmp.UCL &lt;-<span class="st"> </span><span class="kw">dcast.data.table</span>(m.dat[method <span class="op">%in%</span><span class="st"> </span>methodvect <span class="op">&amp;</span></a>
 <a class="sourceLine" id="cb4-23" title="23"><span class="st">                                    </span>pctile <span class="op">%in%</span><span class="st"> </span>pctilevect], </a>
 <a class="sourceLine" id="cb4-24" title="24">                            Compound<span class="op">+</span>chemcas<span class="op">+</span>ExpoCast.group<span class="op">+</span>pctile<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-25" title="25"><span class="st">                              </span>fup.lod<span class="op">+</span>metab.zero<span class="op">+</span>fup.censor<span class="op">+</span>poormetab<span class="op">+</span>metab<span class="op">+</span>fup<span class="op">~</span>method, </a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="st">                              </span>fup.lod<span class="op">+</span>metab.zero<span class="op">+</span>fup.censored.dist<span class="op">+</span>poormetab<span class="op">+</span>metab<span class="op">+</span>fup<span class="op">~</span>method, </a>
 <a class="sourceLine" id="cb4-26" title="26">                            <span class="dt">value.var=</span><span class="kw">c</span>(<span class="st">&#39;UCL&#39;</span>))</a>
 <a class="sourceLine" id="cb4-27" title="27"><span class="kw">setnames</span>(tmp.UCL, methodvect,</a>
 <a class="sourceLine" id="cb4-28" title="28">         <span class="kw">paste</span>(methodvect,</a>
@@ -579,7 +582,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-37" title="37">                  <span class="st">&#39;fup.lod&#39;</span>,</a>
 <a class="sourceLine" id="cb4-38" title="38">                  <span class="st">&#39;metab.zero&#39;</span>,</a>
 <a class="sourceLine" id="cb4-39" title="39">                  <span class="st">&#39;poormetab&#39;</span>,</a>
-<a class="sourceLine" id="cb4-40" title="40">                  <span class="st">&#39;fup.censor&#39;</span>,</a>
+<a class="sourceLine" id="cb4-40" title="40">                  <span class="st">&#39;fup.censored.dist&#39;</span>,</a>
 <a class="sourceLine" id="cb4-41" title="41">                  <span class="st">&#39;metab&#39;</span>,</a>
 <a class="sourceLine" id="cb4-42" title="42">                  <span class="st">&#39;fup&#39;</span>))</a>
 <a class="sourceLine" id="cb4-43" title="43">tmp &lt;-<span class="st"> </span><span class="kw">merge</span>(tmp,</a>
@@ -591,7 +594,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-49" title="49">                  <span class="st">&#39;fup.lod&#39;</span>,</a>
 <a class="sourceLine" id="cb4-50" title="50">                  <span class="st">&#39;metab.zero&#39;</span>,</a>
 <a class="sourceLine" id="cb4-51" title="51">                  <span class="st">&#39;poormetab&#39;</span>,</a>
-<a class="sourceLine" id="cb4-52" title="52">                  <span class="st">&#39;fup.censor&#39;</span>,</a>
+<a class="sourceLine" id="cb4-52" title="52">                  <span class="st">&#39;fup.censored.dist&#39;</span>,</a>
 <a class="sourceLine" id="cb4-53" title="53">                  <span class="st">&#39;metab&#39;</span>,</a>
 <a class="sourceLine" id="cb4-54" title="54">                  <span class="st">&#39;fup&#39;</span>))</a></code></pre></div>
 <p>And we need to handle the independent MC values properly.</p>
@@ -615,7 +618,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb5-18" title="18">                        <span class="st">&#39;fup.lod&#39;</span>, </a>
 <a class="sourceLine" id="cb5-19" title="19">                        <span class="st">&#39;metab.zero&#39;</span>,</a>
 <a class="sourceLine" id="cb5-20" title="20">                        <span class="st">&#39;poormetab&#39;</span>,</a>
-<a class="sourceLine" id="cb5-21" title="21">                        <span class="st">&#39;fup.censor&#39;</span>,</a>
+<a class="sourceLine" id="cb5-21" title="21">                        <span class="st">&#39;fup.censored.dist&#39;</span>,</a>
 <a class="sourceLine" id="cb5-22" title="22">                        <span class="st">&#39;metab&#39;</span>,</a>
 <a class="sourceLine" id="cb5-23" title="23">                        <span class="st">&#39;fup&#39;</span>))</a>
 <a class="sourceLine" id="cb5-24" title="24">tmp &lt;-<span class="st"> </span><span class="kw">copy</span>(tmp.merge)</a></code></pre></div>
@@ -633,7 +636,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb6-12" title="12"> tmp[, poormetab<span class="op">:</span><span class="er">=</span><span class="kw">factor</span>(poormetab,</a>
 <a class="sourceLine" id="cb6-13" title="13">                          <span class="dt">levels=</span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>),</a>
 <a class="sourceLine" id="cb6-14" title="14">                          <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;included&#39;</span>, <span class="st">&#39;excluded&#39;</span>))]</a>
-<a class="sourceLine" id="cb6-15" title="15">  <span class="kw">setnames</span>(tmp, <span class="st">&#39;fup.censor&#39;</span>, <span class="st">&#39;Fub&#39;</span>) <span class="co">#rename this column for better labeling</span></a>
+<a class="sourceLine" id="cb6-15" title="15">  <span class="kw">setnames</span>(tmp, <span class="st">&#39;fup.censored.dist&#39;</span>, <span class="st">&#39;Fub&#39;</span>) <span class="co">#rename this column for better labeling</span></a>
 <a class="sourceLine" id="cb6-16" title="16">  tmp[, Fub<span class="op">:</span><span class="er">=</span><span class="kw">factor</span>(Fub,</a>
 <a class="sourceLine" id="cb6-17" title="17">                    <span class="dt">levels=</span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>),</a>
 <a class="sourceLine" id="cb6-18" title="18">                    <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;&lt;lod censored&#39;</span>, <span class="st">&#39;&lt;lod=lod/2&#39;</span>))]</a>

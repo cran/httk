@@ -7,7 +7,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  library(EnvStats)
 
 ## ----get_chemcas, eval=FALSE---------------------------------------------
-#  chemlist <- httk::get_cheminfo(info='CAS', exclude.fub.zero=FALSE)
+#  chemlist <- httk::get_cheminfo(info='CAS', exclude.fup.zero=FALSE)
 
 ## ----doforeachchem, eval=FALSE-------------------------------------------
 #  doforeachchem <- function(this.chemcas,
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                            css.method,
 #                            indiv.model.bio,
 #                            poormetab,
-#                            fup.censor,
+#                            fup.censored.dist,
 #                            ExpoCast.group,
 #                            nsamp,
 #                            Clint.vary){
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                           httk::draw_fup_clint(this.chem=this.chemcas,
 #                                                   nsamp=nrow(indiv.model.bio),
 #                                                   poormetab=poormetab,
-#                                                   fup.censor=fup.censor))
+#                                                   fup.censored.dist=fup.censored.dist))
 #      indiv.model <- httk::convert_httk(indiv.model.bio=indiv.model.tmp,
 #                                           model=model,
 #                                           this.chem=this.chemcas)
@@ -38,7 +38,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                         model=model,
 #                                         chemcas=this.chemcas,
 #                                         poormetab=poormetab,
-#                                         fup.censor=fup.censor,
+#                                         fup.censored.dist=fup.censored.dist,
 #                                         Clint.vary=Clint.vary)
 #    }
 #  
@@ -154,7 +154,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  popmethod <- "dr"
 #    for (grp in ExpoCast.groups){
 #      for (poormetab in c(TRUE, FALSE)){
-#        for (fup.censor in c(TRUE, FALSE)) {
+#        for (fup.censored.dist in c(TRUE, FALSE)) {
 #          #First read in population data.table
 #          grp.dt <- readRDS(file=paste0('data/',paste('httkpop',
 #                                                      popmethod,
@@ -172,18 +172,18 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                                                   indiv.model.bio = grp.dt,
 #                                                                   ExpoCast.group = grp,
 #                                                                   poormetab = poormetab,
-#                                                                   fup.censor = fup.censor,
+#                                                                   fup.censored.dist = fup.censored.dist,
 #                                                                   nsamp = nsamp,
 #                                                                   Clint.vary = TRUE))
 #          #Now, save the result. Put some metadata in the filename,
 #          #like the group, the method used to generate this population,
-#          #and the values of poormetab and fup.censor.
+#          #and the values of poormetab and fup.censored.dist.
 #          #Also put which HTTK model was used.
 #          saveRDS(object = allchems.dt,
 #                  file = paste0('data/',
 #                                paste('allchems', grp, popmethod,
 #                                      'poormetab', poormetab,
-#                                      'fup.censor', fup.censor,
+#                                      'fup.censored.dist', fup.censored.dist,
 #                                      model,
 #                                      "FuptoFub", sep='_'),
 #                                '.Rdata'))
@@ -287,7 +287,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  parallel::clusterSetRNGStream(cluster,
 #                                TeachingDemos::char2seed("Caroline Ring"))
 #  for (poormetab in c(TRUE, FALSE)){
-#    for (fup.censor in c(TRUE, FALSE)){
+#    for (fup.censored.dist in c(TRUE, FALSE)){
 #  allchems.dt <- data.table::rbindlist(parallel::parLapply(cl = cluster,
 #                                                           X = chemlist,
 #                                                           fun = doforeachchem,
@@ -298,18 +298,18 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                                           indiv.model.bio = indep.bio,
 #                                                           ExpoCast.group = 'indepMC',
 #                                                           poormetab = poormetab,
-#                                                           fup.censor = fup.censor,
+#                                                           fup.censored.dist = fup.censored.dist,
 #                                                           nsamp = 1000,
 #                                                           Clint.vary = TRUE))
 #  #Now, save the result. Put some metadata in the filename,
 #  #like the group, the method used to generate this population,
-#  #and the values of poormetab and fup.censor.
+#  #and the values of poormetab and fup.censored.dist.
 #  #Also put which HTTK model was used.
 #  saveRDS(object = allchems.dt,
 #          file = paste0('data/',
 #                        paste('allchems', popmethod,
 #                              'poormetab', poormetab,
-#                              'fup.censor', fup.censor,
+#                              'fup.censored.dist', fup.censored.dist,
 #                              model,
 #                              "FuptoFub",
 #                              sep='_'),

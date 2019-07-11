@@ -11,9 +11,9 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  model <- '3compartmentss'
 #  css.method <- 'analytic'
 #  
-#  #All combinations of poormetab and fup.censor
+#  #All combinations of poormetab and fup.censored.dist
 #  pmfc <- expand.grid(poormetab=c(TRUE, FALSE),
-#                      fup.censor=c(TRUE, FALSE),
+#                      fup.censored.dist=c(TRUE, FALSE),
 #                      fuptofub=TRUE)
 #  #Initialize list of data.tables
 #  dt.list <- vector(mode="list", length=nrow(pmfc))
@@ -27,13 +27,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                     '_',
 #                     css.method,
 #                     '_fup_censor_',
-#                     pmfc[i, 'fup.censor'],
+#                     pmfc[i, 'fup.censored.dist'],
 #                     '_poormetab_',
 #                     pmfc[i, 'poormetab'],
 #                     ifelse(pmfc[i, 'fuptofub'], "_FuptoFub", ""),
 #                     '.Rdata'))
 #    dt.list[[i]][, poormetab:=pmfc[i, 'poormetab']]
-#    dt.list[[i]][, fup.censor:=pmfc[i, 'fup.censor']]
+#    dt.list[[i]][, fup.censored.dist:=pmfc[i, 'fup.censored.dist']]
 #    dt.list[[i]][, fuptofub:=pmfc[i, 'fuptofub']]
 #  }
 #  
@@ -46,7 +46,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  cheminfo.dt <- as.data.table(httk::get_cheminfo(model='3compartmentss',
 #                                            info=c('CAS','Compound',
 #                                                   'Funbound.plasma'),
-#                                            exclude.fub.zero=FALSE))
+#                                            exclude.fup.zero=FALSE))
 #  setnames(cheminfo.dt,
 #           'Human.Funbound.plasma',
 #           'Funbound.plasma'
@@ -78,13 +78,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                levels=c(FALSE, TRUE),
 #                                labels=c('excluded',
 #                                         'included'))]
-#    #change fup.censor factor levels to be informative
-#    dat[, fup.censor:=factor(fup.censor,
+#    #change fup.censored.dist factor levels to be informative
+#    dat[, fup.censored.dist:=factor(fup.censored.dist,
 #                                 levels=c(FALSE, TRUE),
 #                                 labels=c('<lod=lod/2',
 #                                          '<lod censored'))]
-#    #change fup.censor name is be more informative
-#    setnames(dat, 'fup.censor', 'Fub')
+#    #change fup.censored.dist name is be more informative
+#    setnames(dat, 'fup.censored.dist', 'Fub')
 
 ## ----my_labeller_fun, eval=FALSE-----------------------------------------
 #  my_labeller_fun <- function(DF){
@@ -195,13 +195,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                     '_',
 #                     css.method,
 #                     '_fup_censor_',
-#                     pmfc[i, 'fup.censor'],
+#                     pmfc[i, 'fup.censored.dist'],
 #                     '_poormetab_',
 #                     pmfc[i, 'poormetab'],
 #                      ifelse(pmfc[i, 'fuptofub'], "_FuptoFub", ""),
 #                     '.Rdata'))
 #    dt.list[[i]][, poormetab:=pmfc[i, 'poormetab']]
-#    dt.list[[i]][, fup.censor:=pmfc[i, 'fup.censor']]
+#    dt.list[[i]][, fup.censored.dist:=pmfc[i, 'fup.censored.dist']]
 #    dt.list[[i]][, fuptofub:=pmfc[i, 'fuptofub']]
 #  }
 #  
@@ -231,13 +231,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                levels=c(FALSE, TRUE),
 #                                labels=c('excluded',
 #                                         'included'))]
-#    #change fup.censor factor levels to be informative
-#    dat_indep[, fup.censor:=factor(fup.censor,
+#    #change fup.censored.dist factor levels to be informative
+#    dat_indep[, fup.censored.dist:=factor(fup.censored.dist,
 #                                 levels=c(FALSE, TRUE),
 #                                 labels=c('<lod=lod/2',
 #                                          '<lod censored'))]
-#    #change fup.censor name is be more informative
-#    setnames(dat_indep, 'fup.censor', 'Fub')
+#    #change fup.censored.dist name is be more informative
+#    setnames(dat_indep, 'fup.censored.dist', 'Fub')
 #  dat_indep[CLint==0, CLint:=1e-8] #plot them as 1e-8 but label them as zero
 
 ## ----indep_params, eval=FALSE--------------------------------------------

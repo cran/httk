@@ -11,7 +11,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  poormetab <- TRUE
-#  fup.censor <- TRUE
+#  fup.censored.dist <- TRUE
 #  grp <- 'Age.20.50.nonobese'
 #  model <- '3compartmentss'
 #  popmethod <- 'dr'
@@ -22,8 +22,8 @@ knitr::opts_chunk$set(collapse = TRUE,
 #                                popmethod,
 #                                'poormetab',
 #                                poormetab,
-#                                'fup.censor',
-#                                fup.censor,
+#                                'fup.censored.dist',
+#                                fup.censored.dist,
 #                                model,
 #                                "FuptoFub",
 #                                sep='_'),
@@ -67,7 +67,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #  chemlist <- as.data.table(httk::get_cheminfo(info=c('CAS', 'Compound', 'MW'),
 #                                               species='Human',
 #                                               model=model,
-#                                               exclude.fub.zero=FALSE))
+#                                               exclude.fup.zero=FALSE))
 #  setnames(chemlist, 'CAS', 'chemcas')
 #  litCss.dt <- merge(litCss.dt,
 #                     chemlist[, .(Compound, MW)],

@@ -10,7 +10,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 ## ----read_css_data, eval=FALSE-------------------------------------------
 #  #Set some basic parameters for which data set to use
 #  poormetab <- TRUE
-#  fup.censor <- TRUE
+#  fup.censored.dist <- TRUE
 #  model <- '3compartmentss'
 #  #List all the subpopulations
 #  ExpoCast.groups <- c('Total',
@@ -33,8 +33,8 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                                        'dr',
 #                                                        'poormetab',
 #                                                        poormetab,
-#                                                        'fup.censor',
-#                                                        fup.censor,
+#                                                        'fup.censored.dist',
+#                                                        fup.censored.dist,
 #                                                        model,
 #                                                        "FuptoFub",
 #                                                        sep='_'),
@@ -45,7 +45,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
 ## ----add_chemnames, eval=FALSE-------------------------------------------
 #  chem.dt <- as.data.table(httk::get_cheminfo(info=c('CAS', 'Compound'),
-#                                              exclude.fub.zero=FALSE))
+#                                              exclude.fup.zero=FALSE))
 #  setnames(chem.dt, 'CAS', 'chemcas')
 #  dat <- merge(dat, chem.dt, by='chemcas')
 
@@ -53,14 +53,14 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  #Column names are Assay Endpoint, CASRN, Activity Call, Q, AC50, Emax, Log AC50,
 #  #B, T, W, Data Type, Chemical Name.
 #  #Replace names containing spaces with names without spaces.
-#  setnames(tc.dt,
-#           c('Assay Endpoint', 'AC 50', 'Chemical Name','Activity Call'),
-#           c('Assay.Endpoint', 'AC50', 'Chemical.Name', 'Activity.Call'))
+#  #setnames(tc.dt,
+#  #         c('Assay Endpoint', 'AC 50', 'Chemical Name','Activity Call'),
+#  #         c('Assay.Endpoint', 'AC50', 'Chemical.Name', 'Activity.Call'))
 
 ## ----delete_inactives, eval=FALSE----------------------------------------
 #  #Keep only the rows with "Active" calls.
-#  tc.dt.sub <- tc.dt[Activity.Call=="Active",
-#                     .(Chemical.Name, CASRN, Assay.Endpoint, Activity.Call, AC50)]
+#  #tc.dt.sub <- tc.dt[Activity.Call=="Active",
+#  #                   .(Chemical.Name, CASRN, Assay.Endpoint, Activity.Call, AC50)]
 
 ## ----compute_ac50_pctiles, eval=FALSE------------------------------------
 #  ac50pct <- tc.dt.sub[,
@@ -199,7 +199,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  ggsave(plot=p, filename=paste0('pdf_figures/',
 #                                 paste('oed_exposure_plot',model,
 #                                       'poormetab', poormetab,
-#                                       'fupcensor', fup.censor,
+#                                       'fupcensor', fup.censored.dist,
 #                                       "FuptoFub",
 #                                       'Total', 'OEDdistoverAC50',
 #                                       sep='_'),'.pdf'),
@@ -235,7 +235,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  ggsave(plot=p, filename=paste0('pdf_figures/',
 #                                 paste('oed_exposure_plot',model,
 #                                       'poormetab', poormetab,
-#                                       'fupcensor', fup.censor,
+#                                       'fupcensor', fup.censored.dist,
 #                                       "FuptoFub",
 #                                       'Total', 'OEDdistoverCss',
 #                                       sep='_'),'.pdf'),
@@ -315,7 +315,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #             paste('deltaAERheatmap',
 #                   'model',model,
 #                   'poormetab',poormetab,
-#                   'fupcensor',fup.censor,
+#                   'fupcensor',fup.censored.dist,
 #                   "FuptoFub",
 #                   'test',
 #                   sep='_'), '.pdf'), pointsize=10)
@@ -335,7 +335,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #             paste('deltaAERheatmap',
 #                   'model',model,
 #                   'poormetab',poormetab,
-#                   'fupcensor',fup.censor,
+#                   'fupcensor',fup.censored.dist,
 #                   "FuptoFub",
 #                   'bigger', 'annotated',
 #                   sep='_'), '.pdf'),
@@ -380,7 +380,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #             paste('deltaOEDheatmap',
 #                   'model',model,
 #                   'poormetab',poormetab,
-#                   'fupcensor',fup.censor,
+#                   'fupcensor',fup.censored.dist,
 #                   "FuptoFub",
 #                   sep='_'),
 #             '.pdf'), pointsize=10)
@@ -422,7 +422,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #             paste('deltaexposureheatmap',
 #                   'model', model,
 #                   'poormetab', poormetab,
-#                   'fupcensor', fup.censor,
+#                   'fupcensor', fup.censored.dist,
 #                   "FuptoFub",
 #                   sep='_'),
 #             '.pdf'), pointsize=10)

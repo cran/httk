@@ -1,6 +1,6 @@
 Package: httk
-Version: 1.9.2
-Date: 2019-04-24
+Version: 1.10.0
+Date: 2019-07-10
 Title: High-Throughput Toxicokinetics
 Description: Functions and data tables for simulation and statistical analysis 
              of chemical toxicokinetics ("TK") as in Pearce et al. (2017) 
@@ -26,17 +26,20 @@ Authors@R: c(
            person("Robert", "Pearce", role = c("aut")), 
            person("Caroline", "Ring", email = "cring@toxstrategies.com", role = c("aut")), 
            person("Greg", "Honda", email = "honda.gregory@epa.gov", role = c("aut")), 
+           person("Mark", "Sfeir", email = "sfeir.mark@epa.gov", role = c("aut")), 
            person("Jimena", "Davis", role = c("ctb")), 
+           person("James", "Sluka", email = "jsluka@indiana.edu", role = c("ctb")), 
            person("Nisha", "Sipes", email = "nisha.sipes@nih.gov", role = c("ctb")), 
            person("Barbara", "Wetmore", email = "wetmore.barbara@epa.gov", role = c("ctb")), 
            person("Woodrow", "Setzer", role = c("ctb"))
            )
 Depends: R (>= 2.10)
 Imports: deSolve, msm, data.table, survey, mvtnorm, truncnorm, stats,
-        utils, magrittr
+        graphics, utils, magrittr
 Suggests: ggplot2, knitr, rmarkdown, R.rsp, GGally, gplots, scales,
         EnvStats, MASS, RColorBrewer, TeachingDemos, classInt, ks,
-        reshape2, gdata, viridis, CensRegMod, gmodels, colorspace
+        stringr, reshape, reshape2, gdata, viridis, CensRegMod,
+        gmodels, colorspace
 License: GPL-3
 LazyData: true
 VignetteBuilder: knitr, R.rsp
@@ -45,15 +48,17 @@ URL:
         https://www.epa.gov/chemical-research/rapid-chemical-exposure-and-dose-research
 BugReports: https://github.com/USEPA/CompTox-ExpoCast-httk
 NeedsCompilation: yes
-Packaged: 2019-04-25 15:19:48 UTC; jwambaug
+Packaged: 2019-07-11 18:32:16 UTC; jwambaug
 Author: John Wambaugh [aut, cre],
   Robert Pearce [aut],
   Caroline Ring [aut],
   Greg Honda [aut],
+  Mark Sfeir [aut],
   Jimena Davis [ctb],
+  James Sluka [ctb],
   Nisha Sipes [ctb],
   Barbara Wetmore [ctb],
   Woodrow Setzer [ctb]
 Maintainer: John Wambaugh <wambaugh.john@epa.gov>
 Repository: CRAN
-Date/Publication: 2019-04-25 16:10:02 UTC
+Date/Publication: 2019-07-11 22:21:25 UTC

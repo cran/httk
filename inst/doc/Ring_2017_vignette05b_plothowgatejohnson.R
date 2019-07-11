@@ -13,7 +13,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  chem.dt <- as.data.table(httk::get_cheminfo(model='3compartmentss',
 #                                              species='Human',
 #                                              info=c('CAS', "MW", "Funbound.plasma"),
-#                                              exclude.fub.zero=FALSE))
+#                                              exclude.fup.zero=FALSE))
 #  #Get CLint measured values from HTTK
 #  chem.dt[, Clint:=sapply(CAS,
 #                          function(x) parameterize_steadystate(chem.cas=x,
@@ -50,7 +50,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  plot_virtstudy_innerfunction <- function(model,
-#                                                fup.censor,
+#                                                fup.censored.dist,
 #                                                poormetab,
 #                                           fuptofub,
 #                                                jhchem){
@@ -59,14 +59,14 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #    overall.dt <- readRDS(paste0('data/',
 #                                 paste('virtstudypop', 'overallstats', model,
 #                                       'poormetab', poormetab,
-#                                       'fup.censor', fup.censor,
+#                                       'fup.censored.dist', fup.censored.dist,
 #                                       "FuptoFub", sep='_'),
 #                                 '.Rdata'))
 #    }else{
 #      overall.dt <- readRDS(paste0('data/',
 #                                 paste('virtstudypop', 'overallstats', model,
 #                                       'poormetab', poormetab,
-#                                       'fup.censor', fup.censor, sep='_'),
+#                                       'fup.censored.dist', fup.censored.dist, sep='_'),
 #                                 '.Rdata'))
 #    }
 #    overall.dt <- merge(overall.dt,
@@ -108,7 +108,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #    overall.dt[, mean.css.bw.95CI.max:=mean.css.bw.95CI.max.fold*median.css.bw.median]
 #    overall.dt[, mean.css.bw.95CI.min:=mean.css.bw.95CI.min.fold*median.css.bw.median]
 #    overall.dt[, poormetab:=poormetab]
-#    overall.dt[, fup.censor:=fup.censor]
+#    overall.dt[, fup.censored.dist:=fup.censored.dist]
 #    overall.dt[, fuptofub:=fuptofub]
 #  
 #    #Generate ellipses for Css
@@ -179,28 +179,28 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  args.dt <- as.data.table(expand.grid(poormetab=c(TRUE, FALSE),
-#                           fup.censor=c(TRUE, FALSE),
+#                           fup.censored.dist=c(TRUE, FALSE),
 #                           fuptofub=c(TRUE, FALSE)))
 #  out.dt <- args.dt[, plot_virtstudy_innerfunction(model="3compartmentss",
 #                                         poormetab=poormetab,
-#                                         fup.censor=fup.censor,
+#                                         fup.censored.dist=fup.censored.dist,
 #                                         fuptofub=fuptofub,
 #                                         jhchem=jhchem),
-#          by=.(poormetab, fup.censor, fuptofub)]
+#          by=.(poormetab, fup.censored.dist, fuptofub)]
 #  
-#  plotfun <- function(ptmp, poormetab, fup.censor, fuptofub){
+#  plotfun <- function(ptmp, poormetab, fup.censored.dist, fuptofub){
 #    print(ptmp[[1]] + ggtitle(paste(c("poormetab",
-#                                 "fup.censor",
+#                                 "fup.censored.dist",
 #                                 "Fup to Fub"),
 #                               c(poormetab,
-#                                 fup.censor,
+#                                 fup.censored.dist,
 #                                 fuptofub),
 #                               sep=" = ",
 #                               collapse=", ")))
 #    ggsave(paste0(paste("pdf_figures/howgatejohnson_css_poormetab",
 #                 poormetab,
 #                 "fupcensor",
-#                 fup.censor,
+#                 fup.censored.dist,
 #                 "FuptoFub",
 #                 fuptofub,
 #                 sep="_"),
@@ -212,9 +212,9 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  
 #  out.dt[, plotfun(ptmp=ptest,
 #                   poormetab=poormetab,
-#                   fup.censor=fup.censor,
+#                   fup.censored.dist=fup.censored.dist,
 #                   fuptofub=fuptofub),
-#         by=.(poormetab, fup.censor, fuptofub)]
+#         by=.(poormetab, fup.censored.dist, fuptofub)]
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  stats.dt <- rbindlist(out.dt[, ov.dt])
@@ -238,7 +238,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                                sum(css.median.pred.over.lit<=10 &
 #                                                      css.median.pred.over.lit>=0.1),
 #                                        length(unique(Study.id))),
-#                     by=.(poormetab, fup.censor, fuptofub, src)]
+#                     by=.(poormetab, fup.censored.dist, fuptofub, src)]
 #  setnames(cssmed.dt, paste0("V", 1:4), c("within.2fold",
 #                         "within.5fold",
 #                         "within.10fold",
@@ -263,7 +263,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                                                sum(css.95CI.range.pred.over.lit<=10 &
 #                                                      css.95CI.range.pred.over.lit>=0.1),
 #                                        length(unique(Study.id))),
-#                     by=.(poormetab, fup.censor, fuptofub, src)]
+#                     by=.(poormetab, fup.censored.dist, fuptofub, src)]
 #  setnames(css95CI.dt, paste0("V", 1:4), c("within.2fold",
 #                         "within.5fold",
 #                         "within.10fold",

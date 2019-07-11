@@ -36,7 +36,7 @@
 #  chem.dt <- as.data.table(httk::get_cheminfo(model='3compartmentss',
 #                                              species='Human',
 #                                              info=c('CAS', 'Compound'),
-#                                              exclude.fub.zero=FALSE))
+#                                              exclude.fup.zero=FALSE))
 #  chem.dt[, Compound:=tolower(Compound)]
 #  
 #  #Harmonize compound names
@@ -62,7 +62,7 @@
 
 ## ----eval_studypop, eval=FALSE-------------------------------------------
 #  eval_studypop <- function(args,
-#                            fup.censor,
+#                            fup.censored.dist,
 #                            poormetab,
 #                            model){
 #    #if number of female subjects is specified,
@@ -85,7 +85,7 @@
 #                                         model=model,
 #                                         chemcas=args$CAS,
 #                                         poormetab=poormetab,
-#                                         fup.censor=fup.censor)
+#                                         fup.censored.dist=fup.censored.dist)
 #  
 #    #If model is 3compartmentss, convert Funbound.plasma to Funbound.blood
 #    if (model=="3compartmentss"){
@@ -159,7 +159,7 @@
 #    }
 
 ## ----repfun, eval=FALSE--------------------------------------------------
-#  repfun <- function(args, fup.censor, poormetab, model){
+#  repfun <- function(args, fup.censored.dist, poormetab, model){
 #    #Replicate each study population 20 times and evaluate model;
 #    #rbind the results into one big data.table
 #  
@@ -168,7 +168,7 @@
 #  
 #    for (i in seq_along(allreps.ls)){
 #      allreps.ls[[i]] <- eval_studypop(args = args,
-#                                       fup.censor = fup.censor,
+#                                       fup.censored.dist = fup.censored.dist,
 #                                       poormetab = poormetab,
 #                                       model=model)
 #      }
@@ -194,12 +194,12 @@
 #  #Set seeds on all workers for reproducibility
 #  parallel::clusterSetRNGStream(cluster,
 #                                TeachingDemos::char2seed("Caroline Ring"))
-#  #Loop over values of poormetab and fup.censor
+#  #Loop over values of poormetab and fup.censored.dist
 #  system.time({for (poormetab in c(TRUE, FALSE)){
-#    for (fup.censor in c(TRUE, FALSE)){
+#    for (fup.censored.dist in c(TRUE, FALSE)){
 #      rep_stat <- rbindlist(parallel::parLapply(cl=cluster, jh.ls, repfun,
 #                                      poormetab = poormetab,
-#                                      fup.censor = fup.censor,
+#                                      fup.censored.dist = fup.censored.dist,
 #                                      model = model))
 #  
 #      #Save the stats for each replicate of each study population
@@ -208,7 +208,7 @@
 #                          paste(paste('virtstudypop_allreps_',
 #                                      model,
 #                                      'poormetab', poormetab,
-#                                      'fup.censor', fup.censor,
+#                                      'fup.censored.dist', fup.censored.dist,
 #                                      "FuptoFub",
 #                                      sep='_'),
 #                                'Rdata',
@@ -236,7 +236,7 @@
 #                          paste(paste('virtstudypop_overallstats',
 #                                      model,
 #                                      'poormetab', poormetab,
-#                                      'fup.censor', fup.censor,
+#                                      'fup.censored.dist', fup.censored.dist,
 #                                      "FuptoFub",
 #                                      sep='_'),
 #                                'Rdata',

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2019-04-25" />
+<meta name="date" content="2019-07-11" />
 
 <title>Ring et al. 2017 Virtual study populations</title>
 
@@ -291,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -299,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Ring et al. 2017 Virtual study populations</h1>
-<h4 class="author"><em>Caroline Ring</em></h4>
-<h4 class="date"><em>2019-04-25</em></h4>
+<h4 class="author">Caroline Ring</h4>
+<h4 class="date">2019-07-11</h4>
 
 
 
@@ -357,7 +360,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-30" title="30">chem.dt &lt;-<span class="st"> </span><span class="kw">as.data.table</span>(httk<span class="op">::</span><span class="kw">get_cheminfo</span>(<span class="dt">model=</span><span class="st">&#39;3compartmentss&#39;</span>,</a>
 <a class="sourceLine" id="cb2-31" title="31">                                            <span class="dt">species=</span><span class="st">&#39;Human&#39;</span>,</a>
 <a class="sourceLine" id="cb2-32" title="32">                                            <span class="dt">info=</span><span class="kw">c</span>(<span class="st">&#39;CAS&#39;</span>, <span class="st">&#39;Compound&#39;</span>),</a>
-<a class="sourceLine" id="cb2-33" title="33">                                            <span class="dt">exclude.fub.zero=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb2-33" title="33">                                            <span class="dt">exclude.fup.zero=</span><span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb2-34" title="34">chem.dt[, Compound<span class="op">:</span><span class="er">=</span><span class="kw">tolower</span>(Compound)]</a>
 <a class="sourceLine" id="cb2-35" title="35"></a>
 <a class="sourceLine" id="cb2-36" title="36"><span class="co">#Harmonize compound names</span></a>
@@ -401,7 +404,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>Also calculates bodyweight-adjusted Css and total clearance, and relevant statistics.</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">eval_studypop &lt;-<span class="st"> </span><span class="cf">function</span>(args,</a>
-<a class="sourceLine" id="cb4-2" title="2">                          fup.censor,</a>
+<a class="sourceLine" id="cb4-2" title="2">                          fup.censored.dist,</a>
 <a class="sourceLine" id="cb4-3" title="3">                          poormetab,</a>
 <a class="sourceLine" id="cb4-4" title="4">                          model){</a>
 <a class="sourceLine" id="cb4-5" title="5">  <span class="co">#if number of female subjects is specified,</span></a>
@@ -424,7 +427,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-22" title="22">                                       <span class="dt">model=</span>model,</a>
 <a class="sourceLine" id="cb4-23" title="23">                                       <span class="dt">chemcas=</span>args<span class="op">$</span>CAS,</a>
 <a class="sourceLine" id="cb4-24" title="24">                                       <span class="dt">poormetab=</span>poormetab,</a>
-<a class="sourceLine" id="cb4-25" title="25">                                       <span class="dt">fup.censor=</span>fup.censor)</a>
+<a class="sourceLine" id="cb4-25" title="25">                                       <span class="dt">fup.censored.dist=</span>fup.censored.dist)</a>
 <a class="sourceLine" id="cb4-26" title="26">  </a>
 <a class="sourceLine" id="cb4-27" title="27">  <span class="co">#If model is 3compartmentss, convert Funbound.plasma to Funbound.blood</span></a>
 <a class="sourceLine" id="cb4-28" title="28">  <span class="cf">if</span> (model<span class="op">==</span><span class="st">&quot;3compartmentss&quot;</span>){</a>
@@ -502,7 +505,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Now, the study population specifications for each <em>in vivo</em> study are in <code>jhtmp</code>, and we’ve set up a function to generate virtual study populations and evaluate the HTTK model for each one. We just need to loop over the studies.</p>
 <p>Following the methods of Howgate and Johnson, we replicate each study 20 times and take overall statistics. This procedure tends to reduce numerical error.</p>
 <p>Let’s actually set this up as a function that takes arguments including the HTTK model, whether poor metabolizers should be included or not, and whether <code>Funbound.plasma</code> should be drawn from a censored distribution or not. Then we can call it under different conditions and see how things change. This function will save its results in two .Rdata files: one containing the statistics for each study population replicate, and one containing the overall statistics over all replicates for each study population.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">repfun &lt;-<span class="st"> </span><span class="cf">function</span>(args, fup.censor, poormetab, model){</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">repfun &lt;-<span class="st"> </span><span class="cf">function</span>(args, fup.censored.dist, poormetab, model){</a>
 <a class="sourceLine" id="cb5-2" title="2">  <span class="co">#Replicate each study population 20 times and evaluate model;</span></a>
 <a class="sourceLine" id="cb5-3" title="3">  <span class="co">#rbind the results into one big data.table</span></a>
 <a class="sourceLine" id="cb5-4" title="4">  </a>
@@ -511,7 +514,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb5-7" title="7">  </a>
 <a class="sourceLine" id="cb5-8" title="8">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(allreps.ls)){</a>
 <a class="sourceLine" id="cb5-9" title="9">    allreps.ls[[i]] &lt;-<span class="st"> </span><span class="kw">eval_studypop</span>(<span class="dt">args =</span> args,</a>
-<a class="sourceLine" id="cb5-10" title="10">                                     <span class="dt">fup.censor =</span> fup.censor,</a>
+<a class="sourceLine" id="cb5-10" title="10">                                     <span class="dt">fup.censored.dist =</span> fup.censored.dist,</a>
 <a class="sourceLine" id="cb5-11" title="11">                                     <span class="dt">poormetab =</span> poormetab,</a>
 <a class="sourceLine" id="cb5-12" title="12">                                     <span class="dt">model=</span>model)</a>
 <a class="sourceLine" id="cb5-13" title="13">    }</a>
@@ -537,12 +540,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb6-15" title="15"><span class="co">#Set seeds on all workers for reproducibility</span></a>
 <a class="sourceLine" id="cb6-16" title="16">parallel<span class="op">::</span><span class="kw">clusterSetRNGStream</span>(cluster, </a>
 <a class="sourceLine" id="cb6-17" title="17">                              TeachingDemos<span class="op">::</span><span class="kw">char2seed</span>(<span class="st">&quot;Caroline Ring&quot;</span>))</a>
-<a class="sourceLine" id="cb6-18" title="18"><span class="co">#Loop over values of poormetab and fup.censor</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">#Loop over values of poormetab and fup.censored.dist</span></a>
 <a class="sourceLine" id="cb6-19" title="19"><span class="kw">system.time</span>({<span class="cf">for</span> (poormetab <span class="cf">in</span> <span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)){</a>
-<a class="sourceLine" id="cb6-20" title="20">  <span class="cf">for</span> (fup.censor <span class="cf">in</span> <span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)){</a>
+<a class="sourceLine" id="cb6-20" title="20">  <span class="cf">for</span> (fup.censored.dist <span class="cf">in</span> <span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>)){</a>
 <a class="sourceLine" id="cb6-21" title="21">    rep_stat &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(parallel<span class="op">::</span><span class="kw">parLapply</span>(<span class="dt">cl=</span>cluster, jh.ls, repfun,</a>
 <a class="sourceLine" id="cb6-22" title="22">                                    <span class="dt">poormetab =</span> poormetab,</a>
-<a class="sourceLine" id="cb6-23" title="23">                                    <span class="dt">fup.censor =</span> fup.censor,</a>
+<a class="sourceLine" id="cb6-23" title="23">                                    <span class="dt">fup.censored.dist =</span> fup.censored.dist,</a>
 <a class="sourceLine" id="cb6-24" title="24">                                    <span class="dt">model =</span> model))</a>
 <a class="sourceLine" id="cb6-25" title="25">    </a>
 <a class="sourceLine" id="cb6-26" title="26">    <span class="co">#Save the stats for each replicate of each study population</span></a>
@@ -551,7 +554,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb6-29" title="29">                        <span class="kw">paste</span>(<span class="kw">paste</span>(<span class="st">&#39;virtstudypop_allreps_&#39;</span>,</a>
 <a class="sourceLine" id="cb6-30" title="30">                                    model,</a>
 <a class="sourceLine" id="cb6-31" title="31">                                    <span class="st">&#39;poormetab&#39;</span>, poormetab,</a>
-<a class="sourceLine" id="cb6-32" title="32">                                    <span class="st">&#39;fup.censor&#39;</span>, fup.censor,</a>
+<a class="sourceLine" id="cb6-32" title="32">                                    <span class="st">&#39;fup.censored.dist&#39;</span>, fup.censored.dist,</a>
 <a class="sourceLine" id="cb6-33" title="33">                                    <span class="st">&quot;FuptoFub&quot;</span>,</a>
 <a class="sourceLine" id="cb6-34" title="34">                                    <span class="dt">sep=</span><span class="st">&#39;_&#39;</span>),</a>
 <a class="sourceLine" id="cb6-35" title="35">                              <span class="st">&#39;Rdata&#39;</span>,</a>
@@ -579,7 +582,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb6-57" title="57">                        <span class="kw">paste</span>(<span class="kw">paste</span>(<span class="st">&#39;virtstudypop_overallstats&#39;</span>,</a>
 <a class="sourceLine" id="cb6-58" title="58">                                    model,</a>
 <a class="sourceLine" id="cb6-59" title="59">                                    <span class="st">&#39;poormetab&#39;</span>, poormetab,</a>
-<a class="sourceLine" id="cb6-60" title="60">                                    <span class="st">&#39;fup.censor&#39;</span>, fup.censor,</a>
+<a class="sourceLine" id="cb6-60" title="60">                                    <span class="st">&#39;fup.censored.dist&#39;</span>, fup.censored.dist,</a>
 <a class="sourceLine" id="cb6-61" title="61">                                    <span class="st">&quot;FuptoFub&quot;</span>,</a>
 <a class="sourceLine" id="cb6-62" title="62">                                    <span class="dt">sep=</span><span class="st">&#39;_&#39;</span>),</a>
 <a class="sourceLine" id="cb6-63" title="63">                              <span class="st">&#39;Rdata&#39;</span>,</a>
