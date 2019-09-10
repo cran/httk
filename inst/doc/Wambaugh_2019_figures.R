@@ -397,7 +397,7 @@ print(paste("Median Titration:",signif(median(Fig1.table$Affinity.Fup.Med,na.rm=
 
 Fig1b <- ggplot(Fig1.table)+
    geom_histogram(binwidth = 0.5,alpha=0.6,fill="green",aes(CLint.1uM.Median))+              
-   xlab(expression(paste("Measured ",Cl[int]," (ÂµL/min/",10^6," hepatocytes)"))) +
+   xlab(expression(paste("Measured ",Cl[int]," (µL/min/",10^6," hepatocytes)"))) +
   ylab("Number of chemicals")+
   scale_x_log10(label=scientific_10,limits=c(10^-1,5*10^3))+
 #  scale_y_continuous(limits=c(0,40))+
@@ -712,8 +712,8 @@ summary(clearance.fit)
 #    geom_errorbar(aes(ymin=css25_u,ymax=css975_u),alpha=0.3)+
 #    scale_y_log10(label=scientific_10,limits=c(10^-3,10^5)) +
 #    scale_x_log10(label=scientific_10,limits=c(10^-3,10^5)) +
-#    xlab(expression(paste(C[ss]," Point Estimate (ÂµM)")))+
-#    ylab(expression(paste("Bayesian ",C[ss]," (ÂµM)")))+
+#    xlab(expression(paste(C[ss]," Point Estimate (µM)")))+
+#    ylab(expression(paste("Bayesian ",C[ss]," (µM)")))+
 #    annotate("text", size=8,x = 10^-3, y = 10^5, label = "B")+
 #    theme_bw() +
 #    theme(text  = element_text(size=18)) +

@@ -1,6 +1,6 @@
 Package: httk
-Version: 1.10.0
-Date: 2019-07-10
+Version: 1.10.1
+Date: 2019-09-07
 Title: High-Throughput Toxicokinetics
 Description: Functions and data tables for simulation and statistical analysis 
              of chemical toxicokinetics ("TK") as in Pearce et al. (2017) 
@@ -48,7 +48,7 @@ URL:
         https://www.epa.gov/chemical-research/rapid-chemical-exposure-and-dose-research
 BugReports: https://github.com/USEPA/CompTox-ExpoCast-httk
 NeedsCompilation: yes
-Packaged: 2019-07-11 18:32:16 UTC; jwambaug
+Packaged: 2019-09-09 20:02:50 UTC; jwambaug
 Author: John Wambaugh [aut, cre],
   Robert Pearce [aut],
   Caroline Ring [aut],
@@ -61,4 +61,4 @@ Author: John Wambaugh [aut, cre],
   Woodrow Setzer [ctb]
 Maintainer: John Wambaugh <wambaugh.john@epa.gov>
 Repository: CRAN
-Date/Publication: 2019-07-11 22:21:25 UTC
+Date/Publication: 2019-09-10 04:30:02 UTC
