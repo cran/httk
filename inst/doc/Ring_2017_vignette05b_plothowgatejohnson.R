@@ -1,13 +1,13 @@
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
-## ----load_packages, eval = FALSE-----------------------------------------
+## ----load_packages, eval = FALSE----------------------------------------------
 #  library('data.table')
 #  library('httk')
 #  library('ggplot2')
 #  library('RColorBrewer')
 
-## ----read_study_data, eval=FALSE-----------------------------------------
+## ----read_study_data, eval=FALSE----------------------------------------------
 #  jhchem <- readRDS(file="data/jhchem.Rdata")
 #  #Get Funbound.plasma measured values from HTTK
 #  chem.dt <- as.data.table(httk::get_cheminfo(model='3compartmentss',
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  
 #  jhchem <- merge(jhchem,chem.dt,by='CAS')
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  ellipse_fun <- function(x.CI.max,
 #                          x.CI.min,
 #                          y.CI.max,
@@ -48,7 +48,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  
 #    }
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  plot_virtstudy_innerfunction <- function(model,
 #                                                fup.censored.dist,
 #                                                poormetab,
@@ -177,7 +177,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #    return(list(ptest=list(ptest), ov.dt=list(overall.dt)))
 #    }
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  args.dt <- as.data.table(expand.grid(poormetab=c(TRUE, FALSE),
 #                           fup.censored.dist=c(TRUE, FALSE),
 #                           fuptofub=c(TRUE, FALSE)))
@@ -216,7 +216,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                   fuptofub=fuptofub),
 #         by=.(poormetab, fup.censored.dist, fuptofub)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  stats.dt <- rbindlist(out.dt[, ov.dt])
 #  #Also show a table of how many are within 2-fold, 5-fold, 10-fold
 #  #Compare Css medians:
@@ -230,7 +230,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  stats.dt[src=="Howgate et al. 2006",
 #             css.95CI.range.pred.over.lit:=(mean.css.bw.95CI.max-mean.css.bw.95CI.min)/(css.bw.95CImax.invivo - css.bw.95CImin.invivo)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  cssmed.dt <- stats.dt[, list(sum(css.median.pred.over.lit<=2 &
 #                                                      css.median.pred.over.lit>=0.5),
 #                                                sum(css.median.pred.over.lit<=5 &
@@ -255,7 +255,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #                           "Total"),
 #               caption="Css median, predicted vs. literature in vivo, number of studies")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  css95CI.dt <- stats.dt[, list(sum(css.95CI.range.pred.over.lit<=2 &
 #                                                      css.95CI.range.pred.over.lit>=0.5),
 #                                                sum(css.95CI.range.pred.over.lit<=5 &

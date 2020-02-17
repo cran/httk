@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2019-09-09" />
+<meta name="date" content="2020-02-14" />
 
 <title>Ring et al. (2017) Vignette 2: Evaluating HTTK models for subpopulations</title>
 
@@ -96,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -117,9 +117,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -288,8 +285,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -299,8 +300,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Ring et al. (2017) Vignette 2: Evaluating HTTK models for subpopulations</h1>
-<h4 class="author"><em>Caroline Ring</em></h4>
-<h4 class="date"><em>2019-09-09</em></h4>
+<h4 class="author">Caroline Ring</h4>
+<h4 class="date">2020-02-14</h4>
 
 
 
@@ -309,11 +310,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>To use the code in this vignette, you’ll first need to load a few packages (if you haven’t already).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(httk)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(EnvStats)</a></code></pre></div>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(EnvStats)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">#&gt; Attaching package: &#39;EnvStats&#39;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">#&gt;     predict, predict.lm</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">#&gt; The following object is masked from &#39;package:base&#39;:</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="co">#&gt;     print.default</span></a></code></pre></div>
 <div id="running-the-httk-models" class="section level1">
 <h1>Running the HTTK models</h1>
 <p>The HTTK models are all general (chemical-independent) models, which means that in order to run them, you need to specify a chemical for which they can be parameterized. Let’s loop over all the chemicals in the HTTK data set. First, get a list of all of their CAS numbers.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">chemlist &lt;-<span class="st"> </span>httk<span class="op">::</span><span class="kw">get_cheminfo</span>(<span class="dt">info=</span><span class="st">&#39;CAS&#39;</span>, <span class="dt">exclude.fup.zero=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">chemlist &lt;-<span class="st"> </span>httk<span class="op">::</span><span class="kw">get_cheminfo</span>(<span class="dt">info=</span><span class="st">&#39;CAS&#39;</span>)</a></code></pre></div>
 </div>
 <div id="things-to-do-for-each-chemical" class="section level1">
 <h1>Things to do for each chemical</h1>
@@ -444,7 +453,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>We also need to choose a couple of settings – like whether poor metabolizers should be included in the <code>Clint</code> distribution, and whether the <code>Funbound.plasma</code> distribution should be censored or not. Let’s try it all ways, so we can compare them later on. Let’s also evaluate the model using both the virtual-individuals and direct-resampling populations, so we can compare those and see if there is a difference between the two ways of generating populations. (Spoiler alert: There isn’t.)</p>
 <p><strong>Warning: the following code may take a while to run!</strong></p>
 <p>Also note: This code was written for a machine where 10 processors were available. If you want to run on your own machine, you’ll need to change <code>numcluster</code> to a reasonable number of processors for your machine!</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">numcluster &lt;-<span class="st"> </span><span class="dv">40</span> <span class="co">#The number of processors to use in parallel</span></a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">numcluster &lt;-<span class="st"> </span><span class="dv">2</span> <span class="co"># Reduced from 40, the number of processors to use in parallel</span></a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="co">#Note: This will depend on how many your machine has available!</span></a>
 <a class="sourceLine" id="cb4-3" title="3">cluster &lt;-<span class="st"> </span>parallel<span class="op">::</span><span class="kw">makeCluster</span>(numcluster, <span class="dt">outfile=</span><span class="st">&#39;subpoprun_parallel_out.txt&#39;</span>)</a>
 <a class="sourceLine" id="cb4-4" title="4">parallel<span class="op">::</span><span class="kw">clusterEvalQ</span>(<span class="dt">cl=</span>cluster,</a>
@@ -634,6 +643,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb6-44" title="44">parallel<span class="op">::</span><span class="kw">stopCluster</span>(cluster)</a></code></pre></div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

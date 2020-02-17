@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Gregory S. Honda" />
+
+<meta name="date" content="2018-07-13" />
+
+<title>Honda et al. (2019): Updated Armitage et al. (2014) Model</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Honda et al. (2019): Updated Armitage et al. (2014) Model</h1>
+<h4 class="author">Gregory S. Honda</h4>
+<h4 class="date">July 13, 2018</h4>
+
+
+
+<p>from “Using the concordance of in vitro and in vivo data to evaluate extrapolation assumptionst”</p>
+<p>Gregory S. Honda, Robert G. Pearce, Ly L. Pham, R. W. Setzer, Barbara A. Wetmore, Nisha S. Sipes, Jon Gilbert, Briana Franz, Russell S. Thomas, John F. Wambaugh</p>
+<p>PLoS ONE 14(5): e0217564.</p>
+<p><a href="https://doi.org/10.1371/journal.pone.0217564" class="uri">https://doi.org/10.1371/journal.pone.0217564</a></p>
+<p>The authors thank James Armitage for providing a revised version of his model ( <a href="https://doi.org/10.1021/es501955g" class="uri">https://doi.org/10.1021/es501955g</a>).</p>
+<div id="abstract" class="section level2">
+<h2>Abstract</h2>
+<p>Linking in vitro bioactivity and in vivo toxicity on a dose basis enables the use of high-throughput in vitro assays as an alternative to traditional animal studies. In this study, we evaluated assumptions in the use of a high-throughput, physiologically based toxicokinetic (PBTK) model to relate in vitro bioactivity and rat in vivo toxicity data. The fraction unbound in plasma (fup) and intrinsic hepatic clearance (Clint) were measured for rats (for 67 and 77 chemicals, respectively), combined with fup and Clint literature data for 97 chemicals, and incorporated in the PBTK model. Of these chemicals, 84 had corresponding in vitro ToxCast bioactivity data and in vivo toxicity data. For each possible comparison of in vitro and in vivo endpoint, the concordance between the in vivo and in vitro data was evaluated by a regression analysis. For a base set of assumptions, the PBTK results were more frequently better associated than either the results from a “random” model parameterization or direct comparison of the “untransformed” values of AC50 and dose (performed best in 51%, 28%, and 21% of cases, respectively). We also investigated several assumptions in the application of PBTK for IVIVE, including clearance and internal dose selection. One of the better assumptions sets-restrictive clearance and comparing free in vivo venous plasma concentration with free in vitro concentration-outperformed the random and untransformed results in 71% of the in vitro-in vivo endpoint comparisons. These results demonstrate that applying PBTK improves our ability to observe the association between in vitro bioactivity and in vivo toxicity data in general. This suggests that potency values from in vitro screening should be transformed using in vitro-in vivo extrapolation (IVIVE) to build potentially better machine learning and other statistical models for predicting in vivo toxicity in humans.</p>
+</div>
+<div id="updated-armitage-2014-top-panel-figure-3" class="section level2">
+<h2>Updated Armitage 2014 Top Panel Figure 3</h2>
+<p>This produces an updated version of the top panel of Figure 3 from the paper Armitage, J. M.; Wania, F.; Arnot, J. A. Environ. Sci. Technol. 2014, 48, 9770-9779.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(data.table)</a></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:gdata&#39;:
+## 
+##     first, last</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">library</span>(httk)</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># We love to give warning messages whenever assumptions are used by HTTK,</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co"># but they will overwhelm the output of this vignette so we turn them</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co"># off:</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="kw">options</span>(<span class="dt">warn =</span> <span class="dv">-1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">armitage.dt &lt;-<span class="st"> </span><span class="kw">copy</span>(armitage_input)</a>
+<a class="sourceLine" id="cb5-2" title="2">armitage.dt[,well_number<span class="op">:</span><span class="er">=</span><span class="dv">384</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="st">  </span>.[,option.bottom<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="st">  </span>.[,option.plastic<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="st">  </span>.[,Tsys<span class="op">:</span><span class="er">=</span><span class="dv">37</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="st">  </span>.[,Tref<span class="op">:</span><span class="er">=</span><span class="fl">298.15</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="st">  </span>.[,FBSf<span class="op">:</span><span class="er">=</span><span class="fl">0.1</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="st">  </span>.[,nomconc<span class="op">:</span><span class="er">=</span><span class="dv">50</span>]</a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co"># Make sure we have data for the chemical:</span></a>
+<a class="sourceLine" id="cb5-11" title="11">armitage.dt &lt;-<span class="st"> </span><span class="kw">subset</span>(armitage.dt,casrn<span class="op">%in%</span><span class="kw">get_cheminfo</span>())</a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co"># These chemicals are missing water solubilities:</span></a>
+<a class="sourceLine" id="cb5-13" title="13">armitage.dt &lt;-<span class="st"> </span><span class="kw">subset</span>(armitage.dt,<span class="op">!</span>(casrn<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;71751-41-2&quot;</span>,<span class="st">&quot;34590-94-8&quot;</span>,<span class="st">&quot;1024-57-3&quot;</span>)))</a>
+<a class="sourceLine" id="cb5-14" title="14"></a>
+<a class="sourceLine" id="cb5-15" title="15">armitage.dt2 &lt;-<span class="st"> </span><span class="kw">armitage_estimate_sarea</span>(<span class="dt">tcdata =</span> armitage.dt)</a>
+<a class="sourceLine" id="cb5-16" title="16">armitage_output1 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="dv">50</span>])</a>
+<a class="sourceLine" id="cb5-17" title="17">armitage_output2 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb5-18" title="18">armitage_output3 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="fl">0.001</span>])</a></code></pre></div>
+</div>
+<div id="plot-results" class="section level2">
+<h2>Plot results</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">armitage_output &lt;-<span class="st"> </span><span class="kw">rbind</span>(armitage_output1[,<span class="dt">xfill:=</span><span class="st">&quot;50 \U00B5M&quot;</span>],</a>
+<a class="sourceLine" id="cb6-2" title="2">                         armitage_output2[,<span class="dt">xfill:=</span><span class="st">&quot;1 \U00B5M&quot;</span>],</a>
+<a class="sourceLine" id="cb6-3" title="3">                         armitage_output3[,<span class="dt">xfill:=</span><span class="st">&quot;1 nM&quot;</span>])</a>
+<a class="sourceLine" id="cb6-4" title="4">armitage_output[,xfill<span class="op">:</span><span class="er">=</span><span class="kw">factor</span>(xfill,<span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;50 \U00B5M&quot;</span>,<span class="st">&quot;1 \U00B5M&quot;</span>,<span class="st">&quot;1 nM&quot;</span>))]</a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw">ggplot</span>(armitage_output) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>gkow,<span class="dt">y=</span><span class="kw">log10</span>(ccells<span class="op">/</span>MW<span class="op">*</span><span class="fl">1e9</span>),<span class="dt">color=</span>xfill),<span class="dt">shape=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="kw">expression</span>(<span class="st">&quot;AC&quot;</span>[<span class="st">&quot;50&quot;</span>]),<span class="dt">x=</span><span class="st">&quot;log P&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;log(ng chemical/g cells)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="st">  </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

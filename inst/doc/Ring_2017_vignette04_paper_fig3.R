@@ -1,15 +1,15 @@
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, 
                       comment = '#>', 
                       fig.width=7, 
                       fig.height=7)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  library('data.table')
 #  library('ggplot2')
 #  library('httk')
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  poormetab <- TRUE
 #  fup.censored.dist <- TRUE
 #  grp <- 'Age.20.50.nonobese'
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #                                sep='_'),
 #                          '.Rdata'))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  #Convert clearance in mL/min/kg to Css in mg/L for a dose of 1 mg/kg/day
 #  Obach2008[,"Css (mg/L)"] <- 1/
 #    (24*60*
@@ -39,7 +39,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #  literature.Css <- Obach2008[,c("Name","CAS","Css (mg/L)")]
 #  Obach2008.dt <- as.data.table(literature.Css)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  Wetmore2012 <- Wetmore2012[c(1:2,13,3:12),]
 #  Wetmore2012.Css <- Wetmore2012[,c("Chemical","CAS","Literature.Css")]
 #  Wetmore2012.Css[, 'Literature.Css'] <- gsub(x=Wetmore2012.Css[,
@@ -53,11 +53,11 @@ knitr::opts_chunk$set(collapse = TRUE,
 #  Wetmore2012.Css <- Wetmore2012.Css[!is.na(Wetmore2012.Css[,"Css (mg/L)"]),]
 #  Wetmore2012.dt <- as.data.table(Wetmore2012.Css)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  litCss.dt <- rbind(Obach2008.dt, Wetmore2012.dt)
 #  setnames(litCss.dt, c('Name', 'Css (mg/L)'), c('Compound', 'litcss'))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  #MW = weight in grams per mole of substance
 #  #MW*1000 = weight in mg per mole of substance
 #  #MW*1000/10^6 = MW/1000 = weight in mg per umol of substance
@@ -78,17 +78,17 @@ knitr::opts_chunk$set(collapse = TRUE,
 #           'chemcas')
 #  litCss.dt[, litcss:=litcss/(MW/1000)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med <- merge(m.dat[, .(chemcas, css50)],
 #                   litCss.dt,
 #                   by=c('chemcas')
 #                   )
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  mymodel <- lm(log10(css50)~log10(litcss), data=tmp.med)
 #  summary(mymodel)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  p <- ggplot(data=tmp.med)+
 #    geom_point(aes(y=css50, #Plot data points
 #                   x=litcss),
@@ -115,7 +115,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #          axis.title.y=element_text(size=rel(2)))
 #  print(p)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  #First find the chemicals with the two highest literature Css values
 #  setorder(tmp.med, litcss) #sort ascending by literature Css
 #  knitr::kable(tmp.med[(nrow(tmp.med)-1):nrow(tmp.med),
@@ -123,12 +123,12 @@ knitr::opts_chunk$set(collapse = TRUE,
 #               format="markdown",
 #               col.names=c("Compound", "CASRN", "Predicted median Css", "Literature median Css", "MW (g/mol)"))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med2 <- tmp.med[1:(nrow(tmp.med)-2), ] #remove the highest two lit Css chemicals
 #  mymodel2 <- lm(log10(css50)~log10(litcss), data=tmp.med2) #re-do regression
 #  summary(mymodel2)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  p2 <- p + stat_smooth(data=tmp.med2,#Add new best-fit line
 #                        mapping=aes(x=litcss, y=css50),
 #                        method="lm",
@@ -142,7 +142,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #         plot=p2,
 #         height=11, width=14)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  offset.model <- lm(log10(css50)~offset(log10(litcss)), data=tmp.med) #forces slope of 1
 #  summary(offset.model)
 #  anova(mymodel, offset.model) #Compare original regression to offset model
@@ -151,28 +151,28 @@ knitr::opts_chunk$set(collapse = TRUE,
 #  summary(offset.model2)
 #  anova(mymodel2, offset.model2) #Compare second regression to offset model
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med[, predicted.over.lit:=css50/litcss]
 #  setorder(tmp.med, predicted.over.lit)
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ---- echo=FALSE, eval=FALSE--------------------------------------------------
 #  knitr::kable(tmp.med[, .(Compound, chemcas, css50, litcss, predicted.over.lit)],
 #               format='markdown',
 #               col.names=c("Compound", "CASRN", "Median predicted Css", "Median literature Css", "Ratio of median predicted to median literature Css"),
 #               align=rep("l", 5))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med[, sum(predicted.over.lit<=10 & predicted.over.lit>=0.1)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med[, sum(predicted.over.lit<=5 & predicted.over.lit>=0.2)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med[, sum(predicted.over.lit<=2 & predicted.over.lit>=0.5)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  tmp.med[, sum(predicted.over.lit>1)]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  nrow(tmp.med)
 

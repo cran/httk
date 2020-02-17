@@ -1,54 +1,54 @@
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
-## ----load_packages, eval = FALSE-----------------------------------------
-#  library("httk")
-#  library("data.table")
+## ----load_packages, eval = TRUE-----------------------------------------------
+library("httk")
+library("data.table")
 
-## ----subpop_specs, eval=FALSE--------------------------------------------
-#  nsamp<-1000
-#  #List subpop names
-#  ExpoCast.group<-list("Total",
-#                       "Age.6.11",
-#                       "Age.12.19",
-#                       "Age.20.65",
-#                       "Age.GT65",
-#                       "BMIgt30",
-#                       "BMIle30",
-#                       "Females",
-#                       "Males",
-#                       "ReproAgeFemale",
-#                       "Age.20.50.nonobese")
-#  #List subpop gender specifications
-#  gendernum <- c(rep(list(NULL),7),
-#                 list(list(Male=0, Female=1000)),
-#                 list(list(Male=1000, Female=0)),
-#                 list(list(Male=0, Female=1000)),
-#                 list(NULL))
-#  #List subpop age limits in years
-#  agelim<-c(list(c(0,79),
-#                 c(6,11),
-#                 c(12,19),
-#                 c(20,65),
-#                 c(66,79)),
-#            rep(list(c(0,79)),4),
-#            list(c(16,49)),
-#            list(c(20,50)))
-#  #List subpop weight categories
-#  bmi_category <- c(rep(list(c('Underweight',
-#                               'Normal',
-#                               'Overweight',
-#                               'Obese')),
-#                        5),
-#                    list('Obese', c('Underweight','Normal', 'Overweight')),
-#                    rep(list(c('Underweight',
-#                               'Normal',
-#                               'Overweight',
-#                               'Obese')),
-#                        3),
-#                    list(c('Underweight', 'Normal', 'Overweight')))
+## ----subpop_specs, eval = TRUE------------------------------------------------
+nsamp<-1000
+#List subpop names
+ExpoCast.group<-list("Total",
+                     "Age.6.11",
+                     "Age.12.19",
+                     "Age.20.65",
+                     "Age.GT65",
+                     "BMIgt30",
+                     "BMIle30",
+                     "Females",
+                     "Males",
+                     "ReproAgeFemale",
+                     "Age.20.50.nonobese")
+#List subpop gender specifications
+gendernum <- c(rep(list(NULL),7), 
+               list(list(Male=0, Female=1000)), 
+               list(list(Male=1000, Female=0)), 
+               list(list(Male=0, Female=1000)), 
+               list(NULL))
+#List subpop age limits in years
+agelim<-c(list(c(0,79),
+               c(6,11),
+               c(12,19),
+               c(20,65),
+               c(66,79)),
+          rep(list(c(0,79)),4),
+          list(c(16,49)),
+          list(c(20,50)))
+#List subpop weight categories
+bmi_category <- c(rep(list(c('Underweight', 
+                             'Normal',
+                             'Overweight',
+                             'Obese')),
+                      5),
+                  list('Obese', c('Underweight','Normal', 'Overweight')),
+                  rep(list(c('Underweight', 
+                             'Normal',
+                             'Overweight',
+                             'Obese')),
+                      3),
+                  list(c('Underweight', 'Normal', 'Overweight')))
 
-## ----generate_parallel, eval=FALSE---------------------------------------
+## ----generate_parallel, eval = FALSE------------------------------------------
 #  tmpfun <- function(gendernum, agelim, bmi_category, ExpoCast_grp,
 #                     nsamp, method){
 #    result <- tryCatch({

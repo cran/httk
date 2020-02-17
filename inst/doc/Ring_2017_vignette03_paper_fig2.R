@@ -1,15 +1,15 @@
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, 
                       comment = '#>', 
                       fig.width=12, 
                       fig.height=12)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  library('data.table')
 #  library('GGally')
 #  library('ggplot2')
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  subpop <- 'Age.20.65'
 #  pop.vi <- readRDS(paste0('data/', paste('httkpop',
 #                                 'vi',
@@ -20,11 +20,11 @@ knitr::opts_chunk$set(collapse = TRUE,
 #                                subpop,
 #                                 sep='_'), '.Rdata'))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  pop.vi[, which_method:='virtual individuals']
 #  pop.dr[, which_method:='direct resampling']
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  pop.vi[, portalvein_flow:=Liver_flow+
 #            Stomach_flow+
 #            Small_intestine_flow+
@@ -35,7 +35,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #            Small_intestine_flow+
 #            Large_intestine_flow]
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  #List the variables of interest
 #  inboth <- c('age_years',
 #              'height',
@@ -49,7 +49,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #  bothpop <- rbind(pop.vi[, c(inboth, 'which_method'), with=FALSE],
 #                      pop.dr[, c(inboth, 'which_method'), with=FALSE])
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  setnames(bothpop, inboth,
 #           c('Age',
 #             'Height',
@@ -70,7 +70,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 #             'GFR',
 #             'Hepatocell.')
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #    theme_set(theme_bw())
 #    p <- ggpairs(data=bothpop,
 #                 columns=1:9,

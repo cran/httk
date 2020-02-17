@@ -1,9 +1,9 @@
-## ----load_packages, eval = FALSE-----------------------------------------
+## ----load_packages, eval = FALSE----------------------------------------------
 #  library(httk)
 #  library(data.table)
 #  library(EnvStats)
 
-## ----read_study_dat, eval=FALSE------------------------------------------
+## ----read_study_dat, eval=FALSE-----------------------------------------------
 #  johnson[, Compound:=tolower(Compound)]
 #  #Compute clearance median and CI assuming lognormal dist
 #  johnson[, cv:=Clearance.sd/Clearance.mean]
@@ -56,11 +56,11 @@
 #  saveRDS(object=jhchem,
 #          file="data/jhchem.Rdata")
 
-## ----extract_study_pop_specs, eval=FALSE---------------------------------
+## ----extract_study_pop_specs, eval=FALSE--------------------------------------
 #  jhtmp <- jhchem[, .(Study.id, CAS, Total.subjects,
 #                      Age.min, Age.max, Female.subjects)]
 
-## ----eval_studypop, eval=FALSE-------------------------------------------
+## ----eval_studypop, eval=FALSE------------------------------------------------
 #  eval_studypop <- function(args,
 #                            fup.censored.dist,
 #                            poormetab,
@@ -158,7 +158,7 @@
 #                      css.bw.median.95CI.max=css.bw.median.95CI['UCL']))
 #    }
 
-## ----repfun, eval=FALSE--------------------------------------------------
+## ----repfun, eval=FALSE-------------------------------------------------------
 #  repfun <- function(args, fup.censored.dist, poormetab, model){
 #    #Replicate each study population 20 times and evaluate model;
 #    #rbind the results into one big data.table
@@ -176,7 +176,7 @@
 #    return(allreps)
 #    }
 
-## ----eval_all_parallel, eval=FALSE---------------------------------------
+## ----eval_all_parallel, eval=FALSE--------------------------------------------
 #  #Convert jhtmp to a list of lists by row, because eval_studypop() expects a list of arguments
 #  jh.ls<-lapply(as.list(1:nrow(jhtmp)),
 #                function(x) as.list(jhtmp[x,]))
