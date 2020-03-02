@@ -324,49 +324,49 @@ rb2p.plot <- ggplot(rb2p.table,aes(predicted.rb2p,measured.rb2p)) +
     plot.title=element_text(size=18,hjust=0.5)) + ggtitle('(A)')
 print(rb2p.plot)
 
-## ----MakeHeatmap--------------------------------------------------------------
-heatmap.table <- NULL
-for(this.cas in get_cheminfo(model='schmitt')){
-    parms <- parameterize_schmitt(chem.cas=this.cas)
-    pcs <- predict_partitioning_schmitt(parameters=parms)
-    heatmap.table <- cbind(heatmap.table,log10(unlist(pcs)[1:11]*parms$Funbound.plasma))
-}
-rownames(heatmap.table) <-  c('Adipose','Bone','Brain','Gut','Heart',
-                              'Kidney','Liver','Lung','Muscle','Skin','Spleen')
-colnames(heatmap.table) <- rep("",dim(heatmap.table)[2])
-
-pal <- function (n, h = c(260, -328), c = 80, l = c(30, 100), power = 1.5,
-    fixup = TRUE, gamma = NULL, alpha = 1, ...)
-{
-    if (!is.null(gamma))
-        warning("'gamma' is deprecated and has no effect")
-    if (n < 1L)
-        return(character(0L))
-   h <- rep(h, length.out = 2L)
-    c <- c[1L]
-    l <- rep(l, length.out = 2L)
-    power <- rep(power, length.out = 2L)
-    rval <- seq(1, -1, length = n)
-    rval <- hex(polarLUV(L = l[2L] - diff(l) * abs(rval)^power[2L],
-        C = c * abs(rval)^power[1L], H = ifelse(rval > 0, h[1L],
-            h[2L])), fixup = fixup, ...)
-    if (!missing(alpha)) {
-        alpha <- pmax(pmin(alpha, 1), 0)
-        alpha <- format(as.hexmode(round(alpha * 255 + 1e-04)),
-            width = 2L, upper.case = TRUE)
-        rval <- paste(rval, alpha, sep = "")
-    }
-    return(rval)
-}
-
-hclust.ave <- function(x) hclust(x, method="ward.D2")
-par(cex.main=1.5,cex.lab=2)
-lhei <- c(1,4)
-lwid <- c(1.25,2)
-lmat <- rbind(c(2,3),c(4,1))
-heatmap.2(heatmap.table,dendrogram='column',col=pal,trace="none",
-          hclustfun=hclust.ave,key.xlab=expression(paste(log[10],K[p]," Value")),
-          key.ylab=expression(paste("Number of ",K[p])),
-          key.title="Partition Coefficients",xlab="Chemicals",cex.lab=2,
-          lmat=lmat,margins=c(2,5),lwid=lwid,lhei=lhei)
+## ----MakeHeatmap, eval=FALSE--------------------------------------------------
+#  heatmap.table <- NULL
+#  for(this.cas in get_cheminfo(model='schmitt')){
+#      parms <- parameterize_schmitt(chem.cas=this.cas)
+#      pcs <- predict_partitioning_schmitt(parameters=parms)
+#      heatmap.table <- cbind(heatmap.table,log10(unlist(pcs)[1:11]*parms$Funbound.plasma))
+#  }
+#  rownames(heatmap.table) <-  c('Adipose','Bone','Brain','Gut','Heart',
+#                                'Kidney','Liver','Lung','Muscle','Skin','Spleen')
+#  colnames(heatmap.table) <- rep("",dim(heatmap.table)[2])
+#  
+#  pal <- function (n, h = c(260, -328), c = 80, l = c(30, 100), power = 1.5,
+#      fixup = TRUE, gamma = NULL, alpha = 1, ...)
+#  {
+#      if (!is.null(gamma))
+#          warning("'gamma' is deprecated and has no effect")
+#      if (n < 1L)
+#          return(character(0L))
+#     h <- rep(h, length.out = 2L)
+#      c <- c[1L]
+#      l <- rep(l, length.out = 2L)
+#      power <- rep(power, length.out = 2L)
+#      rval <- seq(1, -1, length = n)
+#      rval <- hex(polarLUV(L = l[2L] - diff(l) * abs(rval)^power[2L],
+#          C = c * abs(rval)^power[1L], H = ifelse(rval > 0, h[1L],
+#              h[2L])), fixup = fixup, ...)
+#      if (!missing(alpha)) {
+#          alpha <- pmax(pmin(alpha, 1), 0)
+#          alpha <- format(as.hexmode(round(alpha * 255 + 1e-04)),
+#              width = 2L, upper.case = TRUE)
+#          rval <- paste(rval, alpha, sep = "")
+#      }
+#      return(rval)
+#  }
+#  
+#  hclust.ave <- function(x) hclust(x, method="ward.D2")
+#  par(cex.main=1.5,cex.lab=2)
+#  lhei <- c(1,4)
+#  lwid <- c(1.25,2)
+#  lmat <- rbind(c(2,3),c(4,1))
+#  heatmap.2(heatmap.table,dendrogram='column',col=pal,trace="none",
+#            hclustfun=hclust.ave,key.xlab=expression(paste(log[10],K[p]," Value")),
+#            key.ylab=expression(paste("Number of ",K[p])),
+#            key.title="Partition Coefficients",xlab="Chemicals",cex.lab=2,
+#            lmat=lmat,margins=c(2,5),lwid=lwid,lhei=lhei)
 
