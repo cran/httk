@@ -1,39 +1,4 @@
----
-title: "Linakis et al. (Submitted): Analysis and Figure Generation"
-author: "Matt Linakis"
-date: "January 30, 2020"
-output: rmarkdown::html_vignette
-vignette: >
- %\VignetteIndexEntry{Linakis et al. (Submitted): Analysis and Figure Generation}
- %\VignetteEngine{knitr::rmarkdown}
- %\VignetteEncoding{UTF-8}
----
-mlinak01@gmail.com
-
-## Abstract
-
-Currently it is difficult to prospectively estimate human toxicokinetics 
-(particularly for novel chemicals) in a high-throughput manner. The R software 
-package httk has been developed, in part, to address this deficiency, and the 
-aim of this investigation was to develop a generalized inhalation model for httk. 
-The structure of the inhalation model was developed from two previously published 
-physiologically-based models from Jongeneelen et al. (2011) and Clewell et al. 
-(2001) while calculated physicochemical data was obtained from EPA's CompTox 
-Chemicals Dashboard. In total, 142 exposure scenarios across 41 volatile organic 
-chemicals were modeled and compared to published data. The slope of the regression 
-line of best fit between log-transformed simulated and observed combined measured 
-plasma and blood concentrations was 0.59 with an r2= 0.54 and a Root Mean Square 
-Error (RMSE) of direct comparison between the log-transformed simulated and 
-observed values of 0.87. Approximately 3.6% (n = 73) of the data points analyzed 
-were > 2 orders of magnitude different than expected. The volatile organic 
-chemicals examined in this investigation represent small, generally lipophilic 
-molecules. Ultimately this paper details a generalized inhalation component that 
-integrates with the httk physiologically-based toxicokinetic model to provide 
-high-throughput estimates of inhalation chemical exposures.
-
-## Prepare for session
-### Load the relevant libraries
-```{r setup}
+## ----setup--------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, fig.width=5, fig.height=4)
 library(httk)
 library(ggplot2)
@@ -50,20 +15,12 @@ rm(list=ls())
 # but they will overwhelm the output of this vignette so we turn them
 # off:
 options(warn = -1)
-```
-###Get metabolism and concentration data 
-```{r data}
+
+## ----data---------------------------------------------------------------------
 met_data <- metabolism_data_Linakis2020
 conc_data <- concentration_data_Linakis2020
-```
 
-## ANALYSIS
-
-Identify chemicals currently in our metabolism data that we don't have good
-concentration/time data for and remove them from our training dataset
-
-### Data summary for chemical properties
-```{r summary}
+## ----summary------------------------------------------------------------------
 # Small molecule chemicals
 summary(met_data$AVERAGE_MASS)
 # Generally more lipophilic chemicals
@@ -74,10 +31,8 @@ summary(met_data$WATER_SOLUBILITY_MOL.L_OPERA_PRED)
 table(conc_data$CONC_SPECIES)/nrow(conc_data)*100
 # ~72% of samples are from blood
 table(conc_data$SAMPLING_MATRIX)/nrow(conc_data)*100
-```
 
-### Exposure scenarios
-```{r scenarios}
+## ----scenarios----------------------------------------------------------------
 # Create a dataframe with 1 row for each unique external exposure scenario
 unique_scenarios <- conc_data[with(conc_data,                             
   order(PREFERRED_NAME,
@@ -85,12 +40,8 @@ unique_scenarios <- conc_data[with(conc_data,
         SAMPLING_MATRIX,
         as.numeric(as.character(DOSE)),EXP_LENGTH,-TIME)),] %>%
   distinct(DTXSID,DOSE,DOSE_U,EXP_LENGTH,CONC_SPECIES,SAMPLING_MATRIX, .keep_all = TRUE)
-```
 
-### Observations and Predictions
-Create a list of dataframes of observed and predicted concentrations
-for each unique external exposure scenario
-```{r runmodel}
+## ----runmodel-----------------------------------------------------------------
 plist <- list()
 simlist <- list()
 obslist <- list()
@@ -196,19 +147,16 @@ for(i in 1:nrow(unique_scenarios)){
 }
 rm(list=ls(pattern='out'))
 rm(list=ls(pattern='c.vs.t'))
-```
 
-Create a list to hold the combined observations and predictions for each scenario:
-```{r init_dataset}
+## ----init_dataset-------------------------------------------------------------
 # Creation of simulated vs. observed concentration dataset
 unique_scenarios$RSQD <- 0
 unique_scenarios$RMSE <- 0
 unique_scenarios$AIC <- 0
 simobslist <- list()
 obvpredlist <- list()
-```
-Merge the simulations and observations on the basis of simualation time:
-```{r merge_datasets}
+
+## ----merge_datasets-----------------------------------------------------------
 for(i in 1:length(simlist))
 {
   obsdata <- as.data.frame(obslist[[i]])
@@ -294,9 +242,8 @@ for(i in 1:length(simlist))
     simobslist[[i]] <- simobscomb
   }
 }
-```
-Identify the appropriate matric (for example, exhaled breath) for each observation:
-```{r match_matrix}
+
+## ----match_matrix-------------------------------------------------------------
 for(i in 1:length(simobslist))
   if (nrow(simobslist[[i]])>0)
   {
@@ -326,32 +273,29 @@ for(i in 1:length(simobslist))
       }
     simobslist[[i]] <- simobscomb
   }
-```
-Identify which quartile each observation occured in with respect to the latest (maximum)
-observed time
-```{r time_quartile, eval=F}
-for(i in 1:length(simobslist))
-  if (nrow(simobslist[[i]])>0)
-  {
-    simobscomb <- simobslist[[i]]
-    for (j in 1:nrow(simobscomb))
-    { 
-      max.time <- max(simobscomb$time,na.rm=T)
-      if (is.na(max.time)) simobscomb$tquart <- NA
-      else if (max.time == 0) simobscomb$tquart <- "1"
-      else if (!is.na(simobscomb$time[j])) 
-      {
-        simobscomb$tquart[j] <- as.character(1 +
-          floor(simobscomb$time[j]/max.time/0.25))
-        simobscomb$tquart[simobscomb$tquart=="5"] <-
-          "4"
-      } else simobscomb$tquart[j] >- NA
-    }
-    simobslist[[i]] <- simobscomb
-  }
-```
-Calculate the area under the curve (AUC)
-```{r calc_AUC}
+
+## ----time_quartile, eval=F----------------------------------------------------
+#  for(i in 1:length(simobslist))
+#    if (nrow(simobslist[[i]])>0)
+#    {
+#      simobscomb <- simobslist[[i]]
+#      for (j in 1:nrow(simobscomb))
+#      {
+#        max.time <- max(simobscomb$time,na.rm=T)
+#        if (is.na(max.time)) simobscomb$tquart <- NA
+#        else if (max.time == 0) simobscomb$tquart <- "1"
+#        else if (!is.na(simobscomb$time[j]))
+#        {
+#          simobscomb$tquart[j] <- as.character(1 +
+#            floor(simobscomb$time[j]/max.time/0.25))
+#          simobscomb$tquart[simobscomb$tquart=="5"] <-
+#            "4"
+#        } else simobscomb$tquart[j] >- NA
+#      }
+#      simobslist[[i]] <- simobscomb
+#    }
+
+## ----calc_AUC-----------------------------------------------------------------
 for(i in 1:length(simobslist))
   if (nrow(simobslist[[i]])>0)
   {
@@ -394,9 +338,8 @@ for(i in 1:length(simobslist))
     }
     simobslist[[i]] <- simobscomb
   }
-```
-Calculate performance statistics
-```{r calc_error}
+
+## ----calc_error---------------------------------------------------------------
 for(i in 1:length(simobslist))
   if (nrow(simobslist[[i]])>0)
   {
@@ -415,9 +358,8 @@ for(i in 1:length(simobslist))
       ) + ((44+1)*2) #44 is the number of parameters from inhalation_inits.R
     simobslist[[i]] <- simobscomb
   }
-```
-Make a plot for each scenario
-```{r make_plots}
+
+## ----make_plots---------------------------------------------------------------
 for(i in 1:length(simobslist))
   if (nrow(simobslist[[i]])>0)
   {
@@ -453,10 +395,8 @@ simobsfull <- do.call("rbind",simobslist)
 simobsfullrat <- subset(simobsfull, simobsfull$species == "Rat")
 simobsfullhum <- subset(simobsfull, simobsfull$species == "Human")
 unique_scenarios <- subset(unique_scenarios,!is.na(unique_scenarios$RSQD))
-```
 
-### Creation of simulated concentration/time plots
-```{r simCvtplots}
+## ----simCvtplots--------------------------------------------------------------
 for (i in 1:length(plist))
 {
   plist[[i]] <- plist[[i]] + 
@@ -480,11 +420,8 @@ for (i in 1:length(plist))
 #      legend.title = element_text(face = 'bold', size = 16),
 #      legend.text = element_text(face = 'bold',size = 14))
 }
-```
 
-### Regressions
-Other analytics including linear regression on overall concentration vs. time observed vs. predicted
-```{r regression}
+## ----regression---------------------------------------------------------------
 table(unique_scenarios$CONC_SPECIES)
 nrow(simobsfull) - nrow(simobsfull[
   !is.na(simobsfull$simconc) & 
@@ -669,29 +606,24 @@ chemunderpred <- subset(simobsfull,
   log10(simobsfull$obsconc) < 0 & 
   simobsfull$simconc > 0)
 table(chemunderpred$chemclass) / table(simobsfull$chemclass)*100
-```
-## TABLE AND PLOT GENERATION
 
-### Concentration vs. time
-```{r cvtplots, eval = F}
-# Create pdfs of simulated concentration-time plots against observed c-t values
-pdf("simdataplots.pdf")
-for (i in 1:length(plist)) {
-  print(plist[[i]])
-}
-dev.off()
-```
-```{r obsvspredplots, eval = F}
-# Create pdfs of observed vs. predicted concentration plots
-pdf("obvpredplots.pdf", width = 10, height = 10)
-for (i in 1:length(obvpredlist)) {
-  print(obvpredlist[[i]])
-}
-dev.off()
-```
+## ----cvtplots, eval = F-------------------------------------------------------
+#  # Create pdfs of simulated concentration-time plots against observed c-t values
+#  pdf("simdataplots.pdf")
+#  for (i in 1:length(plist)) {
+#    print(plist[[i]])
+#  }
+#  dev.off()
 
-### Figure 2: overall observed vs. predicted plot
-```{r obspredFig2}
+## ----obsvspredplots, eval = F-------------------------------------------------
+#  # Create pdfs of observed vs. predicted concentration plots
+#  pdf("obvpredplots.pdf", width = 10, height = 10)
+#  for (i in 1:length(obvpredlist)) {
+#    print(obvpredlist[[i]])
+#  }
+#  dev.off()
+
+## ----obspredFig2--------------------------------------------------------------
 fig2 <- ggplot(
   data = simobsfull[
     simobsfull$simconc > 0 & 
@@ -754,13 +686,16 @@ fig2 #Display plot in R
 #pdf("Figure2.pdf", width = 10, height = 10)
 #print(fig2)
 #dev.off()
-```
 
-### Create and read out plots of overall cvt, cmax, and auc observed vs. pred
-```{r calculations}
+## ----calculations-------------------------------------------------------------
 # Create data and run calculations for populating plots
 cmaxfull <- subset(simobsfull, !duplicated(simobsfull$AUCobs) & simobsfull$Cmaxobs != 0)
-cmaxlm <- lm(log10(cmaxfull$Cmaxobs)~log10(cmaxfull$Cmaxsim), na.action = na.exclude)
+cmaxobs <- cmaxfull$Cmaxobs
+cmaxsim <- cmaxfull$Cmaxsim
+cmaxobs <- cmaxobs[!is.nan(cmaxsim)]
+cmaxsim <- cmaxsim[!is.nan(cmaxsim)]
+cmaxsim[!is.finite(log10(cmaxsim))] <- NA
+cmaxlm <- lm(log10(cmaxobs)~log10(cmaxsim), na.action = na.exclude)
 cmaxvcbkg <- subset(cmaxfull, 
   paste(
     cmaxfull$chem, 
@@ -779,7 +714,12 @@ cmaxvcbkg$adjustedCmaxsim <- cmaxvcbkg$Cmaxsim - cmaxvcbkg$obsconc
 aucfull <-subset(simobsfull, 
   !duplicated(simobsfull$AUCobs) & 
   simobsfull$AUCobs != 0)
-auclm <- lm(log10(aucfull$AUCobs)~log10(aucfull$AUCsim), na.action = na.exclude)
+aucobs <- aucfull$AUCobs
+aucsim <- aucfull$AUCsim
+aucobs <- aucobs[!is.nan(aucsim)]
+aucsim <- aucsim[!is.nan(aucsim)]
+aucsim[!is.finite(log10(aucsim))] <- NA
+auclm <- lm(log10(aucobs)~log10(aucsim), na.action = na.exclude)
 cmaxslope <- summary(cmaxlm)$coef[2,1]
 cmaxrsq <- summary(cmaxlm)$r.squared
 totalrmsecmax <- sqrt(mean((log10(cmaxfull$Cmaxsim) - 
@@ -809,10 +749,8 @@ aucmissp <- nrow(aucfull[
 aucmisschem <- table(aucfull[
   abs(log10(aucfull$AUCsim) - 
   log10(aucfull$AUCobs)) > 1,]$chem)
-```
 
-### Figure 4: Cmax and AUC observed vs. Predicted Values
-```{r Fig4plot}
+## ----Fig4plot-----------------------------------------------------------------
 cmaxp <- ggplot(data = cmaxfull, aes(x = log10(Cmaxsim), y = log10(Cmaxobs))) +
   geom_point(color = 
     ifelse(abs(log10(cmaxfull$Cmaxsim)  -log10(cmaxfull$Cmaxobs))>=1, "red","black"))  +
@@ -930,236 +868,228 @@ aucp
 #pdf("Figure4.pdf", width = 20, height = 10)
 #plot_grid(cmaxp,aucp,nrow = 1, labels = c('A','B'), label_size = 30)
 #dev.off()
-```
 
-### Figure 3: Separation by chemical class
-```{r Fig3plot, eval=F}
-simobsfull$aggscen <- as.factor(paste(simobsfull$chem, 
-  simobsfull$species, 
-  simobsfull$matrix))
-chem.lm <- lm(
-  log10(simconc) - log10(obsconc) ~ 
-  aggscen, 
-  data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,])
-chem.res <- resid(chem.lm)
-# Number of observations per chemical class
-numpt <- simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,] %>%
-  group_by(chemclass) %>% summarize(n = paste("n =", length(simconc))) 
-fig3 <- ggplot(
-  data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,], 
-  aes(x = aggscen, y = log10(simconc)-log10(obsconc), fill = chemclass)) +
-  geom_boxplot() +
-  geom_hline(yintercept = 0) +
-  geom_hline(yintercept = 2, linetype = 2)+
-  geom_hline(yintercept = -2, linetype = 2)+
-  xlab("Exposure Scenario") +
-  ylab("Log(Simulated Concentration)-\nLog(Observed Concentration)\n") +
-  facet_wrap(vars(chemclass), scales = 'free_x', nrow = 1) + #35 by 12 for poster
-  theme_bw() +
-  geom_text(
-    data = numpt, 
-    aes(x = Inf, y = -Inf, hjust = 1.05, vjust = -0.5, label = n), 
-    size = 10, 
-    colour = 'black', 
-    inherit.aes = F, 
-    parse = F) +
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1,vjust=0.5,size = 20, face = 'bold'),
-    strip.text.x = element_text(face = 'bold', size = 24), 
-    legend.position = 'none', 
-    axis.title.x = element_text(face = 'bold', size = 30), 
-    axis.title.y = element_text(face = 'bold', size = 30), 
-    axis.text.y = element_text(face = 'bold',size = 25, color = 'black'))
-fig3
-#pdf("Figure3.pdf", width = 40, height = 13)
-#print(fig3)
-#dev.off()
-```
+## ----Fig3plot, eval=F---------------------------------------------------------
+#  simobsfull$aggscen <- as.factor(paste(simobsfull$chem,
+#    simobsfull$species,
+#    simobsfull$matrix))
+#  chem.lm <- lm(
+#    log10(simconc) - log10(obsconc) ~
+#    aggscen,
+#    data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,])
+#  chem.res <- resid(chem.lm)
+#  # Number of observations per chemical class
+#  numpt <- simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,] %>%
+#    group_by(chemclass) %>% summarize(n = paste("n =", length(simconc)))
+#  fig3 <- ggplot(
+#    data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,],
+#    aes(x = aggscen, y = log10(simconc)-log10(obsconc), fill = chemclass)) +
+#    geom_boxplot() +
+#    geom_hline(yintercept = 0) +
+#    geom_hline(yintercept = 2, linetype = 2)+
+#    geom_hline(yintercept = -2, linetype = 2)+
+#    xlab("Exposure Scenario") +
+#    ylab("Log(Simulated Concentration)-\nLog(Observed Concentration)\n") +
+#    facet_wrap(vars(chemclass), scales = 'free_x', nrow = 1) + #35 by 12 for poster
+#    theme_bw() +
+#    geom_text(
+#      data = numpt,
+#      aes(x = Inf, y = -Inf, hjust = 1.05, vjust = -0.5, label = n),
+#      size = 10,
+#      colour = 'black',
+#      inherit.aes = F,
+#      parse = F) +
+#    theme(
+#      axis.text.x = element_text(angle = 90, hjust = 1,vjust=0.5,size = 20, face = 'bold'),
+#      strip.text.x = element_text(face = 'bold', size = 24),
+#      legend.position = 'none',
+#      axis.title.x = element_text(face = 'bold', size = 30),
+#      axis.title.y = element_text(face = 'bold', size = 30),
+#      axis.text.y = element_text(face = 'bold',size = 25, color = 'black'))
+#  fig3
+#  #pdf("Figure3.pdf", width = 40, height = 13)
+#  #print(fig3)
+#  #dev.off()
 
-### Figures S1A-S1D: Separation by time quartile and physicochemical properties
-```{r FigS1, eval = FALSE}
-figs1a <- ggplot(
-    data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,], 
-    aes(x = tquart, y = log10(simconc)-log10(obsconc))) +
-  geom_boxplot()+
-  geom_hline(yintercept = 0)+
-  geom_hline(yintercept = 2, linetype = 2)+
-  geom_hline(yintercept = -2, linetype = 2)+
-  xlab("\nTime Quartile\n") +
-  ylab("Log(Simulated Concentration)-\nLog(Observed Concentration)\n") +
-  theme_bw()+
-  theme(
-    axis.text.x = element_text(size = 20, face = 'bold'), 
-    strip.text.x = element_text(face = 'bold', size = 20), 
-    legend.position = 'none', 
-    axis.title.x = element_text(face = 'bold', size = 20), 
-    axis.title.y = element_text(face = 'bold', size = 20), 
-    axis.text.y = element_text(size = 20, face = 'bold'))
-figs1a
-figs1b <- ggplot(
-    data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,], 
-    aes(x = mw, y = log10(simconc)-log10(obsconc))) +
-  geom_point()+
-  geom_hline(yintercept = 0)+
-  geom_hline(yintercept = 2, linetype = 2)+
-  geom_hline(yintercept = -2, linetype = 2)+
-  xlab("\nMolecular Weight (g/mol)\n") +
-  ylab("\nLog(Simulated Concentration)-\nLog(Observed Concentration)\n") +
-  theme_bw()+
-  theme(
-    axis.text.x = element_text(size = 20, face = 'bold'), 
-    strip.text.x = element_text(face = 'bold', size = 20), 
-    legend.position = 'none', 
-    axis.title.x = element_text(face = 'bold', size = 20), 
-    axis.title.y = element_text(face = 'bold', size = 20), 
-    axis.text.y = element_text(size = 20, face = 'bold'))
-figs1b
-figs1c <- ggplot(
-    data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,], 
-    aes(x = logp, y = log10(simconc)-log10(obsconc))) +
-  geom_point()+
-  geom_hline(yintercept = 0)+
-  geom_hline(yintercept = 2, linetype = 2)+
-  geom_hline(yintercept = -2, linetype = 2)+
-  xlab("\nLog P") +
-  ylab("Log(Simulated Concentration)-\nLog(Observed Concentration)\n") +
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(size = 20, face = 'bold'), 
-    strip.text.x = element_text(face = 'bold', size = 20), 
-    legend.position = 'none', 
-    axis.title.x = element_text(face = 'bold', size = 20), 
-    axis.title.y = element_text(face = 'bold', size = 20), 
-    axis.text.y = element_text(size = 20, face = 'bold'))
-figs1c
-figs1d <- ggplot(
-    data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,], 
-    aes(x = sol, y = log10(simconc)-log10(obsconc))) +
-  geom_point()+
-  geom_hline(yintercept = 0)+
-  geom_hline(yintercept = 2, linetype = 2)+
-  geom_hline(yintercept = -2, linetype = 2)+
-  xlab("\nSolubility (mol/L)") +
-  ylab("\nLog(Simulated Concentration)-\nLog(Observed Concentration)\n") +
-  scale_x_log10()+
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(size = 20, face = 'bold'), 
-    strip.text.x = element_text(face = 'bold', size = 20), 
-    legend.position = 'none', 
-    axis.title.x = element_text(face = 'bold', size = 20), 
-    axis.title.y = element_text(face = 'bold', size = 20), 
-    axis.text.y = element_text(size = 20, face = 'bold'))
-figs1d
-#pdf("FigureS1.pdf", width = 20, height = 20)
-plot_grid(figs1a,figs1b,figs1c,figs1d,nrow = 2, labels = c('A','B','C','D'), label_size = 30)
-#dev.off()
-```
+## ----FigS1, eval = FALSE------------------------------------------------------
+#  figs1a <- ggplot(
+#      data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,],
+#      aes(x = tquart, y = log10(simconc)-log10(obsconc))) +
+#    geom_boxplot()+
+#    geom_hline(yintercept = 0)+
+#    geom_hline(yintercept = 2, linetype = 2)+
+#    geom_hline(yintercept = -2, linetype = 2)+
+#    xlab("\nTime Quartile\n") +
+#    ylab("Log(Simulated Concentration)-\nLog(Observed Concentration)\n") +
+#    theme_bw()+
+#    theme(
+#      axis.text.x = element_text(size = 20, face = 'bold'),
+#      strip.text.x = element_text(face = 'bold', size = 20),
+#      legend.position = 'none',
+#      axis.title.x = element_text(face = 'bold', size = 20),
+#      axis.title.y = element_text(face = 'bold', size = 20),
+#      axis.text.y = element_text(size = 20, face = 'bold'))
+#  figs1a
+#  figs1b <- ggplot(
+#      data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,],
+#      aes(x = mw, y = log10(simconc)-log10(obsconc))) +
+#    geom_point()+
+#    geom_hline(yintercept = 0)+
+#    geom_hline(yintercept = 2, linetype = 2)+
+#    geom_hline(yintercept = -2, linetype = 2)+
+#    xlab("\nMolecular Weight (g/mol)\n") +
+#    ylab("\nLog(Simulated Concentration)-\nLog(Observed Concentration)\n") +
+#    theme_bw()+
+#    theme(
+#      axis.text.x = element_text(size = 20, face = 'bold'),
+#      strip.text.x = element_text(face = 'bold', size = 20),
+#      legend.position = 'none',
+#      axis.title.x = element_text(face = 'bold', size = 20),
+#      axis.title.y = element_text(face = 'bold', size = 20),
+#      axis.text.y = element_text(size = 20, face = 'bold'))
+#  figs1b
+#  figs1c <- ggplot(
+#      data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,],
+#      aes(x = logp, y = log10(simconc)-log10(obsconc))) +
+#    geom_point()+
+#    geom_hline(yintercept = 0)+
+#    geom_hline(yintercept = 2, linetype = 2)+
+#    geom_hline(yintercept = -2, linetype = 2)+
+#    xlab("\nLog P") +
+#    ylab("Log(Simulated Concentration)-\nLog(Observed Concentration)\n") +
+#    theme_bw() +
+#    theme(
+#      axis.text.x = element_text(size = 20, face = 'bold'),
+#      strip.text.x = element_text(face = 'bold', size = 20),
+#      legend.position = 'none',
+#      axis.title.x = element_text(face = 'bold', size = 20),
+#      axis.title.y = element_text(face = 'bold', size = 20),
+#      axis.text.y = element_text(size = 20, face = 'bold'))
+#  figs1c
+#  figs1d <- ggplot(
+#      data = simobsfull[simobsfull$simconc >0 & simobsfull$obsconc > 0,],
+#      aes(x = sol, y = log10(simconc)-log10(obsconc))) +
+#    geom_point()+
+#    geom_hline(yintercept = 0)+
+#    geom_hline(yintercept = 2, linetype = 2)+
+#    geom_hline(yintercept = -2, linetype = 2)+
+#    xlab("\nSolubility (mol/L)") +
+#    ylab("\nLog(Simulated Concentration)-\nLog(Observed Concentration)\n") +
+#    scale_x_log10()+
+#    theme_bw() +
+#    theme(
+#      axis.text.x = element_text(size = 20, face = 'bold'),
+#      strip.text.x = element_text(face = 'bold', size = 20),
+#      legend.position = 'none',
+#      axis.title.x = element_text(face = 'bold', size = 20),
+#      axis.title.y = element_text(face = 'bold', size = 20),
+#      axis.text.y = element_text(size = 20, face = 'bold'))
+#  figs1d
+#  #pdf("FigureS1.pdf", width = 20, height = 20)
+#  plot_grid(figs1a,figs1b,figs1c,figs1d,nrow = 2, labels = c('A','B','C','D'), label_size = 30)
+#  #dev.off()
 
-### Supplemental Table 2: Leave-one-out Chemical Sensitivity Analysis
-```{r SupTable2, eval = FALSE}
-senschem <- list()
-sensslope <- list()
-sensrsq <- list()
-sensregrmse <- list()
-senstotalrmse <- list()
-senspmiss <- list()
-senscmaxslope <- list()
-senscmaxrsq <- list()
-senstotalrmsecmax <- list()
-sensaucslope <- list()
-sensaucrsq <- list()
-senstotalrmseauc <- list()
-for (i in 1:nrow(simobsfull))
-{
-  simobsfullsens <- subset(simobsfull,simobsfull$chem != simobsfull$chem[i])
-  senschem[i] <- as.character(simobsfull$chem[i])
-  senslm <- lm(
-    log10(simobsfullsens$obsconc[
-      !is.na(simobsfullsens$simconc) & 
-      simobsfullsens$simconc > 0 & 
-      simobsfullsens$obsconc > 0]) 
-    log10(simobsfullsens$simconc[
-      !is.na(simobsfullsens$simconc) & 
-      simobsfullsens$simconc >0 & 
-      simobsfullsens$obsconc > 0]))
-  sensslope[i] <- round(summary(senslm)$coef[2,1],digits = 2)
-  sensrsq[i] <- round(summary(senslm)$r.squared,digits = 2)
-  sensregrmse[i] <- round(sqrt(mean(lm$residuals^2)),digits = 2)
-  senstotalrmse[i] <- round(sqrt(mean((
-    log10(simobsfullsens$simconc[
-      !is.na(simobsfullsens$simconc) & 
-      simobsfullsens$simconc >0 & 
-      simobsfullsens$obsconc > 0]) -   
-    log10(simobsfullsens$obsconc[
-      !is.na(simobsfullsens$simconc) & 
-        simobsfullsens$simconc >0 & 
-        simobsfullsens$obsconc > 0]))^2, 
-    na.rm = T)), digits = 2)
-  senspmiss[i] <- round((nrow(simobsfullsens) - 
-    nrow(simobsfullsens[
-      !is.na(simobsfullsens$simconc) & 
-      simobsfullsens$simconc >0 & 
-      simobsfullsens$obsconc > 0,])) / nrow(simobsfullsens) * 100, 
-    digits = 2)
-  senscmaxfull <- subset(simobsfullsens, !duplicated(simobsfullsens$Cmaxobs))
-  senscmaxlm <- lm(
-    log10(senscmaxfull$Cmaxobs[senscmaxfull$Cmaxobs>0]) ~
-    log10(senscmaxfull$Cmaxsim[senscmaxfull$Cmaxobs>0]), 
-    na.action = na.exclude)
-  sensaucfull <-subset(simobsfullsens, !duplicated(simobsfullsens$AUCobs))
-  sensauclm <- lm(
-    log10(aucfull$AUCobs[aucfull$AUCobs>0]) ~
-    log10(aucfull$AUCsim[aucfull$AUCobs>0]), 
-    na.action = na.exclude)
-  senscmaxslope[i] <- round(summary(senscmaxlm)$coef[2,1],digits = 2)
-  senscmaxrsq[i] <- round(summary(senscmaxlm)$r.squared,digits = 2)
-  senstotalrmsecmax[i] <- sqrt(mean((log10(senscmaxfull$Cmaxsim[senscmaxfull$Cmaxobs>0]) - log10(senscmaxfull$Cmaxobs[senscmaxfull$Cmaxobs>0]))^2, na.rm = T))
-  sensaucslope[i] <- round(summary(sensauclm)$coef[2,1],digits = 2)
-  sensaucrsq[i] <- round(summary(sensauclm)$r.squared,digits = 2)
-  senstotalrmseauc[i] <- sqrt(mean((log10(sensaucfull$AUCsim[sensaucfull$AUCobs>0]) - log10(sensaucfull$AUCobs[sensaucfull$AUCobs>0]))^2, na.rm = T))
-}
-sensitivitydf <- data.frame(Chemical <- as.character(senschem),
-                            sensSlope <- as.numeric(sensslope),
-                            sensRsq <- as.numeric(sensrsq),
-                            sensRegrmse <- as.numeric(sensregrmse),
-                            sensTotrmse <- as.numeric(senstotalrmse),
-                            sensPmiss <- as.numeric(senspmiss),
-                            sensCmaxslope <- as.numeric(senscmaxslope),
-                            sensCmaxrsq <- as.numeric(senscmaxrsq),
-                            sensCmaxrmse <- as.numeric(senstotalrmsecmax),
-                            sensAUCslope <- as.numeric(sensaucslope),
-                            sensAUCrsq <- as.numeric(sensaucrsq),
-                            sensAUCrmse <- as.numeric(senstotalrmseauc),
-                            stringsAsFactors=FALSE)
-sensitivitydf <- subset(sensitivitydf,!duplicated(sensitivitydf$Chemical....as.character.senschem.))
-names(sensitivitydf) <- c('Chemical Dropped','Regression Slope','Regression R^2','Regression RMSE','Orthogonal RMSE', 'Percent Data Censored','Cmax Regression Slope','Cmax Regression R^2','Cmax Orthogonal RMSE','AUC Regression Slope','AUC Regression R^2','AUC Orthogonal RMSE')
-notdropped <- c('None',concregslope,concregr2,concregrmse,totalrmse,pmiss,cmaxslope,cmaxrsq,totalrmsecmax,aucslope,aucrsq,totalrmseauc)
-sensitivitydf <- rbind(notdropped, sensitivitydf)
-sensitivitydf[,-1] <- sapply(sensitivitydf[,-1],as.numeric)
-sensitivitydf[,-1] <- round(sensitivitydf[,-1],2)
-  # Clean up and write file
-rm(chem.lm, obvpredplot, p, pdata1, plot.data, plots, relconc, sensaucfull, sensauclm, sensaucrsq, sensaucslope, senschem, senscmaxfull, senscmaxlm, senscmaxrsq, senscmaxslope, senslm, senspmiss, sensregrmse, sensrsq, sensslope, senstotalrmse, senstotalrmseauc, senstotalrmsecmax, solve, AUCrmse, AUCrsq, AUCslope, chem.res, Chemical, Cmaxrmse, Cmaxrsq, Cmaxslope, colors, count, i, j, k, met_col, name, name1, Pmiss, Regrmse, Rsq, Slope, rem, Totrmse)
+## ----SupTable2, eval = FALSE--------------------------------------------------
+#  senschem <- list()
+#  sensslope <- list()
+#  sensrsq <- list()
+#  sensregrmse <- list()
+#  senstotalrmse <- list()
+#  senspmiss <- list()
+#  senscmaxslope <- list()
+#  senscmaxrsq <- list()
+#  senstotalrmsecmax <- list()
+#  sensaucslope <- list()
+#  sensaucrsq <- list()
+#  senstotalrmseauc <- list()
+#  for (i in 1:nrow(simobsfull))
+#  {
+#    simobsfullsens <- subset(simobsfull,simobsfull$chem != simobsfull$chem[i])
+#    senschem[i] <- as.character(simobsfull$chem[i])
+#    senslm <- lm(
+#      log10(simobsfullsens$obsconc[
+#        !is.na(simobsfullsens$simconc) &
+#        simobsfullsens$simconc > 0 &
+#        simobsfullsens$obsconc > 0])
+#      log10(simobsfullsens$simconc[
+#        !is.na(simobsfullsens$simconc) &
+#        simobsfullsens$simconc >0 &
+#        simobsfullsens$obsconc > 0]))
+#    sensslope[i] <- round(summary(senslm)$coef[2,1],digits = 2)
+#    sensrsq[i] <- round(summary(senslm)$r.squared,digits = 2)
+#    sensregrmse[i] <- round(sqrt(mean(lm$residuals^2)),digits = 2)
+#    senstotalrmse[i] <- round(sqrt(mean((
+#      log10(simobsfullsens$simconc[
+#        !is.na(simobsfullsens$simconc) &
+#        simobsfullsens$simconc >0 &
+#        simobsfullsens$obsconc > 0]) -
+#      log10(simobsfullsens$obsconc[
+#        !is.na(simobsfullsens$simconc) &
+#          simobsfullsens$simconc >0 &
+#          simobsfullsens$obsconc > 0]))^2,
+#      na.rm = T)), digits = 2)
+#    senspmiss[i] <- round((nrow(simobsfullsens) -
+#      nrow(simobsfullsens[
+#        !is.na(simobsfullsens$simconc) &
+#        simobsfullsens$simconc >0 &
+#        simobsfullsens$obsconc > 0,])) / nrow(simobsfullsens) * 100,
+#      digits = 2)
+#    senscmaxfull <- subset(simobsfullsens, !duplicated(simobsfullsens$Cmaxobs))
+#    senscmaxlm <- lm(
+#      log10(senscmaxfull$Cmaxobs[senscmaxfull$Cmaxobs>0]) ~
+#      log10(senscmaxfull$Cmaxsim[senscmaxfull$Cmaxobs>0]),
+#      na.action = na.exclude)
+#    sensaucfull <-subset(simobsfullsens, !duplicated(simobsfullsens$AUCobs))
+#    sensauclm <- lm(
+#      log10(aucfull$AUCobs[aucfull$AUCobs>0]) ~
+#      log10(aucfull$AUCsim[aucfull$AUCobs>0]),
+#      na.action = na.exclude)
+#    senscmaxslope[i] <- round(summary(senscmaxlm)$coef[2,1],digits = 2)
+#    senscmaxrsq[i] <- round(summary(senscmaxlm)$r.squared,digits = 2)
+#    senstotalrmsecmax[i] <- sqrt(mean((log10(senscmaxfull$Cmaxsim[senscmaxfull$Cmaxobs>0]) - log10(senscmaxfull$Cmaxobs[senscmaxfull$Cmaxobs>0]))^2, na.rm = T))
+#    sensaucslope[i] <- round(summary(sensauclm)$coef[2,1],digits = 2)
+#    sensaucrsq[i] <- round(summary(sensauclm)$r.squared,digits = 2)
+#    senstotalrmseauc[i] <- sqrt(mean((log10(sensaucfull$AUCsim[sensaucfull$AUCobs>0]) - log10(sensaucfull$AUCobs[sensaucfull$AUCobs>0]))^2, na.rm = T))
+#  }
+#  sensitivitydf <- data.frame(Chemical <- as.character(senschem),
+#                              sensSlope <- as.numeric(sensslope),
+#                              sensRsq <- as.numeric(sensrsq),
+#                              sensRegrmse <- as.numeric(sensregrmse),
+#                              sensTotrmse <- as.numeric(senstotalrmse),
+#                              sensPmiss <- as.numeric(senspmiss),
+#                              sensCmaxslope <- as.numeric(senscmaxslope),
+#                              sensCmaxrsq <- as.numeric(senscmaxrsq),
+#                              sensCmaxrmse <- as.numeric(senstotalrmsecmax),
+#                              sensAUCslope <- as.numeric(sensaucslope),
+#                              sensAUCrsq <- as.numeric(sensaucrsq),
+#                              sensAUCrmse <- as.numeric(senstotalrmseauc),
+#                              stringsAsFactors=FALSE)
+#  sensitivitydf <- subset(sensitivitydf,!duplicated(sensitivitydf$Chemical....as.character.senschem.))
+#  names(sensitivitydf) <- c('Chemical Dropped','Regression Slope','Regression R^2','Regression RMSE','Orthogonal RMSE', 'Percent Data Censored','Cmax Regression Slope','Cmax Regression R^2','Cmax Orthogonal RMSE','AUC Regression Slope','AUC Regression R^2','AUC Orthogonal RMSE')
+#  notdropped <- c('None',concregslope,concregr2,concregrmse,totalrmse,pmiss,cmaxslope,cmaxrsq,totalrmsecmax,aucslope,aucrsq,totalrmseauc)
+#  sensitivitydf <- rbind(notdropped, sensitivitydf)
+#  sensitivitydf[,-1] <- sapply(sensitivitydf[,-1],as.numeric)
+#  sensitivitydf[,-1] <- round(sensitivitydf[,-1],2)
+#    # Clean up and write file
+#  rm(chem.lm, obvpredplot, p, pdata1, plot.data, plots, relconc, sensaucfull, sensauclm, sensaucrsq, sensaucslope, senschem, senscmaxfull, senscmaxlm, senscmaxrsq, senscmaxslope, senslm, senspmiss, sensregrmse, sensrsq, sensslope, senstotalrmse, senstotalrmseauc, senstotalrmsecmax, solve, AUCrmse, AUCrsq, AUCslope, chem.res, Chemical, Cmaxrmse, Cmaxrsq, Cmaxslope, colors, count, i, j, k, met_col, name, name1, Pmiss, Regrmse, Rsq, Slope, rem, Totrmse)
+#  
+#  write.csv(sensitivitydf, 'supptab2.csv',row.names = F)
 
-write.csv(sensitivitydf, 'supptab2.csv',row.names = F)
-```
+## ----SupTable1, eval = FALSE--------------------------------------------------
+#  supptab1 <- subset(unique_scenarios, !duplicated(unique_scenarios$PREFERRED_NAME) | !duplicated(unique_scenarios$SOURCE_CVT) | !duplicated(unique_scenarios$CONC_SPECIES))
+#  for(i in 1:nrow(supptab1)){
+#    tryCatch({
+#      supptab1$Metabolism_Source[i] <- met_data$SOURCE_MET[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Log_P[i] <- met_data$OCTANOL_WATER_PARTITION_LOGP_OPERA_PRED[met_data$DTXSID %in% supptab1$DTXSID[i]& met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Solubility[i] <- met_data$WATER_SOLUBILITY_MOL.L_OPERA_PRED[met_data$DTXSID %in% supptab1$DTXSID[i]& met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Blood_Air_Partition_Coefficient[i] <- met_data$CALC_PBA[met_data$DTXSID %in% supptab1$DTXSID[i]& met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Chem_Class[i] <- met_data$CHEM_CLASS[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Species[i] <- met_data$SPECIES[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Vmax[i] <- met_data$VMAX[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#      supptab1$Km[i] <- met_data$KM[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
+#    }, error = function(e){})
+#  }
+#  supptab1 <- supptab1[c('PREFERRED_NAME','DTXSID','CASRN','Chem_Class','AVERAGE_MASS','Log_P','Solubility','Blood_Air_Partition_Coefficient','Species','Vmax','Km','Metabolism_Source','SOURCE_CVT')]
+#  names(supptab1) <- c('Chemical','DTXSID','CASRN','CAMEO Chemical Class','Molecular Weight (g/mol)','Log P','Solubility (mol/L)','Blood Air Partition Coefficient','Available Species Data','Vmax (pmol/min/10^6 cells)','KM (uM)','Metabolism Data Source','Concentration-Time Data Source')
+#  write.csv(supptab1, "supptab1.csv", row.names = F)
 
-### Supplemental Table 1
-```{r SupTable1, eval = FALSE}
-supptab1 <- subset(unique_scenarios, !duplicated(unique_scenarios$PREFERRED_NAME) | !duplicated(unique_scenarios$SOURCE_CVT) | !duplicated(unique_scenarios$CONC_SPECIES))
-for(i in 1:nrow(supptab1)){
-  tryCatch({
-    supptab1$Metabolism_Source[i] <- met_data$SOURCE_MET[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Log_P[i] <- met_data$OCTANOL_WATER_PARTITION_LOGP_OPERA_PRED[met_data$DTXSID %in% supptab1$DTXSID[i]& met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Solubility[i] <- met_data$WATER_SOLUBILITY_MOL.L_OPERA_PRED[met_data$DTXSID %in% supptab1$DTXSID[i]& met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Blood_Air_Partition_Coefficient[i] <- met_data$CALC_PBA[met_data$DTXSID %in% supptab1$DTXSID[i]& met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Chem_Class[i] <- met_data$CHEM_CLASS[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Species[i] <- met_data$SPECIES[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Vmax[i] <- met_data$VMAX[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-    supptab1$Km[i] <- met_data$KM[met_data$DTXSID %in% supptab1$DTXSID[i] & met_data$SPECIES %in% supptab1$CONC_SPECIES[i]]
-  }, error = function(e){})
-}
-supptab1 <- supptab1[c('PREFERRED_NAME','DTXSID','CASRN','Chem_Class','AVERAGE_MASS','Log_P','Solubility','Blood_Air_Partition_Coefficient','Species','Vmax','Km','Metabolism_Source','SOURCE_CVT')]
-names(supptab1) <- c('Chemical','DTXSID','CASRN','CAMEO Chemical Class','Molecular Weight (g/mol)','Log P','Solubility (mol/L)','Blood Air Partition Coefficient','Available Species Data','Vmax (pmol/min/10^6 cells)','KM (uM)','Metabolism Data Source','Concentration-Time Data Source')
-write.csv(supptab1, "supptab1.csv", row.names = F)
-```
