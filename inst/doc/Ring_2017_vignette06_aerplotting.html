@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2020-07-19" />
+<meta name="date" content="2020-09-24" />
 
 <title>Ring et al. (2017) AER plotting</title>
 
@@ -301,7 +301,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Ring et al. (2017) AER plotting</h1>
 <h4 class="author">Caroline Ring</h4>
-<h4 class="date">2020-07-19</h4>
+<h4 class="date">2020-09-24</h4>
 
 
 
@@ -554,7 +554,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb22-3" title="3">                               .(Compound.factor, ExpoCast.group, logAER.diff)],</a>
 <a class="sourceLine" id="cb22-4" title="4">                         Compound.factor<span class="op">~</span>ExpoCast.group,</a>
 <a class="sourceLine" id="cb22-5" title="5">                         <span class="dt">value.var=</span><span class="st">&#39;logAER.diff&#39;</span>)</a></code></pre></div>
-<p>To visualize differences above and below some mean value, it’s usually best to use a diverging colormap, like those in <a href="http://colorbrewer2.org">ColorBrewer 2</a>. Unfortunately, <code>heatmap.2</code> — the function we’ll use to create the heatmap plots — doesn’t have a built-in way to properly interpolate the diverging color palettes provided by, e.g., <code>RColorBrewer</code>. So we have to set up a function to do the interpolation. This function is a minor adaptation of some code provided in <a href="http://stackoverflow.com/a/10986203">a Stack Overflow answer by Josh O’Brien</a>.</p>
+<p>To visualize differences above and below some mean value, it’s usually best to use a diverging colormap, like those in <a href="https://colorbrewer2.org">ColorBrewer 2</a>. Unfortunately, <code>heatmap.2</code> — the function we’ll use to create the heatmap plots — doesn’t have a built-in way to properly interpolate the diverging color palettes provided by, e.g., <code>RColorBrewer</code>. So we have to set up a function to do the interpolation. This function is a minor adaptation of some code provided in <a href="https://stackoverflow.com/a/10986203">a Stack Overflow answer by Josh O’Brien</a>.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co">#Use a diverging color palette</span></a>
 <a class="sourceLine" id="cb23-2" title="2"><span class="co">#Based on http://stackoverflow.com/a/10986203 by Josh O&#39;Brien</span></a>
 <a class="sourceLine" id="cb23-3" title="3">diverge.color &lt;-<span class="st"> </span><span class="cf">function</span>(data,<span class="dt">pal_choice=</span><span class="st">&quot;RdBu&quot;</span>,<span class="dt">Thresh=</span><span class="dv">0</span>){</a>

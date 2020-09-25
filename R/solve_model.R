@@ -39,7 +39,7 @@
 #' must be specified.
 #' @param chem.cas Either the chemical name, CAS number, or the parameters must
 #' be specified.
-#' @param dtxsid EPA's DSSTox Structure ID (\url{http://comptox.epa.gov/dashboard})  
+#' @param dtxsid EPA's DSSTox Structure ID (\url{https://comptox.epa.gov/dashboard})  
 #' the chemical must be identified by either CAS, name, or DTXSIDs
 #' @param times Optional time sequence for specified number of days. Dosing
 #' sequence begins at the beginning of times.
@@ -359,7 +359,7 @@ solve_model <- function(chem.name = NULL,
   
   #Provide default, somewhat arbitrary, single-time dosing case of
   #1 mg/kg BW for when no dosing is specified by user.
-  if (all(lapply(dosing, is.null)) & is.null(forcings)) 
+  if (all(unlist(lapply(dosing, is.null))) & is.null(forcings)) 
     dosing$initial.dose <- 1 #mg/kg BW
 
   #Scale dose into intended units
