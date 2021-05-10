@@ -2,10 +2,6 @@
 knitr::opts_chunk$set(collapse = TRUE, comment = '#>', fig.width=5, fig.height=3)
 
 ## ----load_packages------------------------------------------------------------
-# We love to give warning messages whenever assumptions are used by HTTK,
-# but they will overwhelm the output of this vignette so we turn them
-# off:
-options(warn = -1)
 library(scales)
 library(ggplot2)
 library(data.table)
@@ -15,7 +11,6 @@ library(httk)
 library(RColorBrewer)
 library(grid)
 library(gplots)
-
 
 ## ----plot_funcs---------------------------------------------------------------
 # Multiple plot function
@@ -346,7 +341,7 @@ heatmap.3 <- function(x,
                 image(rbind(1:nr), col = RowSideColors[rowInd], axes = FALSE)
         } else {
             par(mar = c(margins[1], 0, 0, 0.5))
-            rsc = t(RowSideColors[,rowInd, drop=F])
+            rsc = t(RowSideColors[,rowInd, drop=FALSE])
             rsc.colors = matrix()
             rsc.names = names(table(rsc))
             rsc.i = 1
@@ -370,7 +365,7 @@ heatmap.3 <- function(x,
             image(cbind(1:nc), col = ColSideColors[colInd], axes = FALSE)
         } else {
             par(mar = c(0.5, 0, 0, margins[2]))
-            csc = ColSideColors[colInd, , drop=F]
+            csc = ColSideColors[colInd, , drop=FALSE]
             csc.colors = matrix()
             csc.names = names(table(csc))
             csc.i = 1
@@ -537,7 +532,7 @@ na.dist <- function(x,method="euclidian",...)
 {
   t.dist <- dist(x,...)
   t.dist <- as.matrix(t.dist)
-  t.limit <- 1.1*max(t.dist,na.rm=T)
+  t.limit <- 1.1*max(t.dist,na.rm=TRUE)
   t.dist[is.na(t.dist)] <- t.limit
   t.dist <- as.dist(t.dist)
   return(t.dist)
@@ -564,11 +559,11 @@ rownames(physprop.matrix) <- rnames
 row.side.cols <- rep("Black",dim(physprop.matrix)[1])
 row.side.cols[sapply(chem.invivo.PK.aggregate.data$CAS,is.pharma)] <- "Grey"
 
-apply(physprop.matrix,2,function(x) mean(x,na.rm=T))
+apply(physprop.matrix,2,function(x) mean(x,na.rm=TRUE))
 for (this.col in c(c(1,3,7,9:11),c(4:6,8,12))) physprop.matrix[,this.col] <- log10(10^-6+physprop.matrix[,this.col])
 
 
-physprop.matrix <- apply(physprop.matrix,2,function(x) (x-mean(x,na.rm=T))/sd(x,na.rm=T))
+physprop.matrix <- apply(physprop.matrix,2,function(x) (x-mean(x,na.rm=TRUE))/sd(TRUE))
 
 ## ----PlotFigure3, eval = FALSE------------------------------------------------
 #  main_title="in vivo Toxicokinetic Parameters"
@@ -606,16 +601,16 @@ FitData.Fup$SelectedVdist.sd <- FitData.Fup$Vdist.sd
 
 #Predict volume of Distribution
 FitData.Fup$Vdist.1comp.pred <- sapply(FitData.Fup$CAS,
-  function(x) calc_vdist(chem.cas=x,
+  function(x) suppressWarnings(calc_vdist(chem.cas=x,
   species="Rat",
-  default.to.human = T,
-  suppress.messages=T))
+  default.to.human = TRUE,
+  suppress.messages=TRUE)))
 FitData.Fup$Vdist.1comp.pred.nocal <- sapply(FitData.Fup$CAS,
-  function(x) calc_vdist(chem.cas=x,
-  regression=F,
+  function(x) suppressWarnings(calc_vdist(chem.cas=x,
+  regression=FALSE,
   species="Rat",
-  default.to.human = T,
-  suppress.messages=T))
+  default.to.human = TRUE,
+  suppress.messages=TRUE)))
 
 
 FigVdista.fit <- lm(log(SelectedVdist)~log(Vdist.1comp.pred),data=subset(FitData.Fup,!is.na(SelectedVdist)&!is.na(Vdist.1comp.pred)))
@@ -707,7 +702,7 @@ FitData.Fup$CLtot.1comp.pred <- sapply(FitData.Fup$CAS,
   function(x) calc_total_clearance(chem.cas=x,
   species="Rat",
   default.to.human = T,
-  suppress.messages=T))
+  suppress.messages=TRUE))
 
 Fig.SelectedClearance.fit <- lm(log(SelectedCLtot)~log(CLtot.1comp.pred),data=subset(FitData.Fup,!is.na(SelectedCLtot.sd)))
 summary(Fig.SelectedClearance.fit)
@@ -739,8 +734,8 @@ Fig.SelectedClearance<- ggplot(data=FitData.Fup,aes(y=SelectedCLtot,x=CLtot.1com
     xlab(expression(paste(italic("In vitro")," predicted clearance (mg/L/h)"))) +
     theme_bw()   +
     theme(legend.position="bottom")+
-    annotate("text",x = 10^2/3/3/3, y = 3*3*10^-4,size=4, label = lm_R2(Fig.SelectedClearance.fit.pharma,prefix="Pharmaceutical:"),parse=T)+ 
-    annotate("text",x = 10^2/3/3/3, y = 3*3*3*10^-5,size=4, label = lm_R2(Fig.SelectedClearance.fit.other,prefix="Other:"),parse=T)+
+    annotate("text",x = 10^2/3/3/3, y = 3*3*10^-4,size=4, label = lm_R2(Fig.SelectedClearance.fit.pharma,prefix="Pharmaceutical:"),parse=TRUE)+ 
+    annotate("text",x = 10^2/3/3/3, y = 3*3*3*10^-5,size=4, label = lm_R2(Fig.SelectedClearance.fit.other,prefix="Other:"),parse=TRUE)+
     theme(plot.margin = unit(c(1,1,1,1), "cm"))+
     guides(shape=guide_legend(nrow=2,byrow=TRUE),color=guide_legend(nrow=2,byrow=TRUE))
 
@@ -748,7 +743,7 @@ Fig.SelectedClearance<- ggplot(data=FitData.Fup,aes(y=SelectedCLtot,x=CLtot.1com
 #dev.new(width=6,height=6)
 print(Fig.SelectedClearance)
 
-paste("with",with(FitData.Fup,sum(SelectedCLtot<CLtot.1comp.pred,na.rm=T)),"chemicals over-estimated and",with(FitData.Fup,sum(SelectedCLtot>CLtot.1comp.pred,na.rm=T)),"under-estimated")
+paste("with",with(FitData.Fup,sum(SelectedCLtot<CLtot.1comp.pred,na.rm=TRUE)),"chemicals over-estimated and",with(FitData.Fup,sum(SelectedCLtot>CLtot.1comp.pred,na.rm=TRUE)),"under-estimated")
 
 
 ## ----fig6, eval=TRUE----------------------------------------------------------
@@ -811,9 +806,9 @@ median(subset(FitData,Selectedkgutabs<999)$Selectedkgutabs)
 #  
 #  summary(lm(log(SelectedFbio)~log(Fbio.pred),data=FitData))
 #  
-#  paste("Fbio ranged from",signif(min(FitData[FitData$Chemical=="Pharmaceutical","SelectedFbio"],na.rm=T),2),"to",signif(max(FitData[FitData$Chemical=="Pharmaceutical","SelectedFbio"],na.rm=T),2),"for pharmaceutical compounds, but was observed to be as low as", signif(min(FitData[FitData$Chemical=="Other","SelectedFbio"],na.rm=T),3),"for other compounds.")
+#  paste("Fbio ranged from",signif(min(FitData[FitData$Chemical=="Pharmaceutical","SelectedFbio"],na.rm=TRUE),2),"to",signif(max(FitData[FitData$Chemical=="Pharmaceutical","SelectedFbio"],na.rm=TRUE),2),"for pharmaceutical compounds, but was observed to be as low as", signif(min(FitData[FitData$Chemical=="Other","SelectedFbio"],na.rm=TRUE),3),"for other compounds.")
 #  
-#  min(FitData$SelectedFbio,na.rm=T)
+#  min(FitData$SelectedFbio,na.rm=TRUE)
 
 ## ----fig8, eval=TRUE----------------------------------------------------------
 FitData$SelectedFbio <- FitData$Fbio
@@ -823,17 +818,17 @@ FitData$Css.1comp.pred <- sapply(FitData$CAS,
   function(x) calc_analytic_css(chem.cas=x,
   species="Rat",
   model="3compartmentss",
-  suppress.messages=T,
+  suppress.messages=TRUE,
   parameterize.args = list(
-    default.to.human=T,
-    adjusted.Funbound.plasma=T,
-    regression=T,
+    default.to.human=TRUE,
+    adjusted.Funbound.plasma=TRUE,
+    regression=TRUE,
     minimum.Funbound.plasma=1e-4)))
 
-Fig.1compCss.fit <- lm(log(SelectedCss)~log(Css.1comp.pred),data=FitData,na.rm=T)
-Fig.1compCss.fit.weighted <- lm(log(SelectedCss)~log(Css.1comp.pred),data=FitData,na.rm=T,weights=1/SelectedCss.sd^2)
-Fig.1compCss.fit.pharma <- lm(log(SelectedCss)~log(Css.1comp.pred),data=subset(FitData,Chemical!="Other"),na.rm=T)
-Fig.1compCss.fit.other <- lm(log(SelectedCss)~log(Css.1comp.pred),data=subset(FitData,Chemical=="Other"),na.rm=T)
+Fig.1compCss.fit <- lm(log(SelectedCss)~log(Css.1comp.pred),data=FitData,na.rm=TRUE)
+Fig.1compCss.fit.weighted <- lm(log(SelectedCss)~log(Css.1comp.pred),data=FitData,na.rm=TRUE,weights=1/SelectedCss.sd^2)
+Fig.1compCss.fit.pharma <- lm(log(SelectedCss)~log(Css.1comp.pred),data=subset(FitData,Chemical!="Other"),na.rm=TRUE)
+Fig.1compCss.fit.other <- lm(log(SelectedCss)~log(Css.1comp.pred),data=subset(FitData,Chemical=="Other"),na.rm=TRUE)
 
 summary(Fig.1compCss.fit)
 summary(Fig.1compCss.fit.pharma)
@@ -856,17 +851,17 @@ Fig.Cssa <- ggplot(data=FitData) +
   theme_bw()  +
   theme(legend.position="bottom")+
     annotate("text", x = textx/15, y = 5*texty, label = "A",size=6) +
-  annotate("text",x = textx, y = texty,size=6, label = lm_R2(Fig.1compCss.fit),parse=T)+
+  annotate("text",x = textx, y = texty,size=6, label = lm_R2(Fig.1compCss.fit),parse=TRUE)+
     guides(shape=guide_legend(nrow=2,byrow=TRUE),color=guide_legend(nrow=2,byrow=TRUE)) 
-#  annotate("text",x = textx/3, y = texty/3,size=4, label = lm_R2(Fig.1compCss.fit.weighted,prefix="Weighted:"),parse=T) 
-#  annotate("text",x = textx, y = texty,size=4, label = lm_R2(Fig.1compCss.fit.pharma,prefix="Pharmaceutical:"),parse=T)
-#  annotate("text",x = textx, y = texty/3,size=4, label = lm_R2(Fig.1compCss.fit.other,prefix="Other:"),parse=T) 
+#  annotate("text",x = textx/3, y = texty/3,size=4, label = lm_R2(Fig.1compCss.fit.weighted,prefix="Weighted:"),parse=TRUE) 
+#  annotate("text",x = textx, y = texty,size=4, label = lm_R2(Fig.1compCss.fit.pharma,prefix="Pharmaceutical:"),parse=TRUE)
+#  annotate("text",x = textx, y = texty/3,size=4, label = lm_R2(Fig.1compCss.fit.other,prefix="Other:"),parse=TRUE) 
 
 FitData$Css.Bio <- FitData$Css.1comp.pred*FitData$SelectedFbio
-Fig.1compCssb.fit <- lm(log(SelectedCss)~log(Css.Bio),data=FitData,na.rm=T)
-Fig.1compCssb.fit.weighted <- lm(log(SelectedCss)~log(Css.Bio),data=FitData,na.rm=T,weights=1/SelectedCss.sd^2)
-Fig.1compCssb.fit.pharma <- lm(log(SelectedCss)~log(Css.Bio),data=subset(FitData,Chemical!="Other"),na.rm=T)
-Fig.1compCssb.fit.other <- lm(log(SelectedCss)~log(Css.Bio),data=subset(FitData,Chemical=="Other"),na.rm=T)
+Fig.1compCssb.fit <- lm(log(SelectedCss)~log(Css.Bio),data=FitData,na.rm=TRUE)
+Fig.1compCssb.fit.weighted <- lm(log(SelectedCss)~log(Css.Bio),data=FitData,na.rm=TRUE,weights=1/SelectedCss.sd^2)
+Fig.1compCssb.fit.pharma <- lm(log(SelectedCss)~log(Css.Bio),data=subset(FitData,Chemical!="Other"),na.rm=TRUE)
+Fig.1compCssb.fit.other <- lm(log(SelectedCss)~log(Css.Bio),data=subset(FitData,Chemical=="Other"),na.rm=TRUE)
 
 Fig.Cssb <- ggplot(data=FitData) +
   geom_segment(color="grey",aes(x=Css.Bio,y=exp(log(SelectedCss)-SelectedCss.sd),xend=Css.Bio,yend=exp(log(SelectedCss)+SelectedCss.sd)))+
@@ -881,7 +876,7 @@ Fig.Cssb <- ggplot(data=FitData) +
   theme_bw()  +
   theme(legend.position="bottom")+
     annotate("text", x = textx/15, y = 5*texty, label = "B",size=6) +
-  annotate("text",x = textx, y = texty,size=6, label = lm_R2(Fig.1compCssb.fit),parse=T)+
+  annotate("text",x = textx, y = texty,size=6, label = lm_R2(Fig.1compCssb.fit),parse=TRUE)+
     guides(shape=guide_legend(nrow=2,byrow=TRUE),color=guide_legend(nrow=2,byrow=TRUE)) 
 
 #dev.new(width=10,height=6)
@@ -945,7 +940,7 @@ FigCmaxa <- ggplot(data=subset(PKstats,is.finite(Cmax))) +
     xlab(expression(paste(italic("In vitro")," predicted ",C[max]))) +
 #    scale_color_brewer(palette="Set2") +
     annotate("text", x = 10^-3, y = 300, label = "A",size=6) +
-    annotate("text",x = 3*10^1, y = 10^-3, label = lm_R2(FigCmaxa.fit),parse=T,size=6) + 
+    annotate("text",x = 3*10^1, y = 10^-3, label = lm_R2(FigCmaxa.fit),parse=TRUE,size=6) + 
     theme_bw()  +
     theme(legend.position="bottom")+
     guides(shape=guide_legend(nrow=2,byrow=TRUE),color=guide_legend(nrow=2,byrow=TRUE))
@@ -968,7 +963,7 @@ FigCmaxb <- ggplot(data=subset(PKstats,is.finite(Cmax))) +
     ylab(expression(paste(italic("In vivo")," estimated ",C[max]))) + 
     xlab(expression(paste("Predicted ", C[max], " Using Measured ", F[bio ]))) + 
     annotate("text", x = 10^-3, y = 300, label = "B",size=6) +
-    annotate("text",x = 3*10^1, y = 10^-3, label = lm_R2(FigCmaxb.fit),parse=T,size=6) + 
+    annotate("text",x = 3*10^1, y = 10^-3, label = lm_R2(FigCmaxb.fit),parse=TRUE,size=6) + 
 #    scale_color_brewer(palette="Set2") + 
     theme_bw()  +
     theme(legend.position="bottom")+
@@ -996,7 +991,7 @@ FigAUCa <- ggplot(data=subset(PKstats,is.finite(log(AUC)))) +
     ylab(expression(paste(italic("In vivo")," estimated AUC (mg*h/L)"))) + 
     xlab(expression(paste(italic("In vitro")," predicted Area under the Curve (AUC, mg*h/L)"))) +
     annotate("text", x = 10^-2, y = 3000, label = "A",size=6) +
-    annotate("text",x = 3*10^1, y = 10^-2, label = lm_R2(FigAUCa.fit),parse=T,size=6) + 
+    annotate("text",x = 3*10^1, y = 10^-2, label = lm_R2(FigAUCa.fit),parse=TRUE,size=6) + 
     theme_bw()  +
     theme(legend.position="bottom")+
     guides(shape=guide_legend(nrow=2,byrow=TRUE),color=guide_legend(nrow=2,byrow=TRUE))
@@ -1014,7 +1009,7 @@ FigAUCb <- ggplot(data=subset(PKstats,is.finite(log(AUC)))) +
     ylab(expression(paste(italic("In vivo")," estimated AUC (mg*h/L)"))) + 
     xlab(expression(paste("Predicted AUC (mg*h/L) Using Measured ", F[bio]))) + 
     annotate("text", x = 10^-2, y = 3000, label = "B",size=6) +
-    annotate("text",x = 3*10^1, y = 10^-2, label = lm_R2(FigAUCb.fit),parse=T,size=6) + 
+    annotate("text",x = 3*10^1, y = 10^-2, label = lm_R2(FigAUCb.fit),parse=TRUE,size=6) + 
     theme_bw()  +
     theme(legend.position="bottom")+
     guides(shape=guide_legend(nrow=2,byrow=TRUE),color=guide_legend(nrow=2,byrow=TRUE))

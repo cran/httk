@@ -12,13 +12,29 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2020-09-24" />
+<meta name="date" content="2021-05-07" />
 
 <title>Ring et al. (2017) AER plotting</title>
 
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
@@ -104,6 +120,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -301,7 +318,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Ring et al. (2017) AER plotting</h1>
 <h4 class="author">Caroline Ring</h4>
-<h4 class="date">2020-09-24</h4>
+<h4 class="date">2021-05-07</h4>
 
 
 
@@ -583,7 +600,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb24-2" title="2">breaksv &lt;-<span class="st"> </span>brks<span class="op">$</span>cuts[[<span class="st">&#39;brks&#39;</span>]]</a></code></pre></div>
 <p>Then we generate a matrix of character strings so that we can label the single cell with missing data for the AER and exposure heatmaps.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">notemat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="st">&quot;&quot;</span>, <span class="kw">length</span>(m.mat)), <span class="dt">nrow=</span><span class="kw">nrow</span>(m.mat), <span class="dt">ncol=</span><span class="kw">ncol</span>(m.mat))</a>
-<a class="sourceLine" id="cb25-2" title="2">notemat[<span class="kw">which</span>(<span class="kw">is.na</span>(m.mat), <span class="dt">arr.ind=</span>T)] &lt;-<span class="st"> &#39;NA&#39;</span></a></code></pre></div>
+<a class="sourceLine" id="cb25-2" title="2">notemat[<span class="kw">which</span>(<span class="kw">is.na</span>(m.mat), <span class="dt">arr.ind=</span><span class="ot">TRUE</span>)] &lt;-<span class="st"> &#39;NA&#39;</span></a></code></pre></div>
 <p>For ease of use later, define a list of plotting options to use for all the heatmap.2 calls.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">hm_args &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">Rowv=</span><span class="ot">FALSE</span>, <span class="co">#don&#39;t reorder rows</span></a>
 <a class="sourceLine" id="cb26-2" title="2">                 <span class="dt">dendrogram =</span> <span class="st">&#39;column&#39;</span>,</a>
@@ -697,7 +714,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb34-11" title="11">m.mat3 &lt;-<span class="st"> </span>m.mat3[,hm1<span class="op">$</span>colInd]</a>
 <a class="sourceLine" id="cb34-12" title="12"><span class="co">#Make cell labeling matrix</span></a>
 <a class="sourceLine" id="cb34-13" title="13">notemat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="st">&quot;&quot;</span>, <span class="kw">length</span>(m.mat3)), <span class="dt">nrow=</span><span class="kw">nrow</span>(m.mat3), <span class="dt">ncol=</span><span class="kw">ncol</span>(m.mat3))</a>
-<a class="sourceLine" id="cb34-14" title="14">notemat[<span class="kw">which</span>(<span class="kw">is.na</span>(m.mat3), <span class="dt">arr.ind=</span>T)] &lt;-<span class="st"> &#39;NA&#39;</span></a>
+<a class="sourceLine" id="cb34-14" title="14">notemat[<span class="kw">which</span>(<span class="kw">is.na</span>(m.mat3), <span class="dt">arr.ind=</span><span class="ot">TRUE</span>)] &lt;-<span class="st"> &#39;NA&#39;</span></a>
 <a class="sourceLine" id="cb34-15" title="15"><span class="co">#Set up diverging colormap</span></a>
 <a class="sourceLine" id="cb34-16" title="16">brks &lt;-<span class="st"> </span><span class="kw">diverge.color</span>(<span class="dt">data=</span><span class="kw">c</span>(<span class="kw">as.vector</span>(m.mat3),<span class="op">-</span><span class="fl">0.8</span>,<span class="fl">0.8</span>), <span class="dt">pal_choice=</span><span class="st">&#39;RdBu&#39;</span>)</a>
 <a class="sourceLine" id="cb34-17" title="17">breaksv &lt;-<span class="st"> </span>brks<span class="op">$</span>cuts[[<span class="st">&#39;brks&#39;</span>]]</a>

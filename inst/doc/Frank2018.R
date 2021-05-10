@@ -4,10 +4,6 @@ library(gdata)
 library(httk)
 library(ggplot2)
 library(scales)
-# We love to give warning messages whenever assumptions are used by HTTK,
-# but they will overwhelm the output of this vignette so we turn them
-# off:
-options(warn = -1)
 
 ## ----scientific.notation------------------------------------------------------
 scientific_10 <- function(x) {                                  
@@ -21,7 +17,7 @@ scientific_10 <- function(x) {
 chem.table <- Frank2018invivo
 
 ## ----ivive.loop---------------------------------------------------------------
-for (this.row in 1:dim(chem.table))
+for (this.row in 1:dim(chem.table)[1])
 {
   this.cas <- chem.table[this.row,"Substance_CASRN"]
   if (tolower(chem.table[this.row,"Species"])=="rodent") 
@@ -39,7 +35,7 @@ for (this.row in 1:dim(chem.table))
     this.species <- "mouse"
   }
   else browser()
-  if (chem.table[this.row,"Route"] %in% c("i.p.","s.c.","i.m.")) iv.dose =T
+  if (chem.table[this.row,"Route"] %in% c("i.p.","s.c.","i.m.")) iv.dose =TRUE
   else if (chem.table[this.row,"Route"]=="oral") iv.dose = F
   else browser()
   this.dose <- chem.table[this.row,"Dose"]
@@ -54,14 +50,14 @@ for (this.row in 1:dim(chem.table))
     this.dose <- this.dose/0.25
   }
 # Here we run the HTTK PBPK Model:
-  out <- solve_pbtk(chem.cas=this.cas,
+  out <- suppressWarnings(solve_pbtk(chem.cas=this.cas,
            dose=this.dose,
            species=this.species,
 # This was used in 2017 but I don't agree with it anymore:
-#           restrictive.clearance=F,
+#           restrictive.clearance=FALSE,
            days=this.days,
            iv.dose=iv.dose,
-           default.to.human=T)
+           default.to.human=TRUE))
 # Record the Cmax and the AUC:
   chem.table[this.row,"Cmax"] <- max(out[,"Cplasma"])
   chem.table[this.row,"AUC"] <- max(out[,"AUC"])

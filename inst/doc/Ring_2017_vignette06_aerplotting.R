@@ -289,7 +289,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  notemat <- matrix(rep("", length(m.mat)), nrow=nrow(m.mat), ncol=ncol(m.mat))
-#  notemat[which(is.na(m.mat), arr.ind=T)] <- 'NA'
+#  notemat[which(is.na(m.mat), arr.ind=TRUE)] <- 'NA'
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  hm_args <- list(Rowv=FALSE, #don't reorder rows
@@ -406,7 +406,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 #  m.mat3 <- m.mat3[,hm1$colInd]
 #  #Make cell labeling matrix
 #  notemat <- matrix(rep("", length(m.mat3)), nrow=nrow(m.mat3), ncol=ncol(m.mat3))
-#  notemat[which(is.na(m.mat3), arr.ind=T)] <- 'NA'
+#  notemat[which(is.na(m.mat3), arr.ind=TRUE)] <- 'NA'
 #  #Set up diverging colormap
 #  brks <- diverge.color(data=c(as.vector(m.mat3),-0.8,0.8), pal_choice='RdBu')
 #  breaksv <- brks$cuts[['brks']]

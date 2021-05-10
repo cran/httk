@@ -11,10 +11,6 @@ library(forcats)
 library(smatr)
 # Delete all objects from memory:
 rm(list=ls())
-# We love to give warning messages whenever assumptions are used by HTTK,
-# but they will overwhelm the output of this vignette so we turn them
-# off:
-options(warn = -1)
 
 ## ----data---------------------------------------------------------------------
 met_data <- metabolism_data_Linakis2020
@@ -55,7 +51,7 @@ for(i in 1:nrow(unique_scenarios)){
     obslist[[i]] <- relconc
     name <- paste0("out",i)
     if(as.character(unique_scenarios$CONC_SPECIES[i]) == "Human"){
-      solve <- assign(name, solve_gas_pbtk(
+      solve <- suppressWarnings(assign(name, solve_gas_pbtk(
         chem.cas = unique_scenarios$CASRN[i], 
         days = (unique_scenarios$TIME[i]+unique_scenarios$EXP_LENGTH[i]), 
 # Make sure we get conc's at the observed times:
@@ -65,14 +61,14 @@ for(i in 1:nrow(unique_scenarios)){
         exp.duration = unique_scenarios$EXP_LENGTH[i]*24, 
         period = (unique_scenarios$TIME[i]+unique_scenarios$EXP_LENGTH[i])*24, 
         species = as.character(unique_scenarios$CONC_SPECIES[i]), 
-        vmax.km = F, 
+        vmax.km = FALSE, 
         vmax = met_data$VMAX[met_data$CASRN %in% unique_scenarios$CASRN[i] & 
         met_data$SPECIES == unique_scenarios$CONC_SPECIES[i]], 
         km = met_data$KM[met_data$CASRN %in% unique_scenarios$CASRN[i] & 
         met_data$SPECIES == unique_scenarios$CONC_SPECIES[i]],
-        suppress.messages=T))
+        suppress.messages=TRUE)))
     } else {
-      solve <- assign(name, solve_gas_pbtk(
+      solve <- suppressWarnings(assign(name, solve_gas_pbtk(
         chem.cas = unique_scenarios$CASRN[i], 
         days = (unique_scenarios$TIME[i]+unique_scenarios$EXP_LENGTH[i]), 
 # Make sure we get conc's at the observed times:
@@ -82,12 +78,12 @@ for(i in 1:nrow(unique_scenarios)){
         exp.duration = unique_scenarios$EXP_LENGTH[i]*24, 
         period = (unique_scenarios$TIME[i]+unique_scenarios$EXP_LENGTH[i])*24, 
         species = as.character(unique_scenarios$CONC_SPECIES[i]), 
-        vmax.km = T, 
+        vmax.km = TRUE, 
         vmax = met_data$VMAX[met_data$CASRN %in% unique_scenarios$CASRN[i] & 
         met_data$SPECIES == unique_scenarios$CONC_SPECIES[i]], 
         km = met_data$KM[met_data$CASRN %in% unique_scenarios$CASRN[i] &
         met_data$SPECIES == unique_scenarios$CONC_SPECIES[i]],
-        suppress.messages=T))
+        suppress.messages=TRUE)))
     }
     #browser()
     solve <- as.data.frame(solve)
@@ -209,7 +205,7 @@ for(i in 1:length(simlist))
       "matrix",
       "mw",
       "orig_conc_u"
-      )], simobscomb, by="time", all.x=T))
+      )], simobscomb, by="time", all.x=TRUE))
 
 # Merge with met_data
     this.met_data <- subset(met_data,
@@ -281,7 +277,7 @@ for(i in 1:length(simobslist))
 #      simobscomb <- simobslist[[i]]
 #      for (j in 1:nrow(simobscomb))
 #      {
-#        max.time <- max(simobscomb$time,na.rm=T)
+#        max.time <- max(simobscomb$time,na.rm=TRUE)
 #        if (is.na(max.time)) simobscomb$tquart <- NA
 #        else if (max.time == 0) simobscomb$tquart <- "1"
 #        else if (!is.na(simobscomb$time[j]))
@@ -303,7 +299,7 @@ for(i in 1:length(simobslist))
 # Calculat the AUC with the trapezoidal rule:    
     if (nrow(simobscomb)>1) 
     {
-      for (k in 2:max(nrow(simobscomb)-1,2,na.rm=T))
+      for (k in 2:max(nrow(simobscomb)-1,2,na.rm=TRUE))
       {
         simobscomb$obsAUCtrap[1] <- 0
         simobscomb$simAUCtrap[1] <- 0
@@ -513,7 +509,7 @@ totalrmse <- sqrt(mean((
     !is.na(simobsfull$simconc) & 
     simobsfull$simconc > 0 & 
     simobsfull$obsconc > 0]))^2, 
-   na.rm = T))
+   na.rm = TRUE))
 totalmae <- mean(abs(
   log10(simobsfull$simconc[
     !is.na(simobsfull$simconc) & 
@@ -523,7 +519,7 @@ totalmae <- mean(abs(
     !is.na(simobsfull$simconc) & 
     simobsfull$simconc > 0 & 
     simobsfull$obsconc > 0])), 
-  na.rm = T)
+  na.rm = TRUE)
 totalaic <- nrow(
   simobsfull[
     !is.na(simobsfull$simconc) & 
@@ -541,7 +537,7 @@ totalaic <- nrow(
          !is.na(simobsfull$simconc) & 
          simobsfull$simconc > 0 & 
          simobsfull$obsconc > 0])^2,
-       na.rm=T) / 
+       na.rm=TRUE) / 
      nrow(simobsfull[
        !is.na(simobsfull$simconc) & 
        simobsfull$simconc > 0 & 
@@ -644,8 +640,8 @@ fig2 <- ggplot(
   xlab("Log(Simulated Concentrations)") + 
   ylab("Log(Observed Concentrations)") + 
   theme_bw() + 
-  geom_smooth(method = 'lm',se = F, aes(color = 'Overall')) + 
-  geom_smooth(method = 'lm', se = F, aes(color = species)) + 
+  geom_smooth(method = 'lm',se = FALSE, aes(color = 'Overall')) + 
+  geom_smooth(method = 'lm', se = FALSE, aes(color = species)) + 
   geom_text(
     x = Inf, 
     y = -Inf, 
@@ -669,7 +665,7 @@ fig2 <- ggplot(
       simobsfull$simconc>0 & simobsfull$obsconc > 0,], 
     aes(label = paste(chem,species,matrix)),
     fontface = 'bold',
-    check_overlap = T,
+    check_overlap = TRUE,
 #    size = 3.5, 
     hjust = 0.5, 
     vjust = -0.8) + 
@@ -723,7 +719,7 @@ auclm <- lm(log10(aucobs)~log10(aucsim), na.action = na.exclude)
 cmaxslope <- summary(cmaxlm)$coef[2,1]
 cmaxrsq <- summary(cmaxlm)$r.squared
 totalrmsecmax <- sqrt(mean((log10(cmaxfull$Cmaxsim) - 
-  log10(cmaxfull$Cmaxobs))^2, na.rm = T))
+  log10(cmaxfull$Cmaxobs))^2, na.rm = TRUE))
 cmaxmiss <- nrow(cmaxfull[
   abs(log10(cmaxfull$Cmaxsim) - 
   log10(cmaxfull$Cmaxobs)) > 1,])
@@ -738,7 +734,7 @@ aucslope <- summary(auclm)$coef[2,1]
 aucrsq <- summary(auclm)$r.squared
 totalrmseauc <- sqrt(mean((
   log10(aucfull$AUCsim) - 
-  log10(aucfull$AUCobs))^2, na.rm = T))
+  log10(aucfull$AUCobs))^2, na.rm = TRUE))
 aucmiss <- nrow(aucfull[
   abs(log10(aucfull$AUCsim) - 
   log10(aucfull$AUCobs)) > 1,])
@@ -758,8 +754,8 @@ cmaxp <- ggplot(data = cmaxfull, aes(x = log10(Cmaxsim), y = log10(Cmaxobs))) +
   xlab("Log(Simulated Max Concentration)") + 
   ylab("Log(Observed Max Concentration)") + 
   theme_bw() + 
-  geom_smooth(method = 'lm', se = F, aes(color = 'Overall')) + 
-  geom_smooth(method = 'lm', se = F, aes(color = species)) +
+  geom_smooth(method = 'lm', se = FALSE, aes(color = 'Overall')) + 
+  geom_smooth(method = 'lm', se = FALSE, aes(color = species)) +
   geom_text(x = Inf, 
     y = -Inf, 
     hjust = 1.05, 
@@ -824,8 +820,8 @@ aucp <- ggplot(
   xlab("Log(Simulated AUC)") + 
   ylab("Log(Observed AUC)") + 
   theme_bw() + 
-  geom_smooth(method = 'lm', se = F, aes(color = "Overall")) + 
-  geom_smooth(method = 'lm', se = F, aes(color = species)) + 
+  geom_smooth(method = 'lm', se = FALSE, aes(color = "Overall")) + 
+  geom_smooth(method = 'lm', se = FALSE, aes(color = species)) + 
   geom_text(
     x = Inf, 
     y = -Inf, 
@@ -897,8 +893,8 @@ aucp
 #      aes(x = Inf, y = -Inf, hjust = 1.05, vjust = -0.5, label = n),
 #      size = 10,
 #      colour = 'black',
-#      inherit.aes = F,
-#      parse = F) +
+#      inherit.aes = FALSE,
+#      parse = FALSE) +
 #    theme(
 #      axis.text.x = element_text(angle = 90, hjust = 1,vjust=0.5,size = 20, face = 'bold'),
 #      strip.text.x = element_text(face = 'bold', size = 24),
@@ -1027,7 +1023,7 @@ aucp
 #        !is.na(simobsfullsens$simconc) &
 #          simobsfullsens$simconc >0 &
 #          simobsfullsens$obsconc > 0]))^2,
-#      na.rm = T)), digits = 2)
+#      na.rm = TRUE)), digits = 2)
 #    senspmiss[i] <- round((nrow(simobsfullsens) -
 #      nrow(simobsfullsens[
 #        !is.na(simobsfullsens$simconc) &
@@ -1046,10 +1042,10 @@ aucp
 #      na.action = na.exclude)
 #    senscmaxslope[i] <- round(summary(senscmaxlm)$coef[2,1],digits = 2)
 #    senscmaxrsq[i] <- round(summary(senscmaxlm)$r.squared,digits = 2)
-#    senstotalrmsecmax[i] <- sqrt(mean((log10(senscmaxfull$Cmaxsim[senscmaxfull$Cmaxobs>0]) - log10(senscmaxfull$Cmaxobs[senscmaxfull$Cmaxobs>0]))^2, na.rm = T))
+#    senstotalrmsecmax[i] <- sqrt(mean((log10(senscmaxfull$Cmaxsim[senscmaxfull$Cmaxobs>0]) - log10(senscmaxfull$Cmaxobs[senscmaxfull$Cmaxobs>0]))^2, na.rm = TRUE))
 #    sensaucslope[i] <- round(summary(sensauclm)$coef[2,1],digits = 2)
 #    sensaucrsq[i] <- round(summary(sensauclm)$r.squared,digits = 2)
-#    senstotalrmseauc[i] <- sqrt(mean((log10(sensaucfull$AUCsim[sensaucfull$AUCobs>0]) - log10(sensaucfull$AUCobs[sensaucfull$AUCobs>0]))^2, na.rm = T))
+#    senstotalrmseauc[i] <- sqrt(mean((log10(sensaucfull$AUCsim[sensaucfull$AUCobs>0]) - log10(sensaucfull$AUCobs[sensaucfull$AUCobs>0]))^2, na.rm = TRUE))
 #  }
 #  sensitivitydf <- data.frame(Chemical <- as.character(senschem),
 #                              sensSlope <- as.numeric(sensslope),
@@ -1073,7 +1069,7 @@ aucp
 #    # Clean up and write file
 #  rm(chem.lm, obvpredplot, p, pdata1, plot.data, plots, relconc, sensaucfull, sensauclm, sensaucrsq, sensaucslope, senschem, senscmaxfull, senscmaxlm, senscmaxrsq, senscmaxslope, senslm, senspmiss, sensregrmse, sensrsq, sensslope, senstotalrmse, senstotalrmseauc, senstotalrmsecmax, solve, AUCrmse, AUCrsq, AUCslope, chem.res, Chemical, Cmaxrmse, Cmaxrsq, Cmaxslope, colors, count, i, j, k, met_col, name, name1, Pmiss, Regrmse, Rsq, Slope, rem, Totrmse)
 #  
-#  write.csv(sensitivitydf, 'supptab2.csv',row.names = F)
+#  write.csv(sensitivitydf, 'supptab2.csv',row.names = FALSE)
 
 ## ----SupTable1, eval = FALSE--------------------------------------------------
 #  supptab1 <- subset(unique_scenarios, !duplicated(unique_scenarios$PREFERRED_NAME) | !duplicated(unique_scenarios$SOURCE_CVT) | !duplicated(unique_scenarios$CONC_SPECIES))
@@ -1091,5 +1087,5 @@ aucp
 #  }
 #  supptab1 <- supptab1[c('PREFERRED_NAME','DTXSID','CASRN','Chem_Class','AVERAGE_MASS','Log_P','Solubility','Blood_Air_Partition_Coefficient','Species','Vmax','Km','Metabolism_Source','SOURCE_CVT')]
 #  names(supptab1) <- c('Chemical','DTXSID','CASRN','CAMEO Chemical Class','Molecular Weight (g/mol)','Log P','Solubility (mol/L)','Blood Air Partition Coefficient','Available Species Data','Vmax (pmol/min/10^6 cells)','KM (uM)','Metabolism Data Source','Concentration-Time Data Source')
-#  write.csv(supptab1, "supptab1.csv", row.names = F)
+#  write.csv(supptab1, "supptab1.csv", row.names = FALSE)
 
