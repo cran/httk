@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2022-03-25" />
+<meta name="date" content="2022-09-08" />
 
 <title>Ring et al. (2017) Vignette 1: Generating subpopulations</title>
 
@@ -25,6 +25,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -318,12 +319,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Ring et al. (2017) Vignette 1: Generating subpopulations</h1>
 <h4 class="author">Caroline Ring</h4>
-<h4 class="date">2022-03-25</h4>
+<h4 class="date">2022-09-08</h4>
 
 
 
 <p>This vignette provides the code used to generate the virtual populations for the ten subpopulations of interest, plus a non-obese adult subpopulation.</p>
-<p>To use the code in this vignette, you’ll first need to load a few packages.</p>
+<p>To use the code in this vignette, you’ll first need to load a few packages. If you get the message “Error in library(X) : there is no package called ‘X’” then you will need to install that package:</p>
+<p>From the R command prompt:</p>
+<p>install.packages(“X”)</p>
+<p>Or, if using RStudio, look for ‘Install Packages’ under ‘Tools’ tab.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(<span class="st">&quot;httk&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(<span class="st">&quot;data.table&quot;</span>)</a></code></pre></div>
 <p>Because we’ll be writing some files (and then reading them in other vignettes), be aware of where your current working directory is – the files will be written there. # Set up subpopulation specs Here, we set the number of individuals in each virtual population (1000). We also specify a list of names for the virtual populations. Then we specify corresponding lists of gender, age limits, and BMI categories. HTTK-Pop default values will be used for other population specifications (e.g. race/ethnicity, kidney function categories).</p>
