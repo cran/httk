@@ -16,6 +16,35 @@
 
 <title>Introduction to HTTK</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -37,26 +66,27 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -65,9 +95,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -326,7 +356,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><a href="mailto:breen.miyuki@epa.gov" class="email">breen.miyuki@epa.gov</a></p>
 <div id="set-vignette-options" class="section level3">
 <h3>Set vignette options</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">echo =</span> <span class="ot">TRUE</span>, <span class="dt">fig.width=</span><span class="dv">5</span>, <span class="dt">fig.height=</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">echo =</span> <span class="ot">TRUE</span>, <span class="dt">fig.width=</span><span class="dv">5</span>, <span class="dt">fig.height=</span><span class="dv">4</span>)</span></code></pre></div>
 </div>
 <div id="description" class="section level2">
 <h2>Description</h2>
@@ -334,7 +364,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>Chemicals can be identified using name, CAS, or DTXSID (that is, a substance identifier for the Distributed Structure- Searchable Toxicity (DSSTox) database [138]). Available chemical- specific information includes logP, MW, pKa, intrinsic clearance, partitioning. Calculations can be performed to derive chemical properties, TK parameters, or IVIVE values. Functions are also available to perform forward dosimetry using the various models. As functions are typed at the RStudio command line, available arguments are displayed, with additional help available through the ‘?’ operator. Vignettes for the various available packages in httk are provided to give an overview of their respective capabilities. The aim of httk is to provide a readily accessible platform for working with HTTK models.</p>
+<p>Chemicals can be identified using name, CAS, or DTXSID (that is, a substance identifier for the Distributed Structure- Searchable Toxicity (DSSTox) database [138]). Available chemical- specific information includes logP, MW, pKa, intrinsic clearance, partitioning. Calculations can be performed to derive chemical properties, TK parameters, or IVIVE values. Functions are also available to perform forward dosimetry using the various models. As functions are typed at the RStudio command line, available arguments are displayed, with additional help available through the “?” operator. Vignettes for the various available packages in httk are provided to give an overview of their respective capabilities. The aim of httk is to provide a readily accessible platform for working with HTTK models.</p>
 <p>This material is from Breen et al. (2021) “High-throughput PBTK models for in vitro to in vivo extrapolation” <a href="https://doi.org/10.1080/17425255.2021.1935867" class="uri">https://doi.org/10.1080/17425255.2021.1935867</a></p>
 </div>
 <div id="getting-started" class="section level2">
@@ -347,24 +377,24 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li>Users will need the freely available R statistical computing language: <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a></li>
 <li>Users will likely want a development environment like RStudio: <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></li>
 <li>If you get the message “Error in library(X) : there is no package called ‘X’” then you will need to install that package: From the R command prompt: install.packages(“X”) Or, if using RStudio, look for ‘Install Packages’ under the ‘Tools’ tab.</li>
-<li>Note that R does not recognize fancy versions of quotation marks ‘,’, “, or”. If you are cutting and pasting from software like Word or Outlook you may need to replace the quotation marks that curve toward each other with ones typed by the keyboard.</li>
+<li>Note that R does not recognize fancy versions of quotation marks that curve toward each other. If you are cutting and pasting from software like Word or Outlook you may need to replace the quotation marks that curve toward each other with ones typed by the keyboard.</li>
 </ul>
 </div>
 <div id="installing-r-package-httk" class="section level3">
 <h3>Installing R package “httk”</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;httk&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
 </div>
 <div id="delete-all-objects-from-memory" class="section level3">
 <h3>Delete all objects from memory:</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">rm</span>(<span class="dt">list=</span><span class="kw">ls</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">rm</span>(<span class="dt">list=</span><span class="kw">ls</span>())</span></code></pre></div>
 </div>
 <div id="load-the-httk-data-models-and-functions" class="section level3">
 <h3>Load the HTTK data, models, and functions</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">library</span>(httk)</a>
-<a class="sourceLine" id="cb4-2" title="2"></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co"># Check what version you are using </span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="kw">packageVersion</span>(<span class="st">&quot;httk&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] &#39;2.2.0&#39;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">library</span>(httk)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># Check what version you are using </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">packageVersion</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &#39;2.2.1&#39;</code></pre>
 </div>
 </div>
 <div id="examples" class="section level2">
@@ -372,7 +402,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>List all CAS numbers for all chemicals with sufficient data to run httk Note that we use the R built-in function head() to show only the first five rows</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">head</span>(<span class="kw">get_cheminfo</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">head</span>(<span class="kw">get_cheminfo</span>())</span></code></pre></div>
 <pre><code>## Warning in get_cheminfo(): Excluding compounds that have one or more missing in
 ## necessary parameters.</code></pre>
 <pre><code>## Warning in get_cheminfo(): Excluding compounds without a &#39;fup&#39; value (i.e. fup
@@ -386,12 +416,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <pre><code>## [1] &quot;2971-36-0&quot;  &quot;94-75-7&quot;    &quot;94-82-6&quot;    &quot;90-43-7&quot;    &quot;1007-28-9&quot; 
 ## [6] &quot;71751-41-2&quot;</code></pre>
 <p>Remove the head() function to get the full table</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">get_cheminfo</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">get_cheminfo</span>()</span></code></pre></div>
 <ul>
 <li>List all information (If median.only=FALSE you will get medians, lower 95th, and upper 95th for Fup, plus p-value for Clint, separated by commans, when those statistics are available. Older data only have means for Clint and Fup.):</li>
 </ul>
 <p>Note that we use the R built-in function head() to show only the first five rows</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">head</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info =</span> <span class="st">&quot;all&quot;</span>, <span class="dt">median.only=</span><span class="ot">TRUE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">head</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info =</span> <span class="st">&quot;all&quot;</span>, <span class="dt">median.only=</span><span class="ot">TRUE</span>))</span></code></pre></div>
 <pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE): Clint values with a
 ## pvalue &gt; 0.05 were set to 0.
 
@@ -431,7 +461,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>Is a chemical with a specified CAS number available?</li>
 </ul>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="st">&quot;80-05-7&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">get_cheminfo</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="st">&quot;80-05-7&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">get_cheminfo</span>()</span></code></pre></div>
 <pre><code>## Warning in get_cheminfo(): Excluding compounds that have one or more missing in
 ## necessary parameters.</code></pre>
 <pre><code>## Warning in get_cheminfo(): Excluding compounds without a &#39;fup&#39; value (i.e. fup
@@ -446,7 +476,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>All data on chemicals A, B, C (You need to specify the names instead of “A”,“B”,“C”…)</li>
 </ul>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">subset</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info =</span> <span class="st">&quot;all&quot;</span>), Compound <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">subset</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info =</span> <span class="st">&quot;all&quot;</span>), Compound <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</span></code></pre></div>
 <pre><code>## Warning in get_cheminfo(info = &quot;all&quot;): Clint values with a pvalue &gt; 0.05 were
 ## set to 0.
 
@@ -470,26 +500,26 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>Administrated equivalent dose (mg/kg BW/day) to produce 0.1 uM plasma concentration, 0.95 quantile, for a specified CAS number and species</li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,<span class="dt">chem.cas =</span> <span class="st">&quot;34256-82-1&quot;</span>,<span class="dt">species =</span> <span class="st">&quot;human&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,<span class="dt">chem.cas =</span> <span class="st">&quot;34256-82-1&quot;</span>,<span class="dt">species =</span> <span class="st">&quot;human&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in (function (chem.cas = NULL, chem.name = NULL, dtxsid = NULL, :
 ## Funbound.plasma adjusted for in vitro partitioning (Pearce, 2017).</code></pre>
 <pre><code>## Warning in (function (chem.cas = NULL, chem.name = NULL, dtxsid = NULL, : Clint
 ## adjusted for in vitro partioning (Kilford, 2008).</code></pre>
 <pre><code>## uM concentration converted to mgpkgpday dose for 0.95 quantile.</code></pre>
-<pre><code>##     95% 
-## 0.09107</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,<span class="dt">chem.cas =</span> <span class="st">&quot;99-71-8&quot;</span>, <span class="dt">species =</span> <span class="st">&quot;human&quot;</span>)</a></code></pre></div>
+<pre><code>##    95% 
+## 0.0777</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="kw">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,<span class="dt">chem.cas =</span> <span class="st">&quot;99-71-8&quot;</span>, <span class="dt">species =</span> <span class="st">&quot;human&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in (function (chem.cas = NULL, chem.name = NULL, dtxsid = NULL, :
 ## Funbound.plasma adjusted for in vitro partitioning (Pearce, 2017).</code></pre>
 <pre><code>## Warning in (function (chem.cas = NULL, chem.name = NULL, dtxsid = NULL, : Clint
 ## adjusted for in vitro partioning (Kilford, 2008).</code></pre>
 <pre><code>## uM concentration converted to mgpkgpday dose for 0.95 quantile.</code></pre>
 <pre><code>##      95% 
-## 0.004496</code></pre>
+## 0.005112</code></pre>
 <ul>
 <li>Calculate the mean, AUC, and peak concentrations for a simulated study (28-day daily dose, by default) for a specified CAS number and species</li>
 </ul>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">calc_tkstats</span>(<span class="dt">chem.cas =</span> <span class="st">&quot;34256-82-1&quot;</span>,<span class="dt">species =</span> <span class="st">&quot;rat&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="kw">calc_tkstats</span>(<span class="dt">chem.cas =</span> <span class="st">&quot;34256-82-1&quot;</span>,<span class="dt">species =</span> <span class="st">&quot;rat&quot;</span>)</span></code></pre></div>
 <pre><code>## Rat plasma concentrations returned in uM units.
 ## AUC is area under plasma concentration curve in uM * days units with Rblood2plasma = 0.8691 .</code></pre>
 <pre><code>## $AUC
@@ -500,7 +530,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 
 ## $mean
 ## [1] 0.04104</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="kw">calc_tkstats</span>(<span class="dt">chem.cas =</span> <span class="st">&quot;962-58-3&quot;</span>, <span class="dt">species =</span> <span class="st">&quot;rat&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="kw">calc_tkstats</span>(<span class="dt">chem.cas =</span> <span class="st">&quot;962-58-3&quot;</span>, <span class="dt">species =</span> <span class="st">&quot;rat&quot;</span>)</span></code></pre></div>
 <pre><code>## Rat plasma concentrations returned in uM units.
 ## AUC is area under plasma concentration curve in uM * days units with Rblood2plasma = 0.9163 .</code></pre>
 <pre><code>## $AUC
@@ -515,7 +545,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li>Using the PBTK solver for a specified chem name</li>
 </ul>
 <p>Note that we use the R built-in function head() to show only the first five rows</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="kw">head</span>(<span class="kw">solve_pbtk</span>(<span class="dt">chem.name =</span> <span class="st">&quot;bisphenol a&quot;</span>, <span class="dt">plots =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="kw">head</span>(<span class="kw">solve_pbtk</span>(<span class="dt">chem.name =</span> <span class="st">&quot;bisphenol a&quot;</span>, <span class="dt">plots =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
 <pre><code>## Warning in parameterize_pbtk(chem.cas = NULL, chem.name = &quot;bisphenol a&quot;, : Clint
 ## is provided as a distribution.</code></pre>
 <pre><code>## Warning in parameterize_pbtk(chem.cas = NULL, chem.name = &quot;bisphenol a&quot;, : Clint
@@ -549,7 +579,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>Create data set, my_data, for all data on chemicals A, B, C, in R</li>
 </ul>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1">my_data &lt;-<span class="st"> </span><span class="kw">subset</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info =</span> <span class="st">&quot;all&quot;</span>), Compound <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a>my_data &lt;-<span class="st"> </span><span class="kw">subset</span>(<span class="kw">get_cheminfo</span>(<span class="dt">info =</span> <span class="st">&quot;all&quot;</span>), Compound <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</span></code></pre></div>
 <pre><code>## Warning in get_cheminfo(info = &quot;all&quot;): Clint values with a pvalue &gt; 0.05 were
 ## set to 0.
 
@@ -568,7 +598,43 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>Export data set, my_data, from R to csv file called my_data.csv in the current working directory</li>
 </ul>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw">write.csv</span>(my_data, <span class="dt">file =</span> <span class="st">&quot;my_data.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="kw">write.csv</span>(my_data, <span class="dt">file =</span> <span class="st">&quot;my_data.csv&quot;</span>)</span></code></pre></div>
+<div id="mean-and-median-fraction-unbound-in-plasma" class="section level4">
+<h4>Mean and Median Fraction Unbound in Plasma</h4>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a><span class="co"># Load httk:</span></span>
+<span id="cb69-2"><a href="#cb69-2"></a><span class="kw">library</span>(httk)</span>
+<span id="cb69-3"><a href="#cb69-3"></a><span class="co"># create a data.frame with all the Fup values, we ask for model=&quot;schmitt&quot; since</span></span>
+<span id="cb69-4"><a href="#cb69-4"></a><span class="co"># that model only needs fup, we ask for &quot;median.only&quot; because we don&#39;t care</span></span>
+<span id="cb69-5"><a href="#cb69-5"></a><span class="co"># about uncertainty intervals here:</span></span>
+<span id="cb69-6"><a href="#cb69-6"></a>fup.tab &lt;-<span class="st"> </span><span class="kw">get_cheminfo</span>(<span class="dt">info=</span><span class="st">&quot;all&quot;</span>,<span class="dt">median.only=</span><span class="ot">TRUE</span>,<span class="dt">model=</span><span class="st">&quot;schmitt&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## Clint values with a pvalue &gt; 0.05 were set to 0.
+
+## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## Clint values with a pvalue &gt; 0.05 were set to 0.</code></pre>
+<pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## Excluding compounds that have one or more missing in necessary parameters.</code></pre>
+<pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## Excluding compounds without a &#39;fup&#39; value (i.e. fup value = NA) or a &#39;fup&#39; value
+## of 0.</code></pre>
+<pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## Excluding compounds with uncertain &#39;fup&#39; confidence/credible intervals.</code></pre>
+<pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## Excluding compounds that are categorized in one or more of the following
+## chemical classes: PFAS.</code></pre>
+<pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;):
+## NAs introduced by coercion</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="co"># calculate the median, making sure to convert to numeric values:</span></span>
+<span id="cb76-2"><a href="#cb76-2"></a><span class="kw">median</span>(<span class="kw">as.numeric</span>(fup.tab<span class="op">$</span>Human.Funbound.plasma),<span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.13</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a><span class="co"># calculate the mean:</span></span>
+<span id="cb78-2"><a href="#cb78-2"></a><span class="kw">mean</span>(<span class="kw">as.numeric</span>(fup.tab<span class="op">$</span>Human.Funbound.plasma),<span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2932383</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="co"># count how many non-NA values we have (should be the same as the number of </span></span>
+<span id="cb80-2"><a href="#cb80-2"></a><span class="co"># rows in the table but just in case we ask for non NA values:</span></span>
+<span id="cb80-3"><a href="#cb80-3"></a><span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(fup.tab<span class="op">$</span>Human.Funbound.plasma))</span></code></pre></div>
+<pre><code>## [1] 1618</code></pre>
+</div>
 <div id="user-notes" class="section level4">
 <h4>User Notes</h4>
 <ul>
@@ -581,19 +647,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>Getting help with R Package httk</li>
 </ul>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1"><span class="kw">help</span>(httk)</a></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a><span class="kw">help</span>(httk)</span></code></pre></div>
 <ul>
 <li>You can go straight to the index:</li>
 </ul>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="kw">help</span>(<span class="dt">package =</span> httk)</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="kw">help</span>(<span class="dt">package =</span> httk)</span></code></pre></div>
 <ul>
 <li>List all vignettes for httk</li>
 </ul>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="kw">vignette</span>(<span class="dt">package =</span> <span class="st">&quot;httk&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a><span class="kw">vignette</span>(<span class="dt">package =</span> <span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
 <ul>
 <li>Displays the vignette for a specified vignette</li>
 </ul>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">vignette</span>(<span class="st">&quot;IntroToHTTK&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="kw">vignette</span>(<span class="st">&quot;IntroToHTTK&quot;</span>)</span></code></pre></div>
 </div>
 
 

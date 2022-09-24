@@ -16,6 +16,35 @@
 
 <title>Honda et al. (2019): Updated Armitage et al. (2014) Model</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -37,26 +66,27 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -65,9 +95,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -339,40 +369,40 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>From the R command prompt:</p>
 <p>install.packages(“X”)</p>
 <p>Or, if using RStudio, look for ‘Install Packages’ under ‘Tools’ tab.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(httk)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">armitage.dt &lt;-<span class="st"> </span><span class="kw">copy</span>(armitage_input)</a>
-<a class="sourceLine" id="cb2-2" title="2">armitage.dt[,well_number<span class="op">:</span><span class="er">=</span><span class="dv">384</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="st">  </span>.[,option.bottom<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="st">  </span>.[,option.plastic<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="st">  </span>.[,Tsys<span class="op">:</span><span class="er">=</span><span class="dv">37</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="st">  </span>.[,Tref<span class="op">:</span><span class="er">=</span><span class="fl">298.15</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span>.[,FBSf<span class="op">:</span><span class="er">=</span><span class="fl">0.1</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="st">  </span>.[,nomconc<span class="op">:</span><span class="er">=</span><span class="dv">50</span>]</a>
-<a class="sourceLine" id="cb2-9" title="9"></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="co"># Make sure we have data for the chemical:</span></a>
-<a class="sourceLine" id="cb2-11" title="11">armitage.dt &lt;-<span class="st"> </span><span class="kw">subset</span>(armitage.dt,casrn<span class="op">%in%</span><span class="kw">get_cheminfo</span>())</a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="co"># These chemicals are missing water solubilities:</span></a>
-<a class="sourceLine" id="cb2-13" title="13">armitage.dt &lt;-<span class="st"> </span><span class="kw">subset</span>(armitage.dt,<span class="op">!</span>(casrn<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;71751-41-2&quot;</span>,<span class="st">&quot;34590-94-8&quot;</span>,<span class="st">&quot;141517-21-7&quot;</span>)))</a>
-<a class="sourceLine" id="cb2-14" title="14"></a>
-<a class="sourceLine" id="cb2-15" title="15">armitage.dt2 &lt;-<span class="st"> </span><span class="kw">armitage_estimate_sarea</span>(<span class="dt">tcdata =</span> armitage.dt)</a>
-<a class="sourceLine" id="cb2-16" title="16">armitage_output1 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="dv">50</span>])</a>
-<a class="sourceLine" id="cb2-17" title="17">armitage_output2 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb2-18" title="18">armitage_output3 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="fl">0.001</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(magrittr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(httk)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>armitage.dt &lt;-<span class="st"> </span><span class="kw">copy</span>(armitage_input)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>armitage.dt[,well_number<span class="op">:</span><span class="er">=</span><span class="dv">384</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="st">  </span>.[,option.bottom<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span>.[,option.plastic<span class="op">:</span><span class="er">=</span><span class="ot">TRUE</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span>.[,Tsys<span class="op">:</span><span class="er">=</span><span class="dv">37</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="st">  </span>.[,Tref<span class="op">:</span><span class="er">=</span><span class="fl">298.15</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="st">  </span>.[,FBSf<span class="op">:</span><span class="er">=</span><span class="fl">0.1</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="st">  </span>.[,nomconc<span class="op">:</span><span class="er">=</span><span class="dv">50</span>]</span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># Make sure we have data for the chemical:</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>armitage.dt &lt;-<span class="st"> </span><span class="kw">subset</span>(armitage.dt,casrn<span class="op">%in%</span><span class="kw">get_cheminfo</span>())</span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co"># These chemicals are missing water solubilities:</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>armitage.dt &lt;-<span class="st"> </span><span class="kw">subset</span>(armitage.dt,<span class="op">!</span>(casrn<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;71751-41-2&quot;</span>,<span class="st">&quot;34590-94-8&quot;</span>,<span class="st">&quot;141517-21-7&quot;</span>)))</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a>armitage.dt2 &lt;-<span class="st"> </span><span class="kw">armitage_estimate_sarea</span>(<span class="dt">tcdata =</span> armitage.dt)</span>
+<span id="cb2-16"><a href="#cb2-16"></a>armitage_output1 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="dv">50</span>])</span>
+<span id="cb2-17"><a href="#cb2-17"></a>armitage_output2 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="dv">1</span>])</span>
+<span id="cb2-18"><a href="#cb2-18"></a>armitage_output3 &lt;-<span class="st"> </span><span class="kw">armitage_eval</span>(<span class="dt">tcdata =</span> armitage.dt2[,<span class="dt">ac50:=</span><span class="fl">0.001</span>])</span></code></pre></div>
 </div>
 <div id="plot-results" class="section level2">
 <h2>Plot results</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">armitage_output &lt;-<span class="st"> </span><span class="kw">rbind</span>(armitage_output1[,<span class="dt">xfill:=</span><span class="st">&quot;50 \U00B5M&quot;</span>],</a>
-<a class="sourceLine" id="cb3-2" title="2">                         armitage_output2[,<span class="dt">xfill:=</span><span class="st">&quot;1 \U00B5M&quot;</span>],</a>
-<a class="sourceLine" id="cb3-3" title="3">                         armitage_output3[,<span class="dt">xfill:=</span><span class="st">&quot;1 nM&quot;</span>])</a>
-<a class="sourceLine" id="cb3-4" title="4">armitage_output[,xfill<span class="op">:</span><span class="er">=</span><span class="kw">factor</span>(xfill,<span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;50 \U00B5M&quot;</span>,<span class="st">&quot;1 \U00B5M&quot;</span>,<span class="st">&quot;1 nM&quot;</span>))]</a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="kw">ggplot</span>(armitage_output) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>gkow,<span class="dt">y=</span><span class="kw">log10</span>(ccells<span class="op">/</span>MW<span class="op">*</span><span class="fl">1e9</span>),<span class="dt">color=</span>xfill),<span class="dt">shape=</span><span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="kw">expression</span>(<span class="st">&quot;AC&quot;</span>[<span class="st">&quot;50&quot;</span>]),<span class="dt">x=</span><span class="st">&quot;log P&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;log(ng chemical/g cells)&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="st">  </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>armitage_output &lt;-<span class="st"> </span><span class="kw">rbind</span>(armitage_output1[,<span class="dt">xfill:=</span><span class="st">&quot;50 \U00B5M&quot;</span>],</span>
+<span id="cb3-2"><a href="#cb3-2"></a>                         armitage_output2[,<span class="dt">xfill:=</span><span class="st">&quot;1 \U00B5M&quot;</span>],</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                         armitage_output3[,<span class="dt">xfill:=</span><span class="st">&quot;1 nM&quot;</span>])</span>
+<span id="cb3-4"><a href="#cb3-4"></a>armitage_output[,xfill<span class="op">:</span><span class="er">=</span><span class="kw">factor</span>(xfill,<span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;50 \U00B5M&quot;</span>,<span class="st">&quot;1 \U00B5M&quot;</span>,<span class="st">&quot;1 nM&quot;</span>))]</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">ggplot</span>(armitage_output) <span class="op">+</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>gkow,<span class="dt">y=</span><span class="kw">log10</span>(ccells<span class="op">/</span>MW<span class="op">*</span><span class="fl">1e9</span>),<span class="dt">color=</span>xfill),<span class="dt">shape=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="kw">expression</span>(<span class="st">&quot;AC&quot;</span>[<span class="st">&quot;50&quot;</span>]),<span class="dt">x=</span><span class="st">&quot;log P&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;log(ng chemical/g cells)&quot;</span>) <span class="op">+</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span></code></pre></div>
 </div>
 
 

@@ -45,6 +45,21 @@ my_data <- subset(get_cheminfo(info = "all"), Compound %in% c("A","B","C"))
 ## ----writetodisk_ex, eval = TRUE----------------------------------------------
 write.csv(my_data, file = "my_data.csv")
 
+## ----fup_stats, eval = TRUE---------------------------------------------------
+# Load httk:
+library(httk)
+# create a data.frame with all the Fup values, we ask for model="schmitt" since
+# that model only needs fup, we ask for "median.only" because we don't care
+# about uncertainty intervals here:
+fup.tab <- get_cheminfo(info="all",median.only=TRUE,model="schmitt")
+# calculate the median, making sure to convert to numeric values:
+median(as.numeric(fup.tab$Human.Funbound.plasma),na.rm=TRUE)
+# calculate the mean:
+mean(as.numeric(fup.tab$Human.Funbound.plasma),na.rm=TRUE)
+# count how many non-NA values we have (should be the same as the number of 
+# rows in the table but just in case we ask for non NA values:
+sum(!is.na(fup.tab$Human.Funbound.plasma))
+
 ## ----help1, eval = FALSE------------------------------------------------------
 #  help(httk)
 

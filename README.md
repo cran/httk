@@ -1,4 +1,4 @@
-![HTTK logo](logo/httk-logo.png)
+![HTTK logo](man/figures/httk-logo.png)
 
 # R Package "httk"
 
@@ -29,8 +29,7 @@ into bioinformatics, as described by Pearce et al. (2017)
 (<https://doi.org/10.18637/jss.v079.i04>). Chemical-specific 
 in vitro data characterizing toxicokinetics can be been obtained 
 from relatively high-throughput experiments. The 
-chemical-independent
-("generic") physiologically-based ("PBTK") and empirical 
+chemical-independent ("generic") physiologically-based ("PBTK") and empirical 
 (for example, one compartment) "TK" models included here can be 
 parameterized with in vitro data or in silico predictions which are 
 provided for thousands of chemicals, multiple exposure routes, 
@@ -42,8 +41,8 @@ included for simulating human biological variability
 and propagating parameter uncertainty 
 (Wambaugh et al., 2019 <https://doi.org/10.1093/toxsci/kfz205>). 
 Empirically calibrated methods are included for predicting 
-tissue:plasma partition coefficients and volume of distribution  
-(Pearce et al., 2017 <https://doi.org/10.1007/s10928-017-9548-7>).
+tissue:plasma partition coefficients and volume of distribution (Pearce et al., 
+2017 <https://doi.org/10.1007/s10928-017-9548-7>).
 These functions and data provide a set of tools for using IVIVE to
 convert concentrations from high-throughput screening experiments
 (for example, Tox21, ToxCast) to real-world exposures via reverse 
@@ -75,6 +74,7 @@ the keyboard.
 ### Installing R package "httk"
 
 Adapted from Breen et al. (2021) <https://doi.org/10.1080/17425255.2021.1935867>
+
 * Getting Started with R Package httk from the R command line
 ```
 install.packages("httk")

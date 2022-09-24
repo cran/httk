@@ -4,7 +4,7 @@ author: "Miyuki Breen, Anna Kreutz, and John Wambaugh"
 date: "June 15, 2021"
 output: rmarkdown::html_vignette
 vignette: >
- %\VignetteIndexEntry{Introduction to HTTK}
+ %\VignetteIndexEntry{1) Introduction to HTTK}
  %\VignetteEngine{knitr::rmarkdown}
  %\VignetteEncoding{UTF-8}
 ---
@@ -50,7 +50,7 @@ properties, TK parameters, or IVIVE values. Functions are also
 available to perform forward dosimetry using the various
 models. As functions are typed at the RStudio command line,
 available arguments are displayed, with additional help available
-through the ‘?’ operator. Vignettes for the various available
+through the "?" operator. Vignettes for the various available
 packages in httk are provided to give an overview of their
 respective capabilities. The aim of httk is to provide a readily
 accessible platform for working with HTTK models.
@@ -73,7 +73,8 @@ For an introduction to toxicokinetics, with examples in "httk", see Ring (2021) 
 * If you get the message "Error in library(X) : there is no package called 'X'" then you will need to install that package: 
 	From the R command prompt: install.packages("X") 
   Or, if using RStudio, look for 'Install Packages' under the 'Tools' tab.
-* Note that R does not recognize fancy versions of quotation marks ‘, ’, “, or ”. 
+* Note that R does not recognize fancy versions of quotation marks that curve
+toward each other. 
 If you are cutting and pasting from software like Word or Outlook you may need 
 to replace the quotation marks that curve toward each other with ones typed by 
 the keyboard.
@@ -157,6 +158,24 @@ my_data <- subset(get_cheminfo(info = "all"), Compound %in% c("A","B","C"))
 * Export data set, my_data, from R to csv file called my_data.csv in the current working directory 
 ```{r writetodisk_ex, eval = TRUE}
 write.csv(my_data, file = "my_data.csv")
+```
+
+#### Mean and Median Fraction Unbound in Plasma
+
+```{r fup_stats, eval = TRUE}
+# Load httk:
+library(httk)
+# create a data.frame with all the Fup values, we ask for model="schmitt" since
+# that model only needs fup, we ask for "median.only" because we don't care
+# about uncertainty intervals here:
+fup.tab <- get_cheminfo(info="all",median.only=TRUE,model="schmitt")
+# calculate the median, making sure to convert to numeric values:
+median(as.numeric(fup.tab$Human.Funbound.plasma),na.rm=TRUE)
+# calculate the mean:
+mean(as.numeric(fup.tab$Human.Funbound.plasma),na.rm=TRUE)
+# count how many non-NA values we have (should be the same as the number of 
+# rows in the table but just in case we ask for non NA values:
+sum(!is.na(fup.tab$Human.Funbound.plasma))
 ```
 
 #### User Notes
