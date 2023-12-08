@@ -24,7 +24,8 @@ SKIP.CHEMS <- 25
 NSAMP <- 25
 
 ## ----rat_pbtk_parameters, eval = execute.vignette-----------------------------
-parameters <- try(parameterize_pbtk(chem.name = "triclosan", species = "rat"))
+parameters <- try(parameterize_pbtk(chem.name = "triclosan", 
+                                    species = "rat"))
 
 ## ----rat_pbtk_parameters2, eval = execute.vignette----------------------------
 parameters <- parameterize_pbtk(chem.name = "triclosan", 
@@ -248,7 +249,7 @@ knitr::kable(zoxtable, caption = "Zoxamide plasma concentration vs. time",
 
 ## ----monte_carlo_css_example_5, eval = execute.vignette-----------------------
 zoxamide1 <- ggplot(as.data.frame(zoxtable), aes(x=time,y=Cplasma)) +
-    geom_line(color = "dark blue",size=2) +
+    geom_line(color = "dark blue",linewidth=2) +
       geom_ribbon(aes(ymin=lcl, ymax=ucl), alpha = 0.3,
                   fill = "light blue", color="black", linetype="dotted")+
     ylab("Plasma concentration") +
