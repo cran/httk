@@ -12,7 +12,7 @@
 
 <meta name="author" content="Caroline Ring" />
 
-<meta name="date" content="2023-12-08" />
+<meta name="date" content="2024-03-21" />
 
 <title>Ring et al. (2017) HTTK-Pop: Generating subpopulations</title>
 
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Ring et al. (2017) HTTK-Pop: Generating
 subpopulations</h1>
 <h4 class="author">Caroline Ring</h4>
-<h4 class="date">2023-12-08</h4>
+<h4 class="date">2024-03-21</h4>
 
 
 
@@ -537,7 +537,7 @@ take a couple of minutes to run.</p>
 <span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">varlist =</span> <span class="st">&#39;tmpfun&#39;</span>)</span>
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Set seeds on all workers for reproducibility</span></span>
 <span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">clusterSetRNGStream</span>(cluster, </span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                              TeachingDemos<span class="sc">::</span><span class="fu">char2seed</span>(<span class="st">&quot;Caroline Ring&quot;</span>))</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                              <span class="dv">010180</span>)</span>
 <span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>out_vi <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">clusterMap</span>(<span class="at">cl=</span>cluster,</span>
 <span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fun =</span> tmpfun,</span>
 <span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gendernum=</span>gendernum,</span>

@@ -1,4 +1,4 @@
-## ---- include=FALSE-----------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
 
 ## ----clear_memory, eval = TRUE------------------------------------------------
@@ -91,7 +91,7 @@ execute.vignette <- FALSE
 #                varlist = 'tmpfun')
 #  #Set seeds on all workers for reproducibility
 #  parallel::clusterSetRNGStream(cluster,
-#                                TeachingDemos::char2seed("Caroline Ring"))
+#                                010180)
 #  out_vi <- parallel::clusterMap(cl=cluster,
 #                    fun = tmpfun,
 #                    gendernum=gendernum,
