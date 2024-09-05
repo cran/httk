@@ -14,13 +14,17 @@ rm(list=ls())
 ## ----install_ggplot2, eval = FALSE--------------------------------------------
 #  install.packages("ggplot2")
 
-## ----load_packages, eval = TRUE-----------------------------------------------
-library(httk)
-library(readxl)
-library(ggplot2)
+## ----runchunks, eval = TRUE---------------------------------------------------
+# Set whether or not the following chunks will be executed (run):
+execute.vignette <- FALSE
 
-## ----MC_samples, eval = TRUE--------------------------------------------------
-NSAMP <- 25
+## ----load_packages, eval = execute.vignette-----------------------------------
+#  library(httk)
+#  library(readxl)
+#  library(ggplot2)
+
+## ----MC_samples, eval = execute.vignette--------------------------------------
+#  NSAMP <- 25
 
 ## ----change_directory, eval = FALSE-------------------------------------------
 #  setwd("FOLDERPATH")
@@ -92,63 +96,63 @@ rownames(toxcast.table) <- seq(1,dim(toxcast.table)[1])
 knitr::kable(head(toxcast.table[,1:6]), caption = "Summarized ToxCast Data",
              floating.environment="sidewaystable")
 
-## ----calc_css1, eval = TRUE---------------------------------------------------
-for (this.id in unique(toxcast.table$DTXSID))
-{
-# get_cheminfo() gives a list of all the CAS numbers for which HTTK will work:
-  if (this.id %in% get_cheminfo(info="dtxsid", suppress.messages=TRUE))
-  {
-# Set a random number generator seed so that the Monte Carlo will always give
-# the same random sequence:
-    set.seed(12345)
-    toxcast.table[toxcast.table$DTXSID==this.id,"Css"] <- 
-      calc_mc_css(dtxsid=this.id,
-                  output.units="uM",
-                  samples=NSAMP,
-                  suppress.messages=TRUE)
-    toxcast.table[toxcast.table$DTXSID==this.id,"Css.Type"] <- "in vitro"
-  }
-}
+## ----calc_css1, eval = execute.vignette---------------------------------------
+#  for (this.id in unique(toxcast.table$DTXSID))
+#  {
+#  # get_cheminfo() gives a list of all the CAS numbers for which HTTK will work:
+#    if (this.id %in% get_cheminfo(info="dtxsid", suppress.messages=TRUE))
+#    {
+#  # Set a random number generator seed so that the Monte Carlo will always give
+#  # the same random sequence:
+#      set.seed(12345)
+#      toxcast.table[toxcast.table$DTXSID==this.id,"Css"] <-
+#        calc_mc_css(dtxsid=this.id,
+#                    output.units="uM",
+#                    samples=NSAMP,
+#                    suppress.messages=TRUE)
+#      toxcast.table[toxcast.table$DTXSID==this.id,"Css.Type"] <- "in vitro"
+#    }
+#  }
 
-## ----css_table1, eval = TRUE--------------------------------------------------
-knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","Css.Type")], 
-                                caption = "Summarized ToxCast Data",
-             floating.environment="sidewaystable")
+## ----css_table1, eval = execute.vignette--------------------------------------
+#  knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","Css.Type")],
+#                                  caption = "Summarized ToxCast Data",
+#               floating.environment="sidewaystable")
 
-## ----load_qspr, eval = TRUE---------------------------------------------------
-load_sipes2017()
+## ----load_qspr, eval = execute.vignette---------------------------------------
+#  load_sipes2017()
 
-## ----calc_css2, eval = TRUE---------------------------------------------------
-for (this.id in unique(toxcast.table$DTXSID))
-{
-  if (this.id %in% get_cheminfo(info="dtxsid", suppress.messages=TRUE) &
-    is.na(toxcast.table[toxcast.table$DTXSID==this.id,"Css"]))
-  {
-# Set a random number generator seed so that the Monte Carlo will always give
-# the same random sequence:
-    set.seed(12345)
-    toxcast.table[toxcast.table$DTXSID==this.id,"Css"] <- 
-      calc_mc_css(dtxsid=this.id,
-                  output.units="uM",
-                  samples=NSAMP,
-                  suppress.messages=TRUE)
-    toxcast.table[toxcast.table$DTXSID==this.id,"Css.Type"] <- "in silico"
-  }
-}
+## ----calc_css2, eval = execute.vignette---------------------------------------
+#  for (this.id in unique(toxcast.table$DTXSID))
+#  {
+#    if (this.id %in% get_cheminfo(info="dtxsid", suppress.messages=TRUE) &
+#      is.na(toxcast.table[toxcast.table$DTXSID==this.id,"Css"]))
+#    {
+#  # Set a random number generator seed so that the Monte Carlo will always give
+#  # the same random sequence:
+#      set.seed(12345)
+#      toxcast.table[toxcast.table$DTXSID==this.id,"Css"] <-
+#        calc_mc_css(dtxsid=this.id,
+#                    output.units="uM",
+#                    samples=NSAMP,
+#                    suppress.messages=TRUE)
+#      toxcast.table[toxcast.table$DTXSID==this.id,"Css.Type"] <- "in silico"
+#    }
+#  }
 
-## ----css_table2, eval = TRUE--------------------------------------------------
-knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","Css.Type")], 
-                                caption = "Summarized ToxCast Data",
-             floating.environment="sidewaystable")
+## ----css_table2, eval = execute.vignette--------------------------------------
+#  knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","Css.Type")],
+#                                  caption = "Summarized ToxCast Data",
+#               floating.environment="sidewaystable")
 
-## ----calc_equivalent_dose16, eval = TRUE--------------------------------------
-toxcast.table$EquivDose <- signif(10^toxcast.table$Q10.AC50 / toxcast.table$Css,
-                                  3)
+## ----calc_equivalent_dose16, eval = execute.vignette--------------------------
+#  toxcast.table$EquivDose <- signif(10^toxcast.table$Q10.AC50 / toxcast.table$Css,
+#                                    3)
 
-## ----display_table2, eval = TRUE----------------------------------------------
-knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","EquivDose")], 
-                                 caption = "Summarized ToxCast Data",
-              floating.environment="sidewaystable")          
+## ----display_table2, eval = execute.vignette----------------------------------
+#  knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","EquivDose")],
+#                                   caption = "Summarized ToxCast Data",
+#                floating.environment="sidewaystable")
 
 ## ----load_seem1, eval = FALSE-------------------------------------------------
 #  SEEM <- read.csv("SupTable-all.chem.preds-2018-11-28.txt",stringsAsFactors=F)
@@ -167,62 +171,62 @@ knitr::kable(toxcast.table[1:10,c("Compound","Q10.AC50","Css","EquivDose")],
 #    example.seem[,this.col] <- signif(example.seem[,this.col],4)
 #  save(example.seem,file="introtoivive-seem.Rdata",version=2)
 
-## ----mergetoxexposure, eval = TRUE--------------------------------------------
-example.seem <- httk::example.seem
-toxcast.table <- merge(toxcast.table,
-                       example.seem[,c(
-                         "dsstox_substance_id",
-                         "seem3",
-                         "seem3.l95",
-                         "seem3.u95",
-                         "Pathway",
-                         "AD")],
-                       by.x="DTXSID",
-                       by.y="dsstox_substance_id",
-                       all.x = TRUE)
+## ----mergetoxexposure, eval = execute.vignette--------------------------------
+#  example.seem <- httk::example.seem
+#  toxcast.table <- merge(toxcast.table,
+#                         example.seem[,c(
+#                           "dsstox_substance_id",
+#                           "seem3",
+#                           "seem3.l95",
+#                           "seem3.u95",
+#                           "Pathway",
+#                           "AD")],
+#                         by.x="DTXSID",
+#                         by.y="dsstox_substance_id",
+#                         all.x = TRUE)
 
-## ----calc_ber, eval = TRUE----------------------------------------------------
-toxcast.table$BER <- signif(toxcast.table$EquivDose/toxcast.table$seem3.u95, 3)
+## ----calc_ber, eval = execute.vignette----------------------------------------
+#  toxcast.table$BER <- signif(toxcast.table$EquivDose/toxcast.table$seem3.u95, 3)
 
-## ----sort_by_ber, eval = TRUE-------------------------------------------------
-toxcast.table <- toxcast.table[order(toxcast.table$BER),]
-knitr::kable(toxcast.table[1:10,c("Compound","EquivDose","seem3.u95","Pathway","BER")], 
-                                 caption = "Bioactivity:Exposure Ratios",
-              floating.environment="sidewaystable")  
+## ----sort_by_ber, eval = execute.vignette-------------------------------------
+#  toxcast.table <- toxcast.table[order(toxcast.table$BER),]
+#  knitr::kable(toxcast.table[1:10,c("Compound","EquivDose","seem3.u95","Pathway","BER")],
+#                                   caption = "Bioactivity:Exposure Ratios",
+#                floating.environment="sidewaystable")
 
-## ----chem_name_factors, eval = TRUE-------------------------------------------
-toxcast.table$Compound <- factor(toxcast.table$Compound,
-                                    levels=toxcast.table$Compound)
+## ----chem_name_factors, eval = execute.vignette-------------------------------
+#  toxcast.table$Compound <- factor(toxcast.table$Compound,
+#                                      levels=toxcast.table$Compound)
 
-## ----ber_plot, eval = TRUE----------------------------------------------------
-BER.plot <- ggplot(data=toxcast.table) +
-  geom_segment(aes(x=Compound,
-                   xend=Compound,
-                   y=(10^Q10.AC50)/Css,
-                   yend=(10^Q90.AC50)/Css),
-               size=1,
-               color="red",
-               alpha=0.5) + 
-  geom_segment(aes(x=Compound,
-                   xend=Compound,
-                   y=seem3.l95,
-                   yend=seem3.u95),
-               size=1,
-               color="blue",
-               alpha=0.5) +   
-  geom_point(aes(x=Compound,y=(10^Med.AC50)/Css),shape=3,color="red") +
-  geom_point(aes(x=Compound,y=seem3),shape=3,color="blue") +
-  theme_bw() +
-  theme(axis.title.x = element_text(size=8)) + 
-  theme(axis.title.y = element_text(size=8)) + 
-  scale_y_log10() + 
-  theme(axis.text.x = element_text(
-    face = "bold", 
-    hjust = 1, 
-    vjust = 1, 
-    size = 4, 
-    angle = 45)) +
-  ylab("Bioactive Dose & Exposure\nmg/kg BW/day") + 
-  xlab("Chemicals Ranked By BER")
-print(BER.plot)
+## ----ber_plot, eval = execute.vignette----------------------------------------
+#  BER.plot <- ggplot(data=toxcast.table) +
+#    geom_segment(aes(x=Compound,
+#                     xend=Compound,
+#                     y=(10^Q10.AC50)/Css,
+#                     yend=(10^Q90.AC50)/Css),
+#                 size=1,
+#                 color="red",
+#                 alpha=0.5) +
+#    geom_segment(aes(x=Compound,
+#                     xend=Compound,
+#                     y=seem3.l95,
+#                     yend=seem3.u95),
+#                 size=1,
+#                 color="blue",
+#                 alpha=0.5) +
+#    geom_point(aes(x=Compound,y=(10^Med.AC50)/Css),shape=3,color="red") +
+#    geom_point(aes(x=Compound,y=seem3),shape=3,color="blue") +
+#    theme_bw() +
+#    theme(axis.title.x = element_text(size=8)) +
+#    theme(axis.title.y = element_text(size=8)) +
+#    scale_y_log10() +
+#    theme(axis.text.x = element_text(
+#      face = "bold",
+#      hjust = 1,
+#      vjust = 1,
+#      size = 4,
+#      angle = 45)) +
+#    ylab("Bioactive Dose & Exposure\nmg/kg BW/day") +
+#    xlab("Chemicals Ranked By BER")
+#  print(BER.plot)
 

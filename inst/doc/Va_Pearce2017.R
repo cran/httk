@@ -18,10 +18,10 @@ packageVersion("httk")
 
 ## ----chemical_thining, eval = execute.vignette--------------------------------
 NUM.CHEMS <- length(get_cheminfo(model="pbtk", suppress.messages = TRUE))
-SKIP.CHEMS <- 25
+SKIP.CHEMS <- 50
 
 ## ----MC_samples, eval = execute.vignette--------------------------------------
-NSAMP <- 25
+NSAMP <- 10
 
 ## ----rat_pbtk_parameters, eval = execute.vignette-----------------------------
 parameters <- try(parameterize_pbtk(chem.name = "triclosan", 
@@ -340,6 +340,10 @@ new.tissue.data$Species <- "Wolverine"
 
 tissue.data <- rbind(tissue.data,new.tissue.data)
 
+new.physiology.data <- physiology.data[,"Rabbit"]
+physiology.data <- rbind(physiology.data, new.physiology.data)
+colnames(physiology.data)[length(colnames(physiology.data))] <- "Wolverine"
+
 ## ----add_a_species3, eval = execute.vignette----------------------------------
 calc_mc_css(chem.cas="80-05-7",species="wolverine",
             parameterize.arg.list=list(default.to.human=TRUE),
@@ -358,6 +362,7 @@ chem.list <- get_cheminfo(model='pbtk', suppress.messages = TRUE)[seq(
 for (this.cas in chem.list) {
     css.info <- calc_css(chem.cas = this.cas,
                          doses.per.day = 1,
+                         model="pbtk",
                          suppress.messages = TRUE)
     css.data[this.cas,"days"] <- css.info[["the.day"]]
     css.data[this.cas,"avg"] <- css.info[["avg"]]

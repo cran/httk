@@ -443,7 +443,7 @@ memory.</p>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what version you are using </span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &#39;2.3.1&#39;</code></pre>
+<pre><code>## [1] &#39;2.4.0&#39;</code></pre>
 </div>
 <div id="control-run-speed" class="section level3">
 <h3>Control run speed</h3>
@@ -514,13 +514,13 @@ first five rows</p>
 ## 4                                        2-phenylphenol    90-43-7
 ## 5                                6-desisopropylatrazine  1007-28-9
 ## 6                                             Abamectin 71751-41-2
-##          DTXSID logP    MW pKa_Accept         pKa_Donor Human.Clint
-## 1 DTXSID8022325 4.28 317.6       &lt;NA&gt;              8.33      136.50
-## 2 DTXSID0020442 2.81 221.0       &lt;NA&gt;              2.42        0.00
-## 3 DTXSID7024035 3.53 249.1       &lt;NA&gt;              3.11        0.00
-## 4 DTXSID2021151 3.09 170.2       &lt;NA&gt;              9.35        0.00
-## 5 DTXSID0037495 1.15 173.6       3.43              &lt;NA&gt;        0.00
-## 6 DTXSID8023892 4.48 819.0       &lt;NA&gt; 12.47,13.17,13.80        5.24
+##          DTXSID  logP    MW pKa_Accept         pKa_Donor Human.Clint
+## 1 DTXSID8022325 4.622 317.6       &lt;NA&gt;              8.33      136.50
+## 2 DTXSID0020442 2.809 221.0       &lt;NA&gt;              2.42        0.00
+## 3 DTXSID7024035 3.528 249.1       &lt;NA&gt;              3.11        0.00
+## 4 DTXSID2021151 3.091 170.2       &lt;NA&gt;              9.35        0.00
+## 5 DTXSID0037495 1.150 173.6       3.43              &lt;NA&gt;        0.00
+## 6 DTXSID8023892 4.480 819.0       &lt;NA&gt; 12.47,13.17,13.80        5.24
 ##   Human.Clint.pValue Human.Funbound.plasma Human.Rblood2plasma
 ## 1          0.0000357              0.005000                  NA
 ## 2          0.1488000              0.040010                2.11
@@ -556,106 +556,112 @@ species</li>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in get_caco2(chem.cas = chem.cas, chem.name = chem.name, dtxsid =
 ## dtxsid, : Clint is provided as a distribution.</code></pre>
+<pre><code>## Warning in (function (chem.name = NULL, chem.cas = NULL, dtxsid = NULL, :
+## calc_analytic_css deprecated argument daily.dose replaced with new argument
+## dose, value given assigned to dose</code></pre>
 <pre><code>## Human plasma concentration returned in uM units for 0.95 quantile.</code></pre>
-<pre><code>##     95% 
-## 0.06068</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">chem.cas =</span> <span class="st">&quot;99-71-8&quot;</span>, </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">species =</span> <span class="st">&quot;human&quot;</span>,</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">samples =</span> NSAMP,</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>##    95% 
+## 0.1262</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">chem.cas =</span> <span class="st">&quot;99-71-8&quot;</span>, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">species =</span> <span class="st">&quot;human&quot;</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">samples =</span> NSAMP,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in get_caco2(chem.cas = chem.cas, chem.name = chem.name, dtxsid =
 ## dtxsid, : Default value of 1.6 used for Caco2 permeability.</code></pre>
+<pre><code>## Warning in (function (chem.name = NULL, chem.cas = NULL, dtxsid = NULL, :
+## calc_analytic_css deprecated argument daily.dose replaced with new argument
+## dose, value given assigned to dose</code></pre>
 <pre><code>## Human plasma concentration returned in uM units for 0.95 quantile.</code></pre>
-<pre><code>##      95% 
-## 0.007067</code></pre>
+<pre><code>##     95% 
+## 0.02513</code></pre>
 <ul>
 <li>Calculate the mean, AUC, and peak concentrations for a simulated
 study (28-day daily dose, by default) for a specified CAS number and
 species</li>
 </ul>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_tkstats</span>(<span class="at">chem.cas =</span> <span class="st">&quot;34256-82-1&quot;</span>,</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">species =</span> <span class="st">&quot;rat&quot;</span>,</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## $AUC
-## [1] 0.6337
-## 
-## $peak
-## [1] 0.1832
-## 
-## $mean
-## [1] 0.02263</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_tkstats</span>(<span class="at">chem.cas =</span> <span class="st">&quot;962-58-3&quot;</span>, </span>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_tkstats</span>(<span class="at">chem.cas =</span> <span class="st">&quot;34256-82-1&quot;</span>,</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">species =</span> <span class="st">&quot;rat&quot;</span>,</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## $AUC
-## [1] 0.01885
+## [1] 2.158
 ## 
 ## $peak
-## [1] 0.01027
+## [1] 0.5815
 ## 
 ## $mean
-## [1] 0.0006732</code></pre>
+## [1] 0.07707</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_tkstats</span>(<span class="at">chem.cas =</span> <span class="st">&quot;962-58-3&quot;</span>, </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">species =</span> <span class="st">&quot;rat&quot;</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## $AUC
+## [1] 0.9342
+## 
+## $peak
+## [1] 0.1998
+## 
+## $mean
+## [1] 0.03336</code></pre>
 <ul>
 <li>Using the PBTK solver for a specified chem name</li>
 </ul>
 <p>Note that we use the R built-in function head() to show only the
 first five rows</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">solve_pbtk</span>(<span class="at">chem.name =</span> <span class="st">&quot;bisphenol a&quot;</span>, </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">plots =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">days =</span> <span class="dv">1</span>,</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<pre><code>##            time Agutlumen  Cgut  Cliver    Cven    Clung      Cart     Crest
-## [1,] 0.00000000    263.90  0.00  0.0000 0.00000 0.000000 0.0000000 0.000e+00
-## [2,] 0.00100000    250.40 11.60  0.3535 0.00219 0.006982 0.0003398 5.172e-06
-## [3,] 0.01041667    153.00 62.08 20.4900 0.24610 2.023000 0.2145000 5.680e-02
-## [4,] 0.02083333     88.72 63.01 42.3500 0.58480 5.095000 0.5606000 3.564e-01
-## [5,] 0.03125000     51.45 51.12 50.8900 0.77210 6.850000 0.7620000 8.430e-01
-## [6,] 0.04166667     29.83 39.15 49.9000 0.82150 7.345000 0.8209000 1.381e+00
-##        Ckidney  Cplasma  Atubules Ametabolized       AUC
-## [1,] 0.000e+00 0.000000 0.000e+00     0.000000 0.000e+00
-## [2,] 3.918e-04 0.002755 3.700e-07     0.001339 7.780e-07
-## [3,] 2.699e+00 0.309600 4.154e-03     0.951800 1.198e-03
-## [4,] 1.065e+01 0.735700 2.683e-02     4.729000 6.760e-03
-## [5,] 1.690e+01 0.971300 6.559e-02    10.270000 1.583e-02
-## [6,] 1.960e+01 1.033000 1.116e-01    16.200000 2.639e-02</code></pre>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAGACAMAAABC/kH9AAAArlBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZmYAZpAAZrY6AAA6ADo6AGY6OgA6OmY6OpA6ZpA6ZrY6kLY6kNtmAABmADpmAGZmOgBmOpBmZjpmZrZmkLZmtrZmtttmtv+QOgCQOjqQOmaQZjqQZmaQ2/+2ZgC2Zjq2kGa22/+2/7a2///bkDrbkGbbtmbbtpDbtrbb25Db27bb/7bb/9vb////tmb/25D/27b//7b//9v////elAsMAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAKZElEQVR4nO2djXbayAFGZW/c2t3ESY3r3W7tpClkvaZpva1FMO//YtXoBwhIIJAQ6uXek+MAQqPPczWj0SCZaCZoomMHkMOiYDgKhqNgOAqGo2A4CoajYDgKhqNgOAqGo2A4CoajYDgKhqNgOAqGo2A4CoajYDgKhtOC4NeP0eXKS9PBxcv3bzl/ar6h/fOUUZaxImeX8fP008Flsd2vb6Po3eO+5bUgeHIVpb//v36Zv3RUwUWeMrZk7IHgPP1C8Di6Tx6cDfcsrwXB47Ofw+YnV4t2c1TBeZ4y9szYZfw8/Vxw+qABzQW/frx4vroJXUt0/ltSaVmqN5+js4e0Euct49unKHr/Mnv9HEUfGm91a55E5h+TDH+7CznybacZnyZ3UfRmOCsyzr4lga4f5y04aUIJD0Xc0KTe33UmuEg/FxwnUZrQXHDSKpJUL2nrmM4Fnz2EbmVZcPL48VvyfBw9jBuGrpnn/HFydXY/vVtsO8t4+RJyLTKeP37LM+ZNNY4Wq4S3xledCS7SzwU3ravmgkOCUdKrfC84yZjse8uC4+gmdEDDcfTD/cv2YlvNU2w766L//Y+30SJjuiz5sRA8HSRFFKuE/zvsoov0/RGc/vKhFkoE3ywLHkcpD9OshzwUpXmKbaev3Z398vtgkTGtwe8Ej8I4tlglLO5O8Dx9f7ro7JAVFd3flhac8vvnWucxLeYpth1eCzU2zfve0hYcp8PYYpVuW/A8fZquF4OscaiI7Fh2OcsGKSFVdL8YtCyOwWlrCj3lzfaCm+ZZ2eEei9qKk71rHC0yrh6D0w46HWQ/FvtqXH3edaj0STdynw36j3yalG86BPsSnT/G2ZBzPkLNn2ej6NA3P6aj6PcHOwgv8iwLLradZvySPPwcdsjyUXSct6FilS5H0Uu1+ZrEjD6Eevp6deSJDukzCoajYDgKhqNgOApuhfgyP7vqHQpug9dPw/Hl5PqQM7D7ouA2mP7laXST/Dh2jhIU3Aavf//tdmgLBhNHF/+5PdwnKA1QMBwFt8F0cLhPTxqi4HYYR1E/HSu4NcZRH8+EFdwOcWjBfTxRCoKng+zylA4vbd2JvufLr4HsJ7ZgOLng0Ej620D6n2/c2x4mE/z6MVxec9HHmZiUvueb3g5HD3Evu+lMcDo6qD1EiNpnyxb/D/KN689Fd5pvtxZc79etzby4bSXu1oLbyhfVz/dpGF/WF9w4WVFQjXz7HIMbB1zb8baWWDNf8x2wvFlsLTG++O/HGjMdLTWQXepvn43tG7C6Q2l3LL9zaVv7uiPnK9bbp/5229hee2DtA0VzdspX5whWvHXj0vrn6Ueov3zRqDxgdhH46lX1dQPWrr/tJVbk26O0HbTWLDEwCmOE9VF0D+pvaRS9Tjq2mc0Wn2TX3OLOVVhrFF2nnMrt7uV1sfaW5RWj/LX6q1fa7g19ewv+UvphdR55NXllcXvX4dY1yvPVKa2B1ooSS6gY5a/V35Ywh6i/fFH5TEyxB/64TXCT1rEl4KZ8VTmWn+8b6ftyt70hHIbXz+L6UH8bu+j8bsbFMWQ9RysNZO8ueuMxri27sxqCK+hB/W3sorcU10KylRIrKc+3cYzQnt6t+aY//drb+stb8GBTF1hyDGljt6sXcFO+6mNcq+lqnCZtnOM4av3tNdHRPvv9XlXHuK7zTf/6z51acJf56rTgytUqnzd5WkZVvtVj3LHy7Ux3+ZaWxuv9TPkgptOAG/NV0hPBPai/paW1T9Q7DbgpXzWd5gt/X620h+lD/S0tXT2UVU50dBpwU75qus1XdT1lH+pv+Ri81gVWDGI6DbgpXzWd74CjsiFCH+pv81IHMSVlVRH3chB4iNo9QbI/c3rsFGUouAXGZY20Jyi4OZWj6D6gYDgKboOdZwK7Q8GtsctMW3couDX6eG+hgltkl5m27lBwG+w809YduwqOi2nXuHT+denVcemHU9nScXSov/luvhV2FDy9HWY90fxB+eIwS7cWcL50cv2ST9O2jflW2VFwKPrTcPlB+eLZ66ef1wJuWbkNzLfKjoLD1fvhKv7Fg/LFSQez3sUslk6uDjS3Z75VDiQ42cc2BIwvDtUFmm+VA3XR47JR5WLpTemdPC1gvlUONsgqGQXOl4abPEYHOakw3yp7nSaFOZsNw/xsSqdqmB+Wjg57GmK+BU50wFEwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNpLnj600vpN+emVySUXhuWrNF4q/U58XzNBVd8L/LkQ/hZfvFfp/fhnXi+xoJfP0YXz9fP7+6iP4evpYiLq4XCnw8dR2/uHrL7LEbphYDhXvib8IXZ3d2mder5WmnBk+vnPw0nyb/r52R3TC/dDZeGTX58mlw9JMuTJ8njZG+ML7MrysYdfk3niedrS3D4kfz7WlzPGzqecBRJ0k6uorNhki684SrbP0uuGDwYJ56vbcGXi1fzgPH50/R2mPQvaaok4sMxK/Dk8rUsOOlqsnFB3sVMB6Fbic+Gs+ntu6fZONx8cVN208bhOPF8LZwmDcIgIQ/4sjJIOHv7MB1EfxiEvS68Pkq/2qDLQcyp5zvYREc2zF+wfCdOH/5cyankO9xM1vfHiXjpXotuJxKqOJF8TlXCUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwHAXDUTAcBcNRMBwFw1EwnP8BlWwJc/s24PQAAAAASUVORK5CYII=" /><!-- --></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">solve_pbtk</span>(<span class="at">chem.name =</span> <span class="st">&quot;bisphenol a&quot;</span>, </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">plots =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">days =</span> <span class="dv">1</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAGACAMAAABC/kH9AAAAtFBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZmYAZpAAZrY6AAA6ADo6AGY6OgA6Ojo6OmY6OpA6ZmY6ZpA6ZrY6kLY6kNtmAABmADpmAGZmOgBmOpBmZjpmkLZmtrZmtttmtv+QOgCQOjqQOmaQZjqQZmaQ2/+2ZgC2Zjq2kDq2tma225C229u22/+2/9u2///bkDrbkGbbtmbbtpDbtrbb25Db27bb////tmb/25D/27b//7b//9v///+sBnfZAAAACXBIWXMAAA7DAAAOwwHHb6hkAAATEUlEQVR4nO2dDXujNhaFZU/chk427kzt1J3p2Glqz243a5o2NQTz///XSogvg8ACBGgu531mHNsK4uQecSVkgVkISMPGFgD6BQYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTBwYTp4vB5x27rSyaHzvU3B8vd4zdP4+tQk2sTcTOXPy6GOw7TCnjr8/WGuyyL1zbbF8q4JrHJtFmj8Hu7JMiVNz3W1sNDtYVKUdoHplUm9nYdTD4vFu8OqswOpJ/3MyPwXpx4uL+t2OMP6Svj77z/ROb/bphs20Yvj0y9uHE/5qbp+j1sHgs2aVC88gtMtUWH8EihFzmKgvZu7sWGjsYzFs991jseXHyWN5QeQRnr+fPvjP7EsiAPr/x94P1bC/K2++9FW4SRJXmkXELBh+F424UpjRkLartYLBQdOA79diqYGjR4NsweS5+N1Z9GiGNp0FUaR6ZksE8Z4sDKB+yFtW2NzjyR+xdKNM12GUR25EMTtOgSvPIFFP0MTzM/3BEeLOQtai2vcG8FxPIJtboCA7DcCSD04GMhUfwxSArPnr+FSdIWT6wwa7YsRjWiz2/MCmK97citaQixeu8waJDyQe29d5bi/5SqXlsSqdJ5x2TQ5w0ZC1qbW1wfDYpbPYc9mEjWlz88yub/3eXvc4bHL5tGLt5HusIDsMXR050KDSPPv0Ra8vOg2W3nAtZi0oNTVVaet5by7eouTkGDBYp7s2CFNeEb1FzO0wcwX/y1LL8xg6Gb1FzK/BpEnFgMHFgMHFgMHFgMHFgMHFgMHFgMHFgMHFgMHFgMHFgMHGEwcFargqZwqdnkwNHMHFig8VBjAOYItLg824bht7gy5RB/0iDg5+P8YPWNuYx+zdBX25n0aPuEZxWZ7jrrq/uvJO7vd6H5P9ck7b0oS802HKuGtysD2b1VbbgSm0uY00uY2LJgzGLe9CXKDQi8brBuhVlLdBo2rpe16FdAzSk0ry+rE4TEo0ZfLGNQYe1qvKapECWvdVBV1qJzi9p6MvXltXZ/TC+bvBBrw+52GawPi6U3VzbLsRAGjSlL58BS++3VqdhsO4AujBmG66Pa3TlZHmM0HU4Y15fucprw+GrNdYWfW0s8GrNTTA1Ss1qK9fYUwDDdvqqqtQ8+dHXFxe5LVJ0Ikhbhl6Nneq5ehrX7CSyN316NarEKvW3TtFeVEGWf1QR6dp/ZCqqkR+HlBtgUV9aWxNB3QLYTt9wp5m1KTqa/whDf3k5A2I2/alrVOCtiu9U6xt0IibGTn3xEaxugfGBnR3f9TlNM6O0OELyarT0jWGwnfpq95S0wPeXytsaWevxdYoyoE9HX+0RHN+mQXEOUKyRmXupQuorpUDou64vV1ruQ7Q266zIcLpS1jldfblS7Y8LFZVON4DtGMXgch+itVlnRd92ANsxtMFVfciVzcwo+rYD2I5RjuAmIIDdsN5g8K0Ag4kDg4kDg4kDg4kDg4kDg4kDg4kDg4nT1GAvWcTvKVfz5951yzOfaanLKr9SqyPQV6ChwcHDXn4mkT5RF4fRF8JUlfrLU/xZuGmgr0hDg0XVj/v8E3VxeH78VBJ4ZWMTQF+RhgZ7PDMctvkn6mKeYMopJiv1nVbfAQR9zfX1ZDBvYzUCvUVfKRD6ivSUol3V58tZ6UqqNQ/0FeltkKUYBaal4lLzQ4PlBdDXXl+r0ySxeqtmmC8Xd1UN80Xpod/TEOjLwEQHcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcWAwcbobHPxyKt6rLyJakaBcG8a36LxXfSaur7vBSnX87Y/iUb34r8kduTozcX2dDT7v2OJ1+Xq/YT/t2EosG5KrhcTtTV12s9nK6ywO0UJAcWdl/uT823DfwTV1fUaOYH/5+sPe5/+Wr7w5Rkt3xdIw//3Rd7a8nL/gz3lr9G7lijK3l0XH0KfAlMHigf97SdbzisQjehGu1nfYbM/ViV9wZPtUrBjsjYnrM23wbfZuLNCbH4OHPc8vkSoucTtmACenz7DBPNXIcUGcYoK1SCvebB8GD/fH0BUXX6xUF230x8T1GThNWotBQizwVBgkzO62wZp9txatTrx/YGxxGnQQM3V9vU10yGF+Rv5KnEFPQyqYir7+ZrIu+wkvd63FsBMJVUxEH6YqiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiQODiWPY4Jc7xu6fzdZpjFjceTcf8C5JjTEcQrMGu+wLj9+s9NXlVpCIs9tgdQj/+ty2PqMGB+uevjfbBKk4qw1Wh9B3WgfWqMFe/K3lUQh9ZxW+PTL24cRV3zyx2YC3B6wTF6kL1ouT/Bkr8x3248YC41OVob9h7GbPY/fubsazdlttRg12E3VCpjvb8zA+v/FQBuvo+bi3F3PVBktl4r/XOogGSVXyQ/kUxLGz5gjOqzvvRMhWYWz0afTEWGGw/CmUjq5QkKoMw79/v2NSoTUGZ/nlMP+DZ2iXRWytMLgiRcufIq6jKxSkKoPN7PM/a8sMzkYIHvsXzyzRERy9b4HBF4Msa4/gVKVwOuk8rDE4G+OLbyIQg6vFcz6MRvfVWpxQIv77zqXRLzb0walKcfdRN0nRHU5PTE90OPFZuuxL3sRI8NmOIzgVFynxHPZhk2t68euRFQqSEH7loXtKBqdf2bzl3AemKlMsaII9AIMjRLp+s3mapjUwWPInT4xLggcwDKYODCYODCYODCYODCYODCYODCYODCYODCYODCYODCYODCYODCYODCYODCYODCZOG4OZecz+TdCX21koFiPJ37q+JKlYnalI1G+mr69Ym236RohfVOQypr5wyIt2WrzULalOJadR69IRWKuvYu/W6LMgfknRQdUAz7tIt79Mriq62KVua1NoLqq+XpVSX9UObdFnQ/xyRV5JYfDzMfejrcCrqjWrKuurqtUWfTbELy4S3Uh1C3x/VGxjcuBxtS61vtoUaIE+G+IX98EVF+X7zmUA8y1wwABW6atNgRbosyF+zUbRueqMnjm0HKWWUmCuNhv01dU2lL76/RRTYK4FDhjASkop0DJ9NsRPFgVrZQsspcBsG8On/lfKK/TVpEAr9NkQv/woelUs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" /><!-- --></p>
+<pre><code>##        time Agutlumen    Cgut    Cliver     Cven  Clung    Cart    Crest
+## [1,] 0.0000     197.5  0.0000  0.000000 0.000000 0.0000 0.00000 0.000000
+## [2,] 0.0001     197.3  0.1582  0.000479 0.000001 0.0000 0.00000 0.000000
+## [3,] 0.0104     180.0 10.1300  3.063000 0.036390 0.2967 0.03130 0.007976
+## [4,] 0.0208     164.1 13.6200  7.596000 0.102500 0.8846 0.09679 0.056220
+## [5,] 0.0312     149.6 14.7600 11.110000 0.162000 1.4230 0.15740 0.149600
+## [6,] 0.0416     136.3 14.9800 13.380000 0.206900 1.8320 0.20360 0.275500
+##      Ckidney  Cplasma Atubules Ametabolized      AUC
+## [1,]  0.0000 0.000000 0.000000     0.000000 0.000000
+## [2,]  0.0000 0.000001 0.000000     0.000000 0.000000
+## [3,]  0.3831 0.045780 0.000583     0.003302 0.000170
+## [4,]  1.7530 0.128900 0.004221     0.018490 0.001074
+## [5,]  3.2900 0.203700 0.011570     0.045260 0.002818
+## [6,]  4.5510 0.260300 0.021980     0.080160 0.005247</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <ul>
 <li>Create data set, my_data, for all data on chemicals A, B, C, in
 R</li>
 </ul>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">get_cheminfo</span>(<span class="at">info =</span> <span class="st">&quot;all&quot;</span>,<span class="at">suppress.messages =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                  Compound <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">get_cheminfo</span>(<span class="at">info =</span> <span class="st">&quot;all&quot;</span>,<span class="at">suppress.messages =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                  Compound <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>))</span></code></pre></div>
 <ul>
 <li>Export data set, my_data, from R to csv file called my_data.csv in
 the current working directory</li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(my_data, <span class="at">file =</span> <span class="st">&quot;my_data.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(my_data, <span class="at">file =</span> <span class="st">&quot;my_data.csv&quot;</span>)</span></code></pre></div>
 <div id="mean-and-median-fraction-unbound-in-plasma" class="section level4">
 <h4>Mean and Median Fraction Unbound in Plasma</h4>
 <p>Create a data.frame with all the Fup values, we ask for
 model=“schmitt” since that model only needs fup, we ask for
 “median.only” because we don’t care about uncertainty intervals
 here:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httk)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>fup.tab <span class="ot">&lt;-</span> <span class="fu">get_cheminfo</span>(<span class="at">info=</span><span class="st">&quot;all&quot;</span>,</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">median.only=</span><span class="cn">TRUE</span>,</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model=</span><span class="st">&quot;schmitt&quot;</span>,</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httk)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>fup.tab <span class="ot">&lt;-</span> <span class="fu">get_cheminfo</span>(<span class="at">info=</span><span class="st">&quot;all&quot;</span>,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">median.only=</span><span class="cn">TRUE</span>,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model=</span><span class="st">&quot;schmitt&quot;</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in get_cheminfo(info = &quot;all&quot;, median.only = TRUE, model = &quot;schmitt&quot;, :
 ## NAs introduced by coercion</code></pre>
 <p>Calculate the median, making sure to convert to numeric values:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="fu">as.numeric</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma),<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="fu">as.numeric</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma),<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.13</code></pre>
 <p>Calculate the mean:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma),<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## [1] 0.2919802</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma),<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2922278</code></pre>
 <p>Count how many non-NA values we have (should be the same as the
 number of rows in the table but just in case we ask for non NA
 values:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma))</span></code></pre></div>
-<pre><code>## [1] 1702</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma))</span></code></pre></div>
+<pre><code>## [1] 1706</code></pre>
 </div>
 <div id="user-notes" class="section level4">
 <h4>User Notes</h4>
@@ -674,19 +680,19 @@ used in the ‘httk’ data sources.</li>
 <ul>
 <li>Getting help with R Package httk</li>
 </ul>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(httk)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(httk)</span></code></pre></div>
 <ul>
 <li>You can go straight to the index:</li>
 </ul>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> httk)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> httk)</span></code></pre></div>
 <ul>
 <li>List all vignettes for httk</li>
 </ul>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="at">package =</span> <span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="at">package =</span> <span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
 <ul>
 <li>Displays the vignette for a specified vignette</li>
 </ul>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&quot;1_IntroToHTTK&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&quot;1_IntroToHTTK&quot;</span>)</span></code></pre></div>
 </div>
 
 

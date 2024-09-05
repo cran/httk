@@ -1,6 +1,6 @@
 Package: httk
-Version: 2.3.1
-Date: 2024-03-18
+Version: 2.4.0
+Date: 2024-08-14
 Title: High-Throughput Toxicokinetics
 Description: Pre-made models that can be rapidly tailored to various chemicals
              and species using chemical-specific in vitro data and physiological 
@@ -66,6 +66,8 @@ Authors@R: c(
              role = c("ctb"), comment = c(ORCID = "0000-0001-8781-2391")),
            person("Katie", "Paul Friedman", email="Paul-Friedman.Katie@epa.gov",
              role = c("ctb"), comment = c(ORCID = "0000-0002-2710-1691")),
+           person("Meredith", "Scherer", email="Scherer.Meredith@epa.gov",
+             role = c("ctb"), comment = c(ORCID = "0000-0002-9785-7363")),
            person("James", "Sluka", email = "jsluka@indiana.edu", 
              role = c("ctb"), comment = c(ORCID = "0000-0002-5901-1404")),
            person("Noelle", "Sinski", email = "Noelle.Sinski@icf.com",
@@ -90,12 +92,12 @@ LazyData: true
 LazyDataCompression: xz
 Encoding: UTF-8
 VignetteBuilder: knitr, R.rsp
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 URL:
         https://www.epa.gov/chemical-research/rapid-chemical-exposure-and-dose-research
-BugReports: https://github.com/USEPA/CompTox-ExpoCast-httk
+BugReports: https://github.com/USEPA/CompTox-ExpoCast-httk/issues
 NeedsCompilation: yes
-Packaged: 2024-03-21 18:56:25 UTC; jwambaug
+Packaged: 2024-09-05 14:18:49 UTC; jwambaug
 Author: John Wambaugh [aut, cre] (<https://orcid.org/0000-0002-4024-534X>),
   Sarah Davidson-Fritz [aut] (<https://orcid.org/0000-0002-2891-9380>),
   Robert Pearce [aut] (<https://orcid.org/0000-0003-3168-4049>),
@@ -112,6 +114,7 @@ Author: John Wambaugh [aut, cre] (<https://orcid.org/0000-0002-4024-534X>),
   Jimena Davis [ctb],
   Elaina Kenyon [ctb] (<https://orcid.org/0000-0001-8781-2391>),
   Katie Paul Friedman [ctb] (<https://orcid.org/0000-0002-2710-1691>),
+  Meredith Scherer [ctb] (<https://orcid.org/0000-0002-9785-7363>),
   James Sluka [ctb] (<https://orcid.org/0000-0002-5901-1404>),
   Noelle Sinski [ctb],
   Nisha Sipes [ctb] (<https://orcid.org/0000-0003-4203-6426>),
@@ -123,4 +126,4 @@ Copyright: This package is primarily developed by employees of the U.S.
         Federal government as part of their official duties and is
         therefore public domain.
 Repository: CRAN
-Date/Publication: 2024-03-27 00:00:02 UTC
+Date/Publication: 2024-09-05 22:40:02 UTC
