@@ -61,11 +61,11 @@ for (this.cas in chem.list)
                                                     output.units = "uM",
                                                     suppress.messages=TRUE)))
     this.row <- cbind(this.row,
-                      as.data.frame(calc_mc_css(chem.cas = this.cas,
-                                                which.quantile = 0.50,
-                                                output.units = "uM",
-                                                samples = NSAMP,
-                                                suppress.messages=TRUE)))
+                        as.data.frame(calc_mc_css(chem.cas = this.cas,
+                                                  which.quantile = 0.50,
+                                                  output.units = "uM",
+                                                  samples = NSAMP,
+                                                  suppress.messages=TRUE)))
     css.table <- rbind(css.table, this.row)
 }
 colnames(css.table) <- c("Compound","DTXSID","CAS", "PBTK", "Wetmore", "MC")
@@ -118,7 +118,7 @@ css <- calc_analytic_css(chem.name = "Bisphenol A",
                   suppress.messages = TRUE)
 
 ## ----stats_example1, eval = FALSE---------------------------------------------
-#  all.peak.stats <- calc_stats(days = 10, doses.per.day = 3, stats = "peak")
+# all.peak.stats <- calc_stats(days = 10, doses.per.day = 3, stats = "peak")
 
 ## ----stats_example2, eval = execute.vignette----------------------------------
 triclosan.stats <- calc_stats(days = 10, chem.name = "triclosan")
@@ -293,13 +293,13 @@ knitr::kable(subset(tissue.data,Tissue=="mammary"),
              digits=3)
 
 ## ----add_a_tissue2, eval = FALSE----------------------------------------------
-#  # If we thought this tissue was included in the rest of the bod
-#  tissue.data[tissue.data$Tissue == "rest", 'value'] <-
-#    tissue.data[tissue.data$Tissue == "rest", 'value'] -
-#    new.tissue[new.tissue$variable %in% c(
-#      'Vol (L/kg)',
-#      'Flow (mL/min/kg^(3/4))'),
-#      'value']
+# # If we thought this tissue was included in the rest of the bod
+# tissue.data[tissue.data$Tissue == "rest", 'value'] <-
+#   tissue.data[tissue.data$Tissue == "rest", 'value'] -
+#   new.tissue[new.tissue$variable %in% c(
+#     'Vol (L/kg)',
+#     'Flow (mL/min/kg^(3/4))'),
+#     'value']
 
 ## ----add_a_tissue3, eval = execute.vignette-----------------------------------
 compartments <- list(liver = c("liver", "gut"), kidney = "kidney",
@@ -346,14 +346,14 @@ colnames(physiology.data)[length(colnames(physiology.data))] <- "Wolverine"
 
 ## ----add_a_species3, eval = execute.vignette----------------------------------
 calc_mc_css(chem.cas="80-05-7",species="wolverine",
-            parameterize.arg.list=list(default.to.human=TRUE),
+            parameterize.args.list =list(default.to.human=TRUE),
             suppress.messages=TRUE,
             samples = NSAMP)
 
 ## ----export, eval = FALSE-----------------------------------------------------
-#  export_pbtk_sbml(chem.name = "Bisphenol A", species = "Rat",
-#                   initial.amounts = list(Agutlumen = 1),
-#                   filename = "PBTKmodel.xml")
+# export_pbtk_sbml(chem.name = "Bisphenol A", species = "Rat",
+#                  initial.amounts = list(Agutlumen = 1),
+#                  filename = "PBTKmodel.xml")
 
 ## ----figure3, eval = execute.vignette-----------------------------------------
 css.data <- data.frame()

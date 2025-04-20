@@ -2,16 +2,16 @@
 knitr::opts_chunk$set(echo = TRUE, fig.width=5, fig.height=4)
 
 ## ----install_httk, eval = FALSE-----------------------------------------------
-#  install.packages("httk")
+# install.packages("httk")
 
 ## ----write_privileges, eval = FALSE-------------------------------------------
-#   Depending on the account you are using and where you want to install the package on that computer, you may need “permission” from your local file system to install the package. See this help here:
-#  
-#  <https://stackoverflow.com/questions/42807247/installing-package-cannot-open-file-permission-denied>
-#  
-#  and here:
-#  
-#  <https://support.microsoft.com/en-us/topic/general-problem-installing-any-r-package-0bf1f9ba-ead2-6335-46ec-190f6af75e44>
+#  Depending on the account you are using and where you want to install the package on that computer, you may need “permission” from your local file system to install the package. See this help here:
+# 
+# <https://stackoverflow.com/questions/42807247/installing-package-cannot-open-file-permission-denied>
+# 
+# and here:
+# 
+# <https://support.microsoft.com/en-us/topic/general-problem-installing-any-r-package-0bf1f9ba-ead2-6335-46ec-190f6af75e44>
 
 ## ----clear_memory, eval = TRUE------------------------------------------------
 rm(list=ls())
@@ -36,7 +36,7 @@ css <- calc_analytic_css(chem.name = "Bisphenol A",
 head(get_cheminfo(suppress.messages = TRUE))
 
 ## ----cheminfo_ex1a, eval = FALSE----------------------------------------------
-#  get_cheminfo(suppress.messages = TRUE)
+# get_cheminfo(suppress.messages = TRUE)
 
 ## ----cheminfo_ex2, eval = TRUE------------------------------------------------
 head(get_cheminfo(info = "all", median.only=TRUE,suppress.messages = TRUE))
@@ -98,14 +98,14 @@ mean(as.numeric(fup.tab$Human.Funbound.plasma),na.rm=TRUE)
 sum(!is.na(fup.tab$Human.Funbound.plasma))
 
 ## ----help1, eval = FALSE------------------------------------------------------
-#  help(httk)
+# help(httk)
 
 ## ----help2, eval = FALSE------------------------------------------------------
-#  help(package = httk)
+# help(package = httk)
 
 ## ----help3, eval = FALSE------------------------------------------------------
-#  vignette(package = "httk")
+# vignette(package = "httk")
 
 ## ----help4, eval = FALSE------------------------------------------------------
-#  vignette("1_IntroToHTTK")
+# vignette("1_IntroToHTTK")
 
