@@ -23,7 +23,7 @@ library(httk)
 packageVersion("httk")
 
 ## ----MC_samples, eval = TRUE--------------------------------------------------
-NSAMP <- 25
+NSAMP <- 5
 
 ## ----suppress_messages, eval = TRUE-------------------------------------------
 css <- calc_analytic_css(chem.name = "Bisphenol A",

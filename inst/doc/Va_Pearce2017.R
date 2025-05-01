@@ -18,7 +18,7 @@ packageVersion("httk")
 
 ## ----chemical_thining, eval = execute.vignette--------------------------------
 NUM.CHEMS <- length(get_cheminfo(model="pbtk", suppress.messages = TRUE))
-SKIP.CHEMS <- 50
+SKIP.CHEMS <- 100
 
 ## ----MC_samples, eval = execute.vignette--------------------------------------
 NSAMP <- 10

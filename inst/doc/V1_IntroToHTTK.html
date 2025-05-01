@@ -443,7 +443,7 @@ memory.</p>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what version you are using </span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &#39;2.6.0&#39;</code></pre>
+<pre><code>## [1] &#39;2.6.1&#39;</code></pre>
 </div>
 <div id="control-run-speed" class="section level3">
 <h3>Control run speed</h3>
@@ -452,10 +452,10 @@ variability and propagate uncertainty. The more samples that are used,
 the more stable the results are (that is, the less likely they are to
 change if a different random sequence is used). However, the more
 samples that are used, the longer it takes to run. So, to speed up how
-fast these examples run, we specify here that we only want to use 25
+fast these examples run, we specify here that we only want to use 5
 samples, even though the actual <strong>httk</strong> default is 1000.
 Increase this number to get more stable (and accurate) results:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>NSAMP <span class="ot">&lt;-</span> <span class="dv">25</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>NSAMP <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
 </div>
 <div id="suppressing-messages" class="section level3">
 <h3>Suppressing Messages</h3>
@@ -514,13 +514,13 @@ first five rows</p>
 ## 4                                        2-phenylphenol    90-43-7
 ## 5                                6-desisopropylatrazine  1007-28-9
 ## 6                                             Abamectin 71751-41-2
-##          DTXSID  logP    MW pKa_Accept         pKa_Donor Human.Clint
-## 1 DTXSID8022325 4.622 317.6       &lt;NA&gt;              8.33      136.50
-## 2 DTXSID0020442 2.809 221.0       &lt;NA&gt;              2.42        0.00
-## 3 DTXSID7024035 3.528 249.1       &lt;NA&gt;              3.11        0.00
-## 4 DTXSID2021151 3.091 170.2       &lt;NA&gt;              9.35        0.00
-## 5 DTXSID0037495 1.150 173.6       3.43              &lt;NA&gt;        0.00
-## 6 DTXSID8023892 4.480 819.0       &lt;NA&gt; 12.47,13.17,13.80        5.24
+##          DTXSID  logP    MW pKa_Accept      pKa_Donor Human.Clint
+## 1 DTXSID8022325 4.622 317.6                 9.63,10.2      136.50
+## 2 DTXSID0020442 2.809 221.0                      2.81        0.00
+## 3 DTXSID7024035 3.528 249.1                      3.58        0.00
+## 4 DTXSID2021151 3.091 170.2                      9.69        0.00
+## 5 DTXSID0037495 1.150 173.6       3.41                       0.00
+## 6 DTXSID8023892 4.480 819.0            12.5,13.2,13.8        5.24
 ##   Human.Clint.pValue Human.Funbound.plasma Human.Rblood2plasma
 ## 1          0.0000357              0.005000                  NA
 ## 2          0.1488000              0.040010                2.11
@@ -557,8 +557,8 @@ species</li>
 <pre><code>## Warning in (function (chem.name = NULL, chem.cas = NULL, dtxsid = NULL, :
 ## calc_analytic_css deprecated argument daily.dose replaced with new argument
 ## dose, value given assigned to dose</code></pre>
-<pre><code>##    95% 
-## 0.1016</code></pre>
+<pre><code>##     95% 
+## 0.04411</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">chem.cas =</span> <span class="st">&quot;99-71-8&quot;</span>, </span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">species =</span> <span class="st">&quot;human&quot;</span>,</span>
@@ -567,8 +567,8 @@ species</li>
 <pre><code>## Warning in (function (chem.name = NULL, chem.cas = NULL, dtxsid = NULL, :
 ## calc_analytic_css deprecated argument daily.dose replaced with new argument
 ## dose, value given assigned to dose</code></pre>
-<pre><code>##      95% 
-## 0.009533</code></pre>
+<pre><code>##  95% 
+## 0.01</code></pre>
 <ul>
 <li>Calculate the mean, AUC, and peak concentrations for a simulated
 study (28-day daily dose, by default) for a specified CAS number and
@@ -589,13 +589,13 @@ species</li>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">species =</span> <span class="st">&quot;rat&quot;</span>,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">suppress.messages =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## $AUC
-## [1] 0.9342
+## [1] 0.1327
 ## 
 ## $peak
-## [1] 0.1998
+## [1] 0.02837
 ## 
 ## $mean
-## [1] 0.03336</code></pre>
+## [1] 0.004739</code></pre>
 <ul>
 <li>Using the PBTK solver for a specified chem name</li>
 </ul>
@@ -609,17 +609,17 @@ first five rows</p>
 <pre><code>##        time Agutlumen    Cgut    Cliver     Cven  Clung    Cart    Crest
 ## [1,] 0.0000     197.5  0.0000  0.000000 0.000000 0.0000 0.00000 0.000000
 ## [2,] 0.0001     197.3  0.1582  0.000479 0.000001 0.0000 0.00000 0.000000
-## [3,] 0.0104     180.0 10.1300  3.063000 0.036390 0.2967 0.03130 0.007976
-## [4,] 0.0208     164.1 13.6200  7.596000 0.102500 0.8846 0.09679 0.056220
-## [5,] 0.0312     149.6 14.7600 11.110000 0.162000 1.4230 0.15740 0.149600
-## [6,] 0.0416     136.3 14.9800 13.380000 0.206900 1.8320 0.20360 0.275500
+## [3,] 0.0104     180.0 10.1400  3.061000 0.036370 0.2969 0.03128 0.007969
+## [4,] 0.0208     164.1 13.6300  7.594000 0.102400 0.8854 0.09674 0.056180
+## [5,] 0.0312     149.6 14.7700 11.110000 0.161900 1.4240 0.15730 0.149500
+## [6,] 0.0416     136.3 14.9900 13.380000 0.206900 1.8340 0.20350 0.275400
 ##      Ckidney  Cplasma Atubules Ametabolized      AUC
 ## [1,]  0.0000 0.000000 0.000000       0.0000 0.000000
 ## [2,]  0.0000 0.000001 0.000000       0.0000 0.000000
-## [3,]  0.3831 0.045780 0.000583       0.1356 0.000170
-## [4,]  1.7530 0.128900 0.004221       0.7597 0.001074
-## [5,]  3.2900 0.203700 0.011570       1.8590 0.002818
-## [6,]  4.5510 0.260300 0.021980       3.2940 0.005247</code></pre>
+## [3,]  0.3828 0.045750 0.000581       0.1353 0.000170
+## [4,]  1.7520 0.128900 0.004210       0.7581 0.001073
+## [5,]  3.2890 0.203700 0.011540       1.8560 0.002817
+## [6,]  4.5500 0.260300 0.021930       3.2870 0.005245</code></pre>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <ul>
 <li>Create data set, my_data, for all data on chemicals A, B, C, in
@@ -650,12 +650,12 @@ here:</p>
 <pre><code>## [1] 0.13</code></pre>
 <p>Calculate the mean:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma),<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## [1] 0.2922278</code></pre>
+<pre><code>## [1] 0.2957295</code></pre>
 <p>Count how many non-NA values we have (should be the same as the
 number of rows in the table but just in case we ask for non NA
 values:</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(fup.tab<span class="sc">$</span>Human.Funbound.plasma))</span></code></pre></div>
-<pre><code>## [1] 1706</code></pre>
+<pre><code>## [1] 1726</code></pre>
 </div>
 <div id="user-notes" class="section level4">
 <h4>User Notes</h4>

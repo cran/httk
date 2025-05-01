@@ -24,7 +24,7 @@ execute.vignette <- FALSE
 # library(ggplot2)
 
 ## ----MC_samples, eval = execute.vignette--------------------------------------
-# NSAMP <- 25
+# NSAMP <- 5
 
 ## ----change_directory, eval = FALSE-------------------------------------------
 # setwd("FOLDERPATH")
@@ -65,7 +65,7 @@ knitr::kable(head(example.toxcast), caption = "ToxCast In Vitro Bioactivity Data
 
 ## ----toxcast_summary.table, eval = TRUE---------------------------------------
 toxcast.table <- NULL
-for (this.id in unique(example.toxcast$dsstox_substance_id))
+for (this.id in unique(example.toxcast$dsstox_substance_id)[1:10])
 {
   this.subset <- subset(example.toxcast, dsstox_substance_id == this.id)
   these.hits <- subset(this.subset, hitc==1)
