@@ -1,6 +1,6 @@
 Package: httk
-Version: 2.7.0
-Date: 2025-07-19
+Version: 2.7.1
+Date: 2025-07-24
 Title: High-Throughput Toxicokinetics
 Description: Pre-made models that can be rapidly tailored to various chemicals
              and species using chemical-specific in vitro data and physiological 
@@ -61,6 +61,8 @@ Authors@R: c(
              role = c("aut"), comment = c(ORCID = "0000-0002-5452-8797")),
            person("Celia", "Schacht", email="Schacht.Celia@epa.gov",
              role = c("aut"), comment = c(ORCID = "0000-0002-8131-513X")),
+           person("Leonie", "Lautz", email="leonie.lautz@wur.nl",
+             role = c("aut"), comment = c(ORCID = "0000-0003-4648-666X")),
            person("Todor", "Antonijevic", email="tantonijevic@toxstrategies.com",
              role = c("ctb"), comment = c(ORCID = "0000-0002-0248-8412")),
            person("Miyuki", "Breen", email = "breen.miyuki@epa.gov",
@@ -101,7 +103,7 @@ Suggests: knitr, rmarkdown, gplots, scales, EnvStats, MASS,
         RColorBrewer, stringr, reshape, viridis, gmodels, colorspace,
         cowplot, ggrepel, forcats, smatr, gridExtra, readxl, ks,
         testthat, ggpubr, tidyverse
-License: GPL-3
+License: MIT + file LICENSE
 LazyData: true
 LazyDataCompression: xz
 Encoding: UTF-8
@@ -111,7 +113,7 @@ URL:
         https://www.epa.gov/chemical-research/rapid-chemical-exposure-and-dose-research
 BugReports: https://github.com/USEPA/CompTox-ExpoCast-httk/issues
 NeedsCompilation: yes
-Packaged: 2025-07-23 19:47:04 UTC; jwambaug
+Packaged: 2025-08-19 01:50:04 UTC; jwambaug
 Author: John Wambaugh [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-4024-534X>),
   Sarah Davidson-Fritz [aut] (ORCID:
@@ -127,6 +129,7 @@ Author: John Wambaugh [aut, cre] (ORCID:
   Meredith Scherer [aut] (ORCID: <https://orcid.org/0000-0002-9785-7363>),
   Annabel Meade [aut] (ORCID: <https://orcid.org/0000-0002-5452-8797>),
   Celia Schacht [aut] (ORCID: <https://orcid.org/0000-0002-8131-513X>),
+  Leonie Lautz [aut] (ORCID: <https://orcid.org/0000-0003-4648-666X>),
   Todor Antonijevic [ctb] (ORCID:
     <https://orcid.org/0000-0002-0248-8412>),
   Miyuki Breen [ctb] (ORCID: <https://orcid.org/0000-0001-8511-4653>),
@@ -151,4 +154,4 @@ Copyright: This package is primarily developed by employees of the U.S.
         Federal government as part of their official duties and is
         therefore public domain.
 Repository: CRAN
-Date/Publication: 2025-07-23 20:40:02 UTC
+Date/Publication: 2025-08-21 14:00:32 UTC
