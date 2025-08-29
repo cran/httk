@@ -1,6 +1,6 @@
 Package: httk
-Version: 2.7.1
-Date: 2025-07-24
+Version: 2.7.2
+Date: 2025-08-22
 Title: High-Throughput Toxicokinetics
 Description: Pre-made models that can be rapidly tailored to various chemicals
              and species using chemical-specific in vitro data and physiological 
@@ -113,7 +113,7 @@ URL:
         https://www.epa.gov/chemical-research/rapid-chemical-exposure-and-dose-research
 BugReports: https://github.com/USEPA/CompTox-ExpoCast-httk/issues
 NeedsCompilation: yes
-Packaged: 2025-08-19 01:50:04 UTC; jwambaug
+Packaged: 2025-08-28 14:15:18 UTC; jwambaug
 Author: John Wambaugh [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-4024-534X>),
   Sarah Davidson-Fritz [aut] (ORCID:
@@ -154,4 +154,4 @@ Copyright: This package is primarily developed by employees of the U.S.
         Federal government as part of their official duties and is
         therefore public domain.
 Repository: CRAN
-Date/Publication: 2025-08-21 14:00:32 UTC
+Date/Publication: 2025-08-29 09:50:02 UTC
