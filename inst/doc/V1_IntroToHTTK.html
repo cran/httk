@@ -443,7 +443,7 @@ memory.</p>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what version you are using </span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &#39;2.7.2&#39;</code></pre>
+<pre><code>## [1] &#39;2.7.3&#39;</code></pre>
 </div>
 <div id="control-run-speed" class="section level3">
 <h3>Control run speed</h3>
@@ -557,8 +557,8 @@ species</li>
 <pre><code>## Warning in (function (chem.name = NULL, chem.cas = NULL, dtxsid = NULL, :
 ## calc_analytic_css deprecated argument daily.dose replaced with new argument
 ## dose, value given assigned to dose</code></pre>
-<pre><code>##    95% 
-## 0.0609</code></pre>
+<pre><code>##     95% 
+## 0.07502</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_mc_oral_equiv</span>(<span class="fl">0.1</span>,</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">chem.cas =</span> <span class="st">&quot;99-71-8&quot;</span>, </span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">species =</span> <span class="st">&quot;human&quot;</span>,</span>
@@ -567,8 +567,8 @@ species</li>
 <pre><code>## Warning in (function (chem.name = NULL, chem.cas = NULL, dtxsid = NULL, :
 ## calc_analytic_css deprecated argument daily.dose replaced with new argument
 ## dose, value given assigned to dose</code></pre>
-<pre><code>##     95% 
-## 0.04087</code></pre>
+<pre><code>##      95% 
+## 0.006739</code></pre>
 <ul>
 <li>Calculate the mean, AUC, and peak concentrations for a simulated
 study (28-day daily dose, by default) for a specified CAS number and
