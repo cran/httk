@@ -49,6 +49,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -344,7 +345,7 @@ Extrapolation (IVIVE) with R Package httk</h1>
 
 
 
-<p><em>Please send questions to <a href="mailto:wambaugh.john@epa.gov" class="email">wambaugh.john@epa.gov</a></em></p>
+<p><em>Please send questions to <a href="mailto:wambaugh.research@gmail.com" class="email">wambaugh.research@gmail.com</a></em></p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Chemical risk assessment depends on knowledge of inherent chemical
@@ -390,14 +391,14 @@ University in September, 2019.</em></p>
 from this RMarkdown file, Each bit of code that follows is known as a
 “chunk”. We start by telling <strong>knitr</strong> how we want our
 chunks to look.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">collapse =</span> <span class="cn">TRUE</span>, <span class="at">comment =</span> <span class="st">&#39;#&gt;&#39;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">rmarkdown.html_vignette.check_title =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">collapse =</span> <span class="cn">TRUE</span>, <span class="at">comment =</span> <span class="st">&#39;#&gt;&#39;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">rmarkdown.html_vignette.check_title =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div id="clear-the-memory" class="section level3">
 <h3>Clear the memory</h3>
 <p>It is a bad idea to let variables and other information from previous
 R sessions float around, so we first remove everything in the R
 memory.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>()) </span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>()) </span></code></pre></div>
 </div>
 </div>
 <div id="httk-version" class="section level2">
@@ -504,15 +505,15 @@ marks that curve toward each other with ones typed by the keyboard.</li>
 </ul>
 <div id="installing-r-package-httk" class="section level3">
 <h3>Installing R package “httk”</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;httk&quot;</span>)</span></code></pre></div>
 </div>
 <div id="installing-r-package-readxl" class="section level3">
 <h3>Installing R package “readxl”</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</span></code></pre></div>
 </div>
 <div id="installing-r-package-ggplot2" class="section level3">
 <h3>Installing R package “ggplot2”</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
 </div>
 <div id="eval-execute.vignette" class="section level3">
 <h3>eval = execute.vignette</h3>
@@ -527,15 +528,15 @@ If you want this vignette to work, you must run all code, either by
 cutting and pasting it into R. Or, if viewing the .RMD file, you can
 either change execute.vignette to TRUE or press “play” (the green arrow)
 on each chunk in RStudio.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set whether or not the following chunks will be executed (run):</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>execute.vignette <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Set whether or not the following chunks will be executed (run):</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>execute.vignette <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span></code></pre></div>
 </div>
 </div>
 <div id="load-the-necessary-packages" class="section level2">
 <h2>Load the necessary packages:</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httk)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">library</span>(httk)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
 </div>
 <div id="control-run-speed" class="section level2">
 <h2>Control run speed</h2>
@@ -547,7 +548,7 @@ samples that are used, the longer it takes to run. So, to speed up how
 fast these examples run, we specify here that we only want to use 5
 samples, even though the actual <strong>httk</strong> default is 1000.
 Increase this number to get more stable (and accurate) results:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>NSAMP <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>NSAMP <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
 </div>
 </div>
 <div id="step-one-loading-in-vitro-screening-data" class="section level1">
@@ -590,18 +591,18 @@ download and place in our working directory (FOLDERPATH).</p>
 <h2>Loading the Data into R</h2>
 <p>Don’t forget to use “setwd(FOLDERPATH)” to change to your R working
 folder:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;FOLDERPATH&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;FOLDERPATH&quot;</span>)</span></code></pre></div>
 <p>Then load the file:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;invitrodb_3_5_mc5.Rdata&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;invitrodb_3_5_mc5.Rdata&quot;</span>)</span></code></pre></div>
 <p>We now have a file “mc5” in our woking environment. It’s absolutely
 huge, so lets shrink it down to contain only the chemicals we care
 about.</p>
 <p>This list could be chemicals with HTTK data (note, this step cuts
 things down to chemicals with human HTTK data, you could change species
 to rat and get something different).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>toxcast.httk <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc5, dsstox_substance_id <span class="sc">%in%</span> <span class="fu">get_cheminfo</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">info=</span><span class="st">&quot;DTXSID&quot;</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">suppress.messages=</span><span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>toxcast.httk <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc5, dsstox_substance_id <span class="sc">%in%</span> <span class="fu">get_cheminfo</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>         <span class="at">info=</span><span class="st">&quot;DTXSID&quot;</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>         <span class="at">suppress.messages=</span><span class="cn">TRUE</span>))</span></code></pre></div>
 </div>
 </div>
 <div id="critical-step-select-your-chemicals-of-interest" class="section level1">
@@ -611,28 +612,28 @@ another – you could type any chemical ID’s you want into the following
 my.chems vector, or even load it from a file.</p>
 <p>Here we’ll pick 50 chemicals at random from among the ToxCast
 chemicals:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>my.chems <span class="ot">&lt;-</span> <span class="fu">sample</span>(mc5<span class="sc">$</span>dsstox_substance_id,<span class="dv">50</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>example.toxcast <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mc5[mc5<span class="sc">$</span>dsstox_substance_id <span class="sc">%in%</span> my.chems,])</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>my.chems <span class="ot">&lt;-</span> <span class="fu">sample</span>(mc5<span class="sc">$</span>dsstox_substance_id,<span class="dv">50</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>example.toxcast <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mc5[mc5<span class="sc">$</span>dsstox_substance_id <span class="sc">%in%</span> my.chems,])</span></code></pre></div>
 <p>Unfortunately for this vignette there are too many ToxCast data to
 fit into a 5mb R package. So we will subset to just the selected
 chemicals and distribute only those data. In addition, out of 78 columns
 in the data, we will keep only eight. Download the full data following
 the instructions above.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>example.toxcast <span class="ot">&lt;-</span> example.toxcast[, <span class="fu">c</span>(<span class="st">&quot;chnm&quot;</span>,</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;dsstox_substance_id&quot;</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;spid&quot;</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;hitc&quot;</span>,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;modl&quot;</span>,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;aeid&quot;</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;modl_ga&quot;</span>,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;modl_ac10&quot;</span>,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;modl_acc&quot;</span>)]</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># reduce precision to decrease space:</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;modl_ga&quot;</span>, <span class="st">&quot;modl_ac10&quot;</span>, <span class="st">&quot;modl_acc&quot;</span>)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (this.col <span class="cf">in</span> cols)</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  example.toxcast[, this.col] <span class="ot">=</span> <span class="fu">signif</span>(example.toxcast[, this.col], <span class="dv">3</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(example.toxcast,<span class="at">file=</span><span class="st">&quot;introtoivive-toxcast.Rdata&quot;</span>,<span class="at">version=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>example.toxcast <span class="ot">&lt;-</span> example.toxcast[, <span class="fu">c</span>(<span class="st">&quot;chnm&quot;</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>              <span class="st">&quot;dsstox_substance_id&quot;</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>              <span class="st">&quot;spid&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>              <span class="st">&quot;hitc&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>              <span class="st">&quot;modl&quot;</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>              <span class="st">&quot;aeid&quot;</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>              <span class="st">&quot;modl_ga&quot;</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>              <span class="st">&quot;modl_ac10&quot;</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>              <span class="st">&quot;modl_acc&quot;</span>)]</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co"># reduce precision to decrease space:</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;modl_ga&quot;</span>, <span class="st">&quot;modl_ac10&quot;</span>, <span class="st">&quot;modl_acc&quot;</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="cf">for</span> (this.col <span class="cf">in</span> cols)</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>  example.toxcast[, this.col] <span class="ot">=</span> <span class="fu">signif</span>(example.toxcast[, this.col], <span class="dv">3</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="fu">save</span>(example.toxcast,<span class="at">file=</span><span class="st">&quot;introtoivive-toxcast.Rdata&quot;</span>,<span class="at">version=</span><span class="dv">2</span>)</span></code></pre></div>
 <div id="interpreting-the-assay-information" class="section level2">
 <h2>Interpreting the Assay Information</h2>
 <p>In the mc5 table, “aenm” gives the assay name while
@@ -661,9 +662,9 @@ Each chemical may have been run multiple times (experimental
 replicates), so that there may be multiple samples from the same
 chemical for the same assay. Different samples are indicated by the
 column “spid” (sample id).</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>example.toxcast <span class="ot">&lt;-</span> httk<span class="sc">::</span>example.toxcast</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(example.toxcast), <span class="at">caption =</span> <span class="st">&quot;ToxCast In Vitro Bioactivity Data&quot;</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>example.toxcast <span class="ot">&lt;-</span> httk<span class="sc">::</span>example.toxcast</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(example.toxcast), <span class="at">caption =</span> <span class="st">&quot;ToxCast In Vitro Bioactivity Data&quot;</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
 <table>
 <caption>ToxCast In Vitro Bioactivity Data</caption>
 <colgroup>
@@ -776,37 +777,37 @@ the concentration that first causes statistically significant activity.
 See <a href="https://doi.org/10.1093/bioinformatics/btw680">Filer et
 al. (2017)</a> figure three for additional discussion.</p>
 <p>To speed things up we only look at first ten chemials:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>toxcast.table <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (this.id <span class="cf">in</span> <span class="fu">unique</span>(example.toxcast<span class="sc">$</span>dsstox_substance_id)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  this.subset <span class="ot">&lt;-</span> <span class="fu">subset</span>(example.toxcast, dsstox_substance_id <span class="sc">==</span> this.id)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  these.hits <span class="ot">&lt;-</span> <span class="fu">subset</span>(this.subset, hitc<span class="sc">==</span><span class="dv">1</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">dim</span>(these.hits)[<span class="dv">1</span>]<span class="sc">&gt;</span><span class="dv">0</span>){</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      this.row <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Compound=</span><span class="fu">as.character</span>(this.subset[<span class="dv">1</span>,<span class="st">&quot;chnm&quot;</span>]),</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">DTXSID=</span>this.id,</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Total.Assays =</span> <span class="fu">dim</span>(this.subset)[<span class="dv">1</span>],</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Unique.Assays =</span> <span class="fu">length</span>(<span class="fu">unique</span>(this.subset<span class="sc">$</span>aeid)),</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Total.Hits =</span> <span class="fu">dim</span>(these.hits)[<span class="dv">1</span>],</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Unique.Hits =</span> <span class="fu">length</span>(<span class="fu">unique</span>(these.hits<span class="sc">$</span>aeid)),</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Low.AC50 =</span> <span class="fu">signif</span>(<span class="fu">min</span>(these.hits<span class="sc">$</span>modl_ga),<span class="dv">3</span>),</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Low.AC10 =</span> <span class="fu">signif</span>(<span class="fu">min</span>(these.hits<span class="sc">$</span>modl_ac10),<span class="dv">3</span>),</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Low.ACC =</span> <span class="fu">signif</span>(<span class="fu">min</span>(these.hits<span class="sc">$</span>modl_acc),<span class="dv">3</span>),</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Q10.AC50 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ga,<span class="at">probs=</span><span class="fl">0.1</span>),<span class="dv">3</span>),</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Q10.AC10 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ac10,<span class="at">probs=</span><span class="fl">0.1</span>),<span class="dv">3</span>),</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Q10.ACC =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_acc,<span class="at">probs=</span><span class="fl">0.1</span>),<span class="dv">3</span>),</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Med.AC50 =</span> <span class="fu">signif</span>(<span class="fu">median</span>(these.hits<span class="sc">$</span>modl_ga),<span class="dv">3</span>),</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Med.AC10 =</span> <span class="fu">signif</span>(<span class="fu">median</span>(these.hits<span class="sc">$</span>modl_ac10),<span class="dv">3</span>),</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Med.ACC =</span> <span class="fu">signif</span>(<span class="fu">median</span>(these.hits<span class="sc">$</span>modl_acc),<span class="dv">3</span>),</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Q90.AC50 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ga,<span class="at">probs=</span><span class="fl">0.9</span>),<span class="dv">3</span>),</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Q90.AC10 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ac10,<span class="at">probs=</span><span class="fl">0.9</span>),<span class="dv">3</span>),</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Q90.ACC =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_acc,<span class="at">probs=</span><span class="fl">0.9</span>),<span class="dv">3</span>)</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>                         )</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    toxcast.table <span class="ot">&lt;-</span> <span class="fu">rbind</span>(toxcast.table, this.row)</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(toxcast.table) <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">dim</span>(toxcast.table)[<span class="dv">1</span>])</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(toxcast.table[,<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]), <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>toxcast.table <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="cf">for</span> (this.id <span class="cf">in</span> <span class="fu">unique</span>(example.toxcast<span class="sc">$</span>dsstox_substance_id)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>{</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  this.subset <span class="ot">&lt;-</span> <span class="fu">subset</span>(example.toxcast, dsstox_substance_id <span class="sc">==</span> this.id)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>  these.hits <span class="ot">&lt;-</span> <span class="fu">subset</span>(this.subset, hitc<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">dim</span>(these.hits)[<span class="dv">1</span>]<span class="sc">&gt;</span><span class="dv">0</span>){</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>      this.row <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Compound=</span><span class="fu">as.character</span>(this.subset[<span class="dv">1</span>,<span class="st">&quot;chnm&quot;</span>]),</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>                         <span class="at">DTXSID=</span>this.id,</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>                         <span class="at">Total.Assays =</span> <span class="fu">dim</span>(this.subset)[<span class="dv">1</span>],</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>                         <span class="at">Unique.Assays =</span> <span class="fu">length</span>(<span class="fu">unique</span>(this.subset<span class="sc">$</span>aeid)),</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>                         <span class="at">Total.Hits =</span> <span class="fu">dim</span>(these.hits)[<span class="dv">1</span>],</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>                         <span class="at">Unique.Hits =</span> <span class="fu">length</span>(<span class="fu">unique</span>(these.hits<span class="sc">$</span>aeid)),</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>                         <span class="at">Low.AC50 =</span> <span class="fu">signif</span>(<span class="fu">min</span>(these.hits<span class="sc">$</span>modl_ga),<span class="dv">3</span>),</span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>                         <span class="at">Low.AC10 =</span> <span class="fu">signif</span>(<span class="fu">min</span>(these.hits<span class="sc">$</span>modl_ac10),<span class="dv">3</span>),</span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>                         <span class="at">Low.ACC =</span> <span class="fu">signif</span>(<span class="fu">min</span>(these.hits<span class="sc">$</span>modl_acc),<span class="dv">3</span>),</span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>                         <span class="at">Q10.AC50 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ga,<span class="at">probs=</span><span class="fl">0.1</span>),<span class="dv">3</span>),</span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>                         <span class="at">Q10.AC10 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ac10,<span class="at">probs=</span><span class="fl">0.1</span>),<span class="dv">3</span>),</span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>                         <span class="at">Q10.ACC =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_acc,<span class="at">probs=</span><span class="fl">0.1</span>),<span class="dv">3</span>),</span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>                         <span class="at">Med.AC50 =</span> <span class="fu">signif</span>(<span class="fu">median</span>(these.hits<span class="sc">$</span>modl_ga),<span class="dv">3</span>),</span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a>                         <span class="at">Med.AC10 =</span> <span class="fu">signif</span>(<span class="fu">median</span>(these.hits<span class="sc">$</span>modl_ac10),<span class="dv">3</span>),</span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a>                         <span class="at">Med.ACC =</span> <span class="fu">signif</span>(<span class="fu">median</span>(these.hits<span class="sc">$</span>modl_acc),<span class="dv">3</span>),</span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a>                         <span class="at">Q90.AC50 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ga,<span class="at">probs=</span><span class="fl">0.9</span>),<span class="dv">3</span>),</span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a>                         <span class="at">Q90.AC10 =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_ac10,<span class="at">probs=</span><span class="fl">0.9</span>),<span class="dv">3</span>),</span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>                         <span class="at">Q90.ACC =</span> <span class="fu">signif</span>(<span class="fu">quantile</span>(these.hits<span class="sc">$</span>modl_acc,<span class="at">probs=</span><span class="fl">0.9</span>),<span class="dv">3</span>)</span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a>                         )</span>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>    toxcast.table <span class="ot">&lt;-</span> <span class="fu">rbind</span>(toxcast.table, this.row)</span>
+<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a>  }</span>
+<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a>}</span>
+<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a><span class="fu">rownames</span>(toxcast.table) <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">dim</span>(toxcast.table)[<span class="dv">1</span>])</span>
+<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(toxcast.table[,<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]), <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
+<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
 <table>
 <caption>Summarized ToxCast Data</caption>
 <colgroup>
@@ -890,28 +891,28 @@ the predicted steady-state plasma concentration resulting from an
 ongoing 1 mg/kg/day exposure.</p>
 <div id="steady-state-plasma-concentration-c_ss" class="section level2">
 <h2>Steady State Plasma Concentration <span class="math inline">\(C_{ss}\)</span></h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (this.id <span class="cf">in</span> <span class="fu">unique</span>(toxcast.table<span class="sc">$</span>DTXSID))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get_cheminfo() gives a list of all the CAS numbers for which HTTK will work:</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (this.id <span class="sc">%in%</span> <span class="fu">get_cheminfo</span>(<span class="at">info=</span><span class="st">&quot;dtxsid&quot;</span>, <span class="at">suppress.messages=</span><span class="cn">TRUE</span>))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a random number generator seed so that the Monte Carlo will always give</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># the same random sequence:</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css&quot;</span>] <span class="ot">&lt;-</span> </span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">calc_mc_css</span>(<span class="at">dtxsid=</span>this.id,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output.units=</span><span class="st">&quot;uM&quot;</span>,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">samples=</span>NSAMP,</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">suppress.messages=</span><span class="cn">TRUE</span>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css.Type&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;in vitro&quot;</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="cf">for</span> (this.id <span class="cf">in</span> <span class="fu">unique</span>(toxcast.table<span class="sc">$</span>DTXSID))</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>{</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co"># get_cheminfo() gives a list of all the CAS numbers for which HTTK will work:</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="cf">if</span> (this.id <span class="sc">%in%</span> <span class="fu">get_cheminfo</span>(<span class="at">info=</span><span class="st">&quot;dtxsid&quot;</span>, <span class="at">suppress.messages=</span><span class="cn">TRUE</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>  {</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co"># Set a random number generator seed so that the Monte Carlo will always give</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co"># the same random sequence:</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css&quot;</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>      <span class="fu">calc_mc_css</span>(<span class="at">dtxsid=</span>this.id,</span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>                  <span class="at">output.units=</span><span class="st">&quot;uM&quot;</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>                  <span class="at">samples=</span>NSAMP,</span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>                  <span class="at">suppress.messages=</span><span class="cn">TRUE</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css.Type&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;in vitro&quot;</span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a>  }</span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>}</span></code></pre></div>
 <p>Let’s look at just the relevant columns from our table. Any Css
 values of “NA” (not a number) indicate that we don’t currently have
 <em>in vitro</em> TK data for those chemicals:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;Q10.AC50&quot;</span>,<span class="st">&quot;Css&quot;</span>,<span class="st">&quot;Css.Type&quot;</span>)], </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;Q10.AC50&quot;</span>,<span class="st">&quot;Css&quot;</span>,<span class="st">&quot;Css.Type&quot;</span>)], </span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>                                <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="step-three-high-throughput-toxicokinetics-with-qspr-predictions" class="section level1">
@@ -926,28 +927,28 @@ predictions form a variety of models. For example, you can load the
 table of quantitative structure-property relationship (QSPR) model
 predictions from the <a href="https://doi.org/10.1021/acs.est.7b00650">Sipes et al. (2017)</a>
 supplemental material:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load_sipes2017</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">load_sipes2017</span>()</span></code></pre></div>
 <p>Now go through the list of chemicals again but only calculate if we
 didn’t already have a value (NOTE: load_sipes2017 will not overwrite the
 <em>in vitro</em> data by default, so you’ll still get the same answer
 if you use the same random number seed, but you would also be wasting
 time):</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (this.id <span class="cf">in</span> <span class="fu">unique</span>(toxcast.table<span class="sc">$</span>DTXSID))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (this.id <span class="sc">%in%</span> <span class="fu">get_cheminfo</span>(<span class="at">info=</span><span class="st">&quot;dtxsid&quot;</span>, <span class="at">suppress.messages=</span><span class="cn">TRUE</span>) <span class="sc">&amp;</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css&quot;</span>]))</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a random number generator seed so that the Monte Carlo will always give</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># the same random sequence:</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css&quot;</span>] <span class="ot">&lt;-</span> </span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">calc_mc_css</span>(<span class="at">dtxsid=</span>this.id,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output.units=</span><span class="st">&quot;uM&quot;</span>,</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">samples=</span>NSAMP,</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">suppress.messages=</span><span class="cn">TRUE</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css.Type&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;in silico&quot;</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="cf">for</span> (this.id <span class="cf">in</span> <span class="fu">unique</span>(toxcast.table<span class="sc">$</span>DTXSID))</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>{</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="cf">if</span> (this.id <span class="sc">%in%</span> <span class="fu">get_cheminfo</span>(<span class="at">info=</span><span class="st">&quot;dtxsid&quot;</span>, <span class="at">suppress.messages=</span><span class="cn">TRUE</span>) <span class="sc">&amp;</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    <span class="fu">is.na</span>(toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css&quot;</span>]))</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  {</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co"># Set a random number generator seed so that the Monte Carlo will always give</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co"># the same random sequence:</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css&quot;</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>      <span class="fu">calc_mc_css</span>(<span class="at">dtxsid=</span>this.id,</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>                  <span class="at">output.units=</span><span class="st">&quot;uM&quot;</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>                  <span class="at">samples=</span>NSAMP,</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>                  <span class="at">suppress.messages=</span><span class="cn">TRUE</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>    toxcast.table[toxcast.table<span class="sc">$</span>DTXSID<span class="sc">==</span>this.id,<span class="st">&quot;Css.Type&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;in silico&quot;</span></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>  }</span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>}</span></code></pre></div>
 <p>Take another look at our table – many of the gaps are now filled in.
 Any Css values of “NA” (not a number) indicate that we don’t currently
 have <em>in vitro</em> TK data or <em>in silico</em> predictions from <a href="https://doi.org/10.1021/acs.est.7b00650">Sipes et al. (2017)</a>
@@ -955,9 +956,9 @@ for those chemicals (note that there are also predictions available from
 <a href="https://doi.org/10.1016/j.comtox.2020.100136">Pradeep et
 al. (2020)</a> (load_pradeep2020) and <a href="https://doi.org/10.1021/acs.est.0c06117">Dawson et al. (2021)</a>
 (load_dawson2021):</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;Q10.AC50&quot;</span>,<span class="st">&quot;Css&quot;</span>,<span class="st">&quot;Css.Type&quot;</span>)], </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;Q10.AC50&quot;</span>,<span class="st">&quot;Css&quot;</span>,<span class="st">&quot;Css.Type&quot;</span>)], </span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>                                <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>             <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)</span></code></pre></div>
 </div>
 <div id="step-four-reverse-dosimetry-in-vitro-in-vivo-extrapolation" class="section level1">
 <h1>Step Four: Reverse Dosimetry <em>In Vitro-In Vivo</em>
@@ -985,12 +986,12 @@ vitro</em> concentration: <span class="math display">\[AED =
 b0oth <span class="math inline">\(AC_{50}\)</span> and <span class="math inline">\(C_{ss}\)</span> must have the same units. Do not
 forget that the ToxCast concentrations are given on the log-10
 scale:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>toxcast.table<span class="sc">$</span>EquivDose <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="dv">10</span><span class="sc">^</span>toxcast.table<span class="sc">$</span>Q10.AC50 <span class="sc">/</span> toxcast.table<span class="sc">$</span>Css,</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>toxcast.table<span class="sc">$</span>EquivDose <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="dv">10</span><span class="sc">^</span>toxcast.table<span class="sc">$</span>Q10.AC50 <span class="sc">/</span> toxcast.table<span class="sc">$</span>Css,</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>                                  <span class="dv">3</span>)</span></code></pre></div>
 <p>Look at the table again:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;Q10.AC50&quot;</span>,<span class="st">&quot;Css&quot;</span>,<span class="st">&quot;EquivDose&quot;</span>)], </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)          </span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;Q10.AC50&quot;</span>,<span class="st">&quot;Css&quot;</span>,<span class="st">&quot;EquivDose&quot;</span>)], </span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>                                 <span class="at">caption =</span> <span class="st">&quot;Summarized ToxCast Data&quot;</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>              <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)          </span></code></pre></div>
 </div>
 <div id="step-five-compare-with-estimated-exposure-rates" class="section level1">
 <h1>Step Five: Compare with Estimated Exposure Rates</h1>
@@ -1020,7 +1021,7 @@ Table 1</a> of the Supporting Information for <a href="https://doi.org/10.1021/a
 Don’t forget that you have to “unzip” a file that ends in “.zip” and
 place the “.txt” file in your working directory with your other
 files.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>SEEM <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;SupTable-all.chem.preds-2018-11-28.txt&quot;</span>,<span class="at">stringsAsFactors=</span>F)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>SEEM <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;SupTable-all.chem.preds-2018-11-28.txt&quot;</span>,<span class="at">stringsAsFactors=</span>F)</span></code></pre></div>
 <p>If you want, you can also download the predictions for specific
 chemicals from the <a href="https://comptox.epa.gov/dashboard">Comptox
 Chemicals Dashboard</a>. Be sure to use Batch Search and select the
@@ -1028,81 +1029,81 @@ option for “NHANES/Predicted Exposure”. You can download the file in a
 “comma separated values” or “.CSV” format, in which case you use
 “read.csv”. Or you can download an Excel “.xls” file which requires load
 the package <em>readXL</em>.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>SEEM <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;CCD-Batch-Search_DATE.xlsx&quot;</span>,<span class="at">sheet=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>SEEM <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;CCD-Batch-Search_DATE.xlsx&quot;</span>,<span class="at">sheet=</span><span class="dv">2</span>)</span></code></pre></div>
 <p>Perhaps most easily we can grab SEEM predictions already in RData
 format from <a href="https://github.com/HumanExposure/SEEM3RPackage/tree/main/SEEM3Predictor/data">GitHub</a>
 Download the file Ring2018Preds.RData and load it:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;Ring2018Preds.RData&quot;</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>SEEM <span class="ot">&lt;-</span> Ring2018.preds</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;Ring2018Preds.RData&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>SEEM <span class="ot">&lt;-</span> Ring2018.preds</span></code></pre></div>
 <p>Again we do not have the space to distribute all the SEEM predictions
 within this R package, but we can give you our example chemicals:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>example.seem <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">subset</span>(SEEM, </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                              dsstox_substance_id <span class="sc">%in%</span> toxcast.table<span class="sc">$</span>DTXSID))</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (this.col <span class="cf">in</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">36</span>) </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  example.seem[,this.col] <span class="ot">&lt;-</span> <span class="fu">signif</span>(example.seem[,this.col],<span class="dv">4</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(example.seem,<span class="at">file=</span><span class="st">&quot;introtoivive-seem.Rdata&quot;</span>,<span class="at">version=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>example.seem <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">subset</span>(SEEM, </span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>                              dsstox_substance_id <span class="sc">%in%</span> toxcast.table<span class="sc">$</span>DTXSID))</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="cf">for</span> (this.col <span class="cf">in</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">36</span>) </span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>  example.seem[,this.col] <span class="ot">&lt;-</span> <span class="fu">signif</span>(example.seem[,this.col],<span class="dv">4</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="fu">save</span>(example.seem,<span class="at">file=</span><span class="st">&quot;introtoivive-seem.Rdata&quot;</span>,<span class="at">version=</span><span class="dv">2</span>)</span></code></pre></div>
 <p>Merge the consensus model predictions with your table:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>example.seem <span class="ot">&lt;-</span> httk<span class="sc">::</span>example.seem</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>toxcast.table <span class="ot">&lt;-</span> <span class="fu">merge</span>(toxcast.table,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                       example.seem[,<span class="fu">c</span>(</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;dsstox_substance_id&quot;</span>,</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;seem3&quot;</span>,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;seem3.l95&quot;</span>,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;seem3.u95&quot;</span>,</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;Pathway&quot;</span>,</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;AD&quot;</span>)],</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">by.x=</span><span class="st">&quot;DTXSID&quot;</span>,</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">by.y=</span><span class="st">&quot;dsstox_substance_id&quot;</span>,</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>example.seem <span class="ot">&lt;-</span> httk<span class="sc">::</span>example.seem</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>toxcast.table <span class="ot">&lt;-</span> <span class="fu">merge</span>(toxcast.table,</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>                       example.seem[,<span class="fu">c</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>                         <span class="st">&quot;dsstox_substance_id&quot;</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>                         <span class="st">&quot;seem3&quot;</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a>                         <span class="st">&quot;seem3.l95&quot;</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>                         <span class="st">&quot;seem3.u95&quot;</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a>                         <span class="st">&quot;Pathway&quot;</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>                         <span class="st">&quot;AD&quot;</span>)],</span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>                       <span class="at">by.x=</span><span class="st">&quot;DTXSID&quot;</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>                       <span class="at">by.y=</span><span class="st">&quot;dsstox_substance_id&quot;</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a>                       <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Now we can calculate a bioactivity:exposure ratio (BER), which is a
 risk-like metric since it takes hazard, dose-response, and exposure into
 account (<a href="https://doi.org/10.1093/toxsci/kfv171">Wetmore,
 2015</a>):</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>toxcast.table<span class="sc">$</span>BER <span class="ot">&lt;-</span> <span class="fu">signif</span>(toxcast.table<span class="sc">$</span>EquivDose<span class="sc">/</span>toxcast.table<span class="sc">$</span>seem3.u95, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>toxcast.table<span class="sc">$</span>BER <span class="ot">&lt;-</span> <span class="fu">signif</span>(toxcast.table<span class="sc">$</span>EquivDose<span class="sc">/</span>toxcast.table<span class="sc">$</span>seem3.u95, <span class="dv">3</span>)</span></code></pre></div>
 <p>Reorder your table by BER:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>toxcast.table <span class="ot">&lt;-</span> toxcast.table[<span class="fu">order</span>(toxcast.table<span class="sc">$</span>BER),]</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;EquivDose&quot;</span>,<span class="st">&quot;seem3.u95&quot;</span>,<span class="st">&quot;Pathway&quot;</span>,<span class="st">&quot;BER&quot;</span>)], </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">caption =</span> <span class="st">&quot;Bioactivity:Exposure Ratios&quot;</span>,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)  </span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>toxcast.table <span class="ot">&lt;-</span> toxcast.table[<span class="fu">order</span>(toxcast.table<span class="sc">$</span>BER),]</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(toxcast.table[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="st">&quot;Compound&quot;</span>,<span class="st">&quot;EquivDose&quot;</span>,<span class="st">&quot;seem3.u95&quot;</span>,<span class="st">&quot;Pathway&quot;</span>,<span class="st">&quot;BER&quot;</span>)], </span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>                                 <span class="at">caption =</span> <span class="st">&quot;Bioactivity:Exposure Ratios&quot;</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>              <span class="at">floating.environment=</span><span class="st">&quot;sidewaystable&quot;</span>)  </span></code></pre></div>
 <div id="make-a-ber-plot" class="section level2">
 <h2>Make a BER plot</h2>
 <p>Convert the chemical names into factors for plotting:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>toxcast.table<span class="sc">$</span>Compound <span class="ot">&lt;-</span> <span class="fu">factor</span>(toxcast.table<span class="sc">$</span>Compound,</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">levels=</span>toxcast.table<span class="sc">$</span>Compound)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>toxcast.table<span class="sc">$</span>Compound <span class="ot">&lt;-</span> <span class="fu">factor</span>(toxcast.table<span class="sc">$</span>Compound,</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>                                    <span class="at">levels=</span>toxcast.table<span class="sc">$</span>Compound)</span></code></pre></div>
 <p>Then we can create a plot where the BER for each chemical is shown by
 the margin between putative hazard (in red) and estimated exposure (in
 blue). The wider the margin, the lesser the risk. Chemicals are arranged
 from left-to-right by increasing margin (that is, decreasing risk).</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>BER.plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>toxcast.table) <span class="sc">+</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend=</span>Compound,</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>(<span class="dv">10</span><span class="sc">^</span>Q10.AC50)<span class="sc">/</span>Css,</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">yend=</span>(<span class="dv">10</span><span class="sc">^</span>Q90.AC50)<span class="sc">/</span>Css),</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">size=</span><span class="dv">1</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">&quot;red&quot;</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend=</span>Compound,</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>seem3.l95,</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">yend=</span>seem3.u95),</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">size=</span><span class="dv">1</span>,</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span>   </span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,<span class="at">y=</span>(<span class="dv">10</span><span class="sc">^</span>Med.AC50)<span class="sc">/</span>Css),<span class="at">shape=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,<span class="at">y=</span>seem3),<span class="at">shape=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>)) <span class="sc">+</span> </span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>)) <span class="sc">+</span> </span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> </span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, </span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="dv">1</span>, </span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="dv">1</span>, </span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>, </span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">angle =</span> <span class="dv">45</span>)) <span class="sc">+</span></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Bioactive Dose &amp; Exposure</span><span class="sc">\n</span><span class="st">mg/kg BW/day&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Chemicals Ranked By BER&quot;</span>)</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(BER.plot)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>BER.plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>toxcast.table) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,</span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>                   <span class="at">xend=</span>Compound,</span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>                   <span class="at">y=</span>(<span class="dv">10</span><span class="sc">^</span>Q10.AC50)<span class="sc">/</span>Css,</span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>                   <span class="at">yend=</span>(<span class="dv">10</span><span class="sc">^</span>Q90.AC50)<span class="sc">/</span>Css),</span>
+<span id="cb31-6"><a href="#cb31-6" tabindex="-1"></a>               <span class="at">size=</span><span class="dv">1</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" tabindex="-1"></a>               <span class="at">color=</span><span class="st">&quot;red&quot;</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb31-9"><a href="#cb31-9" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,</span>
+<span id="cb31-10"><a href="#cb31-10" tabindex="-1"></a>                   <span class="at">xend=</span>Compound,</span>
+<span id="cb31-11"><a href="#cb31-11" tabindex="-1"></a>                   <span class="at">y=</span>seem3.l95,</span>
+<span id="cb31-12"><a href="#cb31-12" tabindex="-1"></a>                   <span class="at">yend=</span>seem3.u95),</span>
+<span id="cb31-13"><a href="#cb31-13" tabindex="-1"></a>               <span class="at">size=</span><span class="dv">1</span>,</span>
+<span id="cb31-14"><a href="#cb31-14" tabindex="-1"></a>               <span class="at">color=</span><span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb31-15"><a href="#cb31-15" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span>   </span>
+<span id="cb31-16"><a href="#cb31-16" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,<span class="at">y=</span>(<span class="dv">10</span><span class="sc">^</span>Med.AC50)<span class="sc">/</span>Css),<span class="at">shape=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Compound,<span class="at">y=</span>seem3),<span class="at">shape=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-18"><a href="#cb31-18" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb31-19"><a href="#cb31-19" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>)) <span class="sc">+</span> </span>
+<span id="cb31-20"><a href="#cb31-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>)) <span class="sc">+</span> </span>
+<span id="cb31-21"><a href="#cb31-21" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> </span>
+<span id="cb31-22"><a href="#cb31-22" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
+<span id="cb31-23"><a href="#cb31-23" tabindex="-1"></a>    <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, </span>
+<span id="cb31-24"><a href="#cb31-24" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="dv">1</span>, </span>
+<span id="cb31-25"><a href="#cb31-25" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="dv">1</span>, </span>
+<span id="cb31-26"><a href="#cb31-26" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>, </span>
+<span id="cb31-27"><a href="#cb31-27" tabindex="-1"></a>    <span class="at">angle =</span> <span class="dv">45</span>)) <span class="sc">+</span></span>
+<span id="cb31-28"><a href="#cb31-28" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Bioactive Dose &amp; Exposure</span><span class="sc">\n</span><span class="st">mg/kg BW/day&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb31-29"><a href="#cb31-29" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Chemicals Ranked By BER&quot;</span>)</span>
+<span id="cb31-30"><a href="#cb31-30" tabindex="-1"></a><span class="fu">print</span>(BER.plot)</span></code></pre></div>
 </div>
 </div>
 

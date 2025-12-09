@@ -52,6 +52,20 @@ convert concentrations from high-throughput screening experiments
 dosimetry (also known as "RTK")
 ([Wetmore et al., 2015](<https://doi.org/10.1093/toxsci/kfv171>)).
 
+## Chemical Insights
+
+UL Research Institutes’ Chemical Insights Research Institute (ULRI-CIRI) is an independent, non-profit research organization (501(c)(3)) dedicated to advancing the understanding of chemical exposures and their impacts on human health. Building on UL’s 130-year legacy in safety science, we are committed to producing peer-reviewed, open-access research that serves as a trusted resource for the public and scientific community.
+CIRI develops data and tools that adhere to the FAIR principles [Wilkinson et al. 2016](https://doi.org/10.1038/sdata.2016.18): Findable, Accessible, Interoperable, and Reusable. Our mission is to provide trustworthy, scientifically grounded predictions of chemical behavior.
+
+We emphasize rigorous scientific peer review, and best practices in software development and engineering:
+1. Wherever possible, we integrate existing, peer-reviewed data and tools.
+2. When creating new data or methods, we submit them to external peer review to ensure quality and credibility.
+3. We try to make our research open-source where possible, and use continuous integration and testing to ensure high-quality software
+
+Our goal is to inform standards, support evidence-based decision-making, and protect public health. We are passionate about advancing scientific discovery and applying it to real-world health challenges.
+
+Visit the [ULRI Chemical Insights](https://ul.org/institutes-offices/chemical-insights/) website for more information and our latest research updates.
+
 ## Getting Started
 
 For an introduction to R, see Irizarry (2022) "Introduction to Data Science": 
@@ -166,14 +180,14 @@ vignette("IntroToHTTK")
 ## Authors
 
 ### Principal Investigator 
-John Wambaugh [wambaugh.john@epa.gov]
+John Wambaugh [wambaugh.research@gmail.com]
 
-### Lead Software Engineer 
-Sarah Davidson-Fritz [DavidsonFritz.Sarah@epa.gov]
+### EPA Lead Developer
+Caroline Ring [Ring.Caroline@epa.gov]
 
 ### Model Authors and Function Developers
 Robert Pearce,
-Caroline Ring [Ring.Caroline@epa.gov],
+Sarah Davidson-Fritz [DavidsonFritz.Sarah@epa.gov]
 Greg Honda [honda.gregory@epa.gov], 
 Mark Sfeir, 
 Matt Linakis [MLINAKIS@ramboll.com],
@@ -189,9 +203,9 @@ Miyuki Breen,
 Shannon Bell [Shannon.bell@inotivco.com], 
 Xiaoqing Chang [Xiaoqing.chang@inotivco.com], 
 Jimena Davis, 
-Elaina Kenyon [kenyon.elaina@epa.gov],
+Elaina Kenyon,
 Gilberto Padilla Mercado [PadillaMercado.Gilberto@epa.gov],
-Katie Paul Friedman [Paul-Friedman.Katie@epa.gov],
+Katie Paul Friedman [Katie.PaulFriedman@UL.org],
 Nathan Pollesch [pollesch.nathan@epa.gov],
 Meredith Scherer [Scherer.Meredith@epa.gov],
 Noelle Sinski [Noelle.Sinski@icf.com],
@@ -202,13 +216,7 @@ Barbara Wetmore [wetmore.barbara@epa.gov], and
 Lily Whipple
 
 ### Statistical Expertise
-Woodrow Setzer [setzer.woodrow@epa.gov]
-
-## License
-
-License: MIT <https://github.com/USEPA/CompTox-ExpoCast-httk/blob/main/httk/LICENSE>
+Woodrow Setzer
 
 ## Disclaimer
-This software/application was developed by the U.S. Environmental Protection Agency (USEPA). No warranty expressed or implied is made regarding the accuracy or utility of the system, nor shall the act of distribution constitute any such warranty. The USEPA has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality or availability of the information. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the USEPA. The USEPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by the USEPA or the United States Government.
-
-<img src="man/figures/httk-logo.png" align="center" width="50%"/>
+This software/application was initially developed by the U.S. Environmental Protection Agency (USEPA). No warranty expressed or implied is made regarding the accuracy or utility of the system, nor shall the act of distribution constitute any such warranty. The USEPA has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality or availability of the information. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the USEPA.
